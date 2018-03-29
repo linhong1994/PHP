@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>{:session('sys.webtitle')}</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+		<link href="/assets/css/amazeui.min.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/check.css" rel="stylesheet" type="text/css" />
+		<script src="/assets/js/jquery-3.2.1.min.js"></script>
+		<script src="/assets/js/layer_mobile/layer.js"></script>
+	</head>
+       
+ <style>
+ .success-bg {margin-top:10px; background:#fff; padding:10px 0 30px 0;}
+ /*评价标签*/
+  .input-weak { width:100%; display:block; padding:8px; background:#fff; min-height:60px; margin-bottom:20px; border:1px solid #DDD8CE;}
+  .grayBtn, .orgBtn {
+  border-radius: 5px;
+  color: #fff !important;
+  display: inline-block;
+  font-size: 18px;
+  height: 43px;
+  line-height: 43px;
+  text-align: center;
+  width: 80%;
+}
+a.orgBtn {
+  background: #CB2527 none repeat scroll 0 0;
+  border: 1px solid #C7A770;
+}
+
+a.z-foot-fans {
+	background:url(/assets/images/set.png) 0 0 /35px no-repeat;
+  background-position: 0 -236px;
+  display: inline-block;
+height: 22px;
+margin: 6px 0 0 14px;
+width: 22px;
+display:inline-block;
+}
+a.z-foot-fansed {
+  background-position: 0 -259px;
+}
+
+	 .index-tagBlock { padding:0 7px;}
+     .index-tagBlock ul li { display:inline-block; padding:5px 7px;  border-radius:7px; color:#6d7885;background-color:#ebf5ff; font-size:12px; margin-bottom:7px;}
+	 .index-tagBlock ul li.tags-active { color:#fff; background-color:#CB2527}
+	 .index-tagBlock ul li.tags-unsatisfied { color:#aaa; background-color:#DADADA;}
+	 
+	 .tjpj { position:fixed; bottom:0; width:100%;}
+	 .jspj { margin-top:7px; padding:10px; background:#fff; color:#999; border:1px solid #e8e8e8}
+	 .jspj h3 { font-size:12px; text-align:center; margin-bottom:5px;}
+	 .jspj-bh-lb { display:block;}
+	 
+	 /*商品信息*/
+ .product-title { border-bottom:1px solid #E2DED6; margin:7px; padding-bottom:7px;}
+ .product-title:after {     content:".";        
+   display:block;        
+   height:0;        
+   clear:both;        
+   visibility:hidden; }
+ .img-title { float:left;}
+ .img-title img { width:80px; height:80px; border:1px solid #F1F1F1}
+ .font-title { float:left; margin-left:20px;}
+ .font-title span { display:block;}
+ .font-title span:last-child{color:#CB2527;}
+ .font-title span:nth-child(2){color:#808080; font-size:12px;}
+   </style>
+  <style>
+ /*评价星星*/
+.starts ul{
+	float:left;
+}
+.starts ul li{
+	list-style: none;
+	width:32px;
+	height:21px;
+	float:left;
+	background:url(/assets/images/stark2.png) no-repeat;
+	
+}
+.starts ul li.on{
+	background:url(/assets/images/stars2.png) no-repeat;
+}
+.starts ul span{
+	display:inline;
+	float:left;
+	padding-left:10px;
+	height:21px;
+	line-height:21px;
+}
+</style>
+<body style=" background: #efefef;">
+	<header data-am-widget="header" class="am-header am-header-default sq-head ">
+		<div class="am-header-left am-header-nav">
+			<a href="{:outo()}" class="">
+				<i class="am-icon-chevron-left"></i>
+			</a>
+		</div>
+		<h1 class="am-header-title">
+	            <a href="" class="">评价</a>
+          </h1>
+      <div class="am-header-right am-header-nav">
+				<a href="/index.html" class="">
+					<i class="am-icon-home am-icon-sm"></i>
+				</a>
+			</div>
+          
+    </header>
+    <div style="height: 49px;"></div>
+<form id="myform">
+<input name="oid" type="hidden" value="{$orderno}" />
+{volist name='order' id='vo'}
+<!--商品评价开始-->    
+<div class="view success-bg">
+	<input type="hidden" name="pid[]" value="{$vo.productid}" />
+	<input type="hidden" name="psid[]" value="{$vo.pspecid}" />
+	
+   <div class="product-title">
+       <div class="img-title"><img src="{$vo.menuimg}"></div>
+       <div class="font-title"><span>{$vo.spmc}</span><span>规格:{$vo.spgg}</span><span>￥{$vo.price} X {$vo.num}</span></div>
+   </div>
+   <div class="index-tagBlock">
+       <ul>
+          <li class="tags-active">很满意</li>
+          <li>还不错</li>
+          <li class="tags-unsatisfied">不满意</li>
+          <li>一般般</li>
+          <li>品质优良</li>
+          <li>绿色健康</li>
+       </ul>
+   </div>
+   
+   <div class="textrar">
+       <textarea name="remark[]" class="input-weak" placeholder="说说您对本商品的评价吧"></textarea>
+   </div>    
+
+      <div class="starts">
+		<ul id = >
+			<li class="on" data-rel = "1" data-title = "特别差，给1分"></li>
+			<li class="on" data-rel = "2" data-title = "很差，给2分"></li>
+			<li class="on" data-rel = "3" data-title = "一般，给3分"></li>
+			<li class="on" data-rel = "4" data-title = "很好，给4分"></li>
+			<li class="on" data-rel = "5" data-title = "非常好，给5分"></li>
+			<span>非常好，给5分</span>
+			<input type="hidden" name="star[]" value="5" />
+		</ul>
+	</div>
+   
+</div>
+<!--商品评价结束-->  
+{/volist}
+</form>
+<div style="height: 49px;"></div>
+   
+<div class="tjpj">
+   <a class="orgBtn" style="width:100%" >发 布</a><a style="display:none" id="test5" class="z-set z-foot-fans"s></a>
+</div>
+<script>
+function msg(m){
+  layer.open({
+    content: m
+    ,skin: 'msg'
+    ,time: 2 //2秒后自动关闭
+  });
+}
+function tj(){
+	$('.orgBtn').attr({"disabled":"disabled"});
+  $.ajax({
+    type: 'POST',
+    async: false,
+    url: '/myassess.html',
+    data: $('#myform').serialize(),
+    dataType: 'json',
+    success: function(data){
+			msg(data.msg);
+			if(data.code==1){
+	      setTimeout(function(){
+					location.href = data.url;
+	      },1500);
+			}else{
+				$('.orgBtn').removeAttr("disabled");
+			}
+    },
+    error: function(xhr, type){
+			msg('网络错误,请重试!');
+			$('.orgBtn').removeAttr("disabled");
+    }
+  });	
+}
+ //标签追加
+$(function(){
+	$('.index-tagBlock li').click(function() {
+		var myvalue=$(this).html();
+		mycont=$("textarea[class='input-weak']").append(myvalue + ";");
+  });
+  
+  $('.starts li').click(function(){
+  	$li=$(this);
+  	$li.addClass('on');
+  	$li.siblings('input').val($li.data('rel'));
+  	$li.siblings('span').text($li.data('title'));
+  	$li.siblings('li').each(function(){
+  		if($(this).data('rel')<$li.data('rel')){
+  			$(this).addClass('on');
+  		}else{
+  			$(this).removeClass('on');
+  		}
+  	});
+  });
+  
+  $('.orgBtn').click(function(){
+  	tj();
+  });
+  
+  
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>{:config('web_site_title')}</title>
+  <meta name="keywords" content="{:config('web_site_keywords')}">
+	<meta name="description" content="{:config('web_site_description')}">
+  <meta name="author" content="templatemo">
+    
+    
+	<!-- Google Fonts 
+	<link href="http://fonts.useso.com/css?family=PT+Serif:400,700,400italic,700itali" rel="stylesheet">
+	<link href="http://fonts.useso.com/css?family=Raleway:400,900,800,700,500,200,100,600" rel="stylesheet">-->
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="__STATIC__/index/bootstrap/bootstrap.css">
+	<link rel="stylesheet" href="__STATIC__/index/css/misc.css">
+	<link rel="stylesheet" href="__STATIC__/index/css/blue-scheme.css">
+	
+	<!-- JavaScripts -->
+	<script src="__STATIC__/index/js/jquery-1.10.2.min.js"></script>
+	<script src="__STATIC__/index/js/jquery-migrate-1.2.1.min.js"></script>
+	<!-- greatwall.net.cn 
+	
+	 Baidu tongji analytics -->
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?1f3cae75c0f68c3667ecebab9e07d621";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+	<link rel="shortcut icon" href="__STATIC__/index/images/favicon.ico" type="image/x-icon" />
+
+</head>
+<style>
+.fa-2x {font-size:4em}
+.index-user { text-align:center;}
+</style>
+<body>
+	<div class="responsive_menu">
+        <ul class="main_menu">
+            <li><a href="{:url('index')}">首页</a></li>
+            <li><a href="{:url('project')}">案例</a></li>
+            <li><a href="{:url('blog')}">博客</a></li>
+            <li><a href="{:url('us_image')}">关于我们</a></li>
+        </ul> <!-- /.main_menu -->
+    </div> <!-- /.responsive_menu -->
+
+	<header class="site-header clearfix">
+		<div class="container">
+
+			<div class="row">
+
+				<div class="col-md-12">
+
+					<div class="pull-left logo">
+						<a href="{:url('index')}">
+              {notempty name="Think.config.web_site_logo"}
+              <img src="{$Think.config.web_site_logo|get_file_path}" alt="长城信息">
+              {else/}
+              <img src="__STATIC__/index/images/logo.png" alt="长城信息">
+              {/notempty}
+						</a>
+					</div>	<!-- /.logo -->
+
+					<div class="main-navigation pull-right">
+
+						<nav class="main-nav visible-md visible-lg">
+							<ul class="sf-menu">
+								<li><a href="{:url('index')}">首页</a></li>
+                                <li><a href="{:url('project')}">案例</a></li>
+                                <li><a href="{:url('blog')}">博客</a></li>
+            										<li><a href="{:url('us_image')}">关于我们</a></li>
+                                <li><a href="{:url('publish')}" class="main-button accent-color">提交需求<i class="icon-button fa fa-arrow-right"></i></a><li>
+							</ul> <!-- /.sf-menu -->
+						</nav> <!-- /.main-nav -->
+
+						<!-- This one in here is responsive menu for tablet and mobiles -->
+					    <div class="responsive-navigation visible-sm visible-xs">
+					        <a href="#nogo" class="menu-toggle-btn">
+					            <i class="fa fa-bars"></i>
+					        </a>
+					    </div> <!-- /responsive_navigation -->
+
+					</div> <!-- /.main-navigation -->
+
+				</div> <!-- /.col-md-12 -->
+
+			</div> <!-- /.row -->
+
+		</div> <!-- /.container -->
+	</header> <!-- /.site-header -->
+
+
+  {// 主体内容}
+	{block name="content"}{/block}
+
+	<footer class="site-footer">
+		<div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="footer_title">
+                        长城信息
+                    </div>
+                    <ul class="footer_list">
+                        <li><a style="color: #777777;" href="{:url('index')}">首页</a></li>
+                        <li><a style="color: #777777;" href="{:url('project')}">案例</a></li>
+                        <li><a style="color: #777777;" href="{:url('blog')}">博客</a></li>
+                        <li><a style="color: #777777;" href="{:url('us_image')}">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <ul class="footer_list">
+                       <li><img src="__STATIC__/index/images/includes/ewm.png" alt="" class="img-circle"></li>
+                       <li><a href="{:url('publish')}" class="main-button accent-color" style="background-color: #777777;">提交需求<i class="icon-button fa fa-arrow-right"></i></a></li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <div class="footer_title">
+                        联系我们
+                    </div>
+                    <ul class="footer_list">
+                    		<li>福建省长城信息发展有限公司</li>
+                        <li>电话：{:config('web_site_tel')}</li>
+                        <li>传真：{:config('web_site_fax')}</li>
+                        <li>地址：{:config('web_site_address')}</li>
+                    </ul>
+                </div>
+            </div>
+			<div class="row">
+				<div class="col-md-12">
+					<p class="copyright-text">{:config('web_site_copyright')}{:config('web_site_statistics')}<br>
+{:config('web_site_icp')}</p>
+				</div> <!-- /.col-md-12 -->
+			</div> <!-- /.row -->
+		</div> <!-- /.container -->
+	</footer> <!-- /.site-footer -->
+
+	<!-- Scripts -->
+	<script src="__STATIC__/index/js/min/plugins.min.js"></script>
+	<script src="__STATIC__/index/js/min/medigo-custom.min.js"></script>
+<!--页面js-->
+{block name="script"}{/block}
+
+</body>
+</html>

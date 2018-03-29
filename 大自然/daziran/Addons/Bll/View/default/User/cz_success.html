@@ -1,0 +1,161 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="applicable-device" content="mobile" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<title>评价 — 大自然会所</title>
+<link href="{:ADDON_PUBLIC_PATH}/css/public.css" rel="stylesheet" type="text/css" />
+<link href="{:ADDON_PUBLIC_PATH}/css/frozen.css" rel="stylesheet" type="text/css">
+<link href="{:ADDON_PUBLIC_PATH}/css/baoliao.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{:ADDON_PUBLIC_PATH}/css/bootstrap1.css"/>
+<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/layer.js"></script>
+<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/bootstrap.min.js"></script>
+
+
+</head>
+
+<body style="background:#F5F5F5">
+<div class="mobile success-bg">
+
+  <!--header 开始-->
+  <header>
+    <div class="header"> <a class="new-a-back" href="{:U("pay_online")}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/iconfont-fanhui.png"></span> </a>
+      <h2>充值成功</h2>
+      <a class="new-a-back2" style="right:0; top:0;" href="{:U("index",array("rand"=>rand(1000,9999)))}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/home.png"></span> </a>
+    </div>
+  </header>
+  <!--header 结束-->
+  <style>
+  .result { text-align:center;}
+  .success-bg { background-color:#F5F5F5; color:#666;}
+  .success,.faile { background:url({:ADDON_PUBLIC_PATH}/images/success.jpg) 0 0 no-repeat; width:137px; height:97px; margin:0 auto; margin-top:15px;}
+  .faile { background:url({:ADDON_PUBLIC_PATH}/images/faile.jpg) 0 0 no-repeat;}
+  .result-font { font-size:16px; font-weight:bold; color:#595C63; margin-top:10px;}
+  .result-notice { font-size:14px; color:#969696; background: url({:ADDON_PUBLIC_PATH}/images/notice.png) left center no-repeat; background-size:17px auto; margin:0 auto; text-indent:19px; text-align:left; display:inline-block}
+  
+  h1, .h1, h2, .h2, h3, .h3 { margin:0;}
+  .assess { padding:10px;}
+  
+  .input-weak { width:100%; display:block; padding:8px; background:#fff; min-height:60px; margin-bottom:20px; border:1px solid #DDD8CE;}
+  .grayBtn, .orgBtn {
+  border-radius: 5px;
+  color: #fff !important;
+  display: inline-block;
+  font-size: 18px;
+  height: 43px;
+  line-height: 43px;
+  text-align: center;
+  width: 80%;
+}
+a.orgBtn {
+  background: #C7A770 none repeat scroll 0 0;
+  border: 1px solid #C7A770;
+}
+
+a.z-foot-fans {
+	background:url({:ADDON_PUBLIC_PATH}/images/set.png) 0 0 /35px no-repeat;
+  background-position: 0 -236px;
+  display: inline-block;
+height: 22px;
+margin: 6px 0 0 14px;
+width: 22px;
+display:inline-block;
+}
+a.z-foot-fansed {
+  background-position: 0 -259px;
+}
+
+.rating-sm { font-size:1.5em; display:inline-block}
+.glyphicon-minus-sign:before { display:none;}
+.orgBtn {
+    border-radius: 5px;
+    color: #fff !important;
+    display: block;
+    font-size: 18px;
+    height: 43px;
+    line-height: 43px;
+    text-align: center;
+    width: 100%;
+}
+  </style>
+  <div  class="view success-bg" >
+     <div class="result">
+         <div class="success"></div>
+         <div class="result-font">充值成功</div>
+     </div>
+  </div>
+
+<div style="padding: 10px 10px 10px 10px;">
+ <ul class="list-group">
+  <li class="list-group-item">充值金额：￥<strong style="color: red;">{$order.orderamount}</strong></li>
+  <li class="list-group-item">账户余额：￥<strong style="color:green;">{$order.userbalance}</strong></li>
+  <li class="list-group-item">充值时间：{$order.insertdate}</li>
+</ul>
+<a id="ljzf" class="orgBtn" style="text-decoration: none;">立即买单</a>
+</div>
+
+</div>
+
+<div id="codepay" style="display: none;">
+	
+		<img id="barcode" src="{:addons_url("Bll://Api/barCode")}" style="height: 79px;width: 287px;">
+	
+	
+		<img id="qrcode" src="{:addons_url("Bll://Api/qrCode")}" style="height: 165px;width: 165px;">
+		<p style="color: red;margin-top: 0px;margin-bottom: 10px;">温馨提示：请勿向其他人透露扫码信息！</p>
+</div>
+<script>
+var countdown=0;
+function opencode(){
+	//layer.closeAll();
+  layer.open({
+    title: "向商家付款(60s刷新)"
+    ,content: $("#codepay").html()
+  });	
+}
+
+function makecode(){
+	$.ajax({
+		async: false,
+		type: 'GET',
+		url: '{:addons_url("Bll://Api/makeCode")}',
+		dataType: 'json',
+		success: function(data){
+			countdown=data;
+		},
+		error: function(xhr, type){
+		  alert('Ajax error!');
+		}
+	});	
+}
+
+function settime() {
+	if (countdown == 0) {
+		makecode();
+		opencode();
+	} else {
+		$("h3").text("向商家付款("+countdown+"s刷新)");
+		countdown--; 
+	}
+	if($("h3").length==0) {
+		countdown = 0;
+		return;
+	}
+	setTimeout(function() { 
+		settime() 
+	},1000) 
+}
+
+
+
+$(function(){
+	$("#ljzf").unbind("click").click(function(){
+		  settime();
+	});
+});
+
+</script>
+<include file="./Addons/Bll/View/default/Public/guanzhu.html" />
+</body>
+</html>

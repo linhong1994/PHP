@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>{:session('sys.webtitle')}</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+		<link href="/assets/css/amazeui.min.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/check.css" rel="stylesheet" type="text/css" />
+		<script src="/assets/js/jquery-3.2.1.min.js"></script>
+		<script src="/assets/js/layer_mobile/layer.js"></script>
+	</head>
+	<body>
+		<header data-am-widget="header" class="am-header am-header-default sq-head ">
+			<div class="am-header-left am-header-nav">
+				<a href="{:outo()}" class="">
+					<i class="am-icon-chevron-left"></i>
+				</a>
+			</div>
+			<h1 class="am-header-title">
+  	            <a href="" class="">我的收藏</a>
+            </h1>
+            <div class="bianji">编辑</div>
+	    </header>
+	    <div style="height: 49px;"></div>
+	   <form id="myform" class="shopcart-list" style="padding-bottom: 0px;">
+	   	{volist name='list' id='vo'}
+	    	<li>
+	    		<input class='rid' name='rid[]' type="hidden" value="{$vo.rid}" />
+	    		<label class="am-checkbox am-warning">
+                 <input type="checkbox"   data-am-ucheck checked>
+                </label>
+                <a href="/detail/pid/{$vo.pid}.html" style="color: #909090;"><img src="{$vo.menuimg}" class="shop-pic" />
+                <div class="shop-list-mid">
+                	<div class="tit">{$vo.spmc}</div>
+                	<b class="shop-list-price" data-dj="{$vo.price}">￥{$vo.price} </b>
+                </div>
+                </a>
+              
+	    	</li>
+
+	    {/volist}	
+	    </form>
+
+        <div class="shop-fix edit">
+	    	<label class="am-checkbox am-warning">
+               <input type="checkbox" checked="checked" value="" data-am-ucheck checked>
+            </label>
+            <a class="del">全选</a>
+            <a id="del" class="js-btn">删除</a>
+            </div>
+	    </div>
+	    <!--底部-->
+ <div style="height: 55px;"></div>
+ <div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default sq-foot am-no-layout" id="">
+      <ul class="am-navbar-nav am-cf am-avg-sm-5">   
+          <li>
+            <a href="{:url('index')}" class="">
+                <span class="am-icon-home"></span>
+                <span class="am-navbar-label">首页</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('category')}" class="">
+                <span class="am-icon-comments"></span>
+                <span class="am-navbar-label">分类</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('shopcart')}" class="">
+                <span class="am-icon-shopping-cart"></span>
+                <span class="am-navbar-label">购物车</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('allorder')}" class="">
+                <span class="am-icon-file-text"></span>
+                <span class="am-navbar-label">订单</span>
+            </a>
+          </li>
+ 
+          <li>
+            <a href="{:url('member')}" class="curr">
+                <span class="am-icon-user"></span>
+                <span class="am-navbar-label">我的</span>
+            </a>
+          </li>
+      </ul>
+</div>
+
+<script src="/assets/js/amazeui.min.js"></script>   
+<script>
+function msg(m){
+  layer.open({
+    content: m
+    ,skin: 'msg'
+    ,time: 2 //2秒后自动关闭
+  });
+}
+function del(idlist){
+  $.ajax({
+    type: 'POST',
+    async: false,
+    url: '/collect.html',
+    data:{
+    	rid:idlist
+    },
+    dataType: 'json',
+    success: function(data){
+			msg(data.msg);
+    },
+    error: function(xhr, type){
+			msg('网络错误,请重试!');
+    }
+  });	
+}
+$(function(){
+	//编辑
+	$(".bianji").click(function() {
+    if ($(this).text() == '编辑') {
+    	$('.shopcart-list').css('padding-bottom','50px');
+    	$(".edit").css("display", "block");
+			$(this).text("完成");
+    }else {
+    	$('.shopcart-list').css('padding-bottom','0px');
+      $(".edit").css("display", "none");
+			$(this).text("编辑");
+    }
+    $(".shopcart-list :checkbox").each(function(){
+			if($(this).is(':checked')){
+				$(this).prop("checked", false);
+			}else{
+				$(this).prop("checked", true);
+			}
+			
+		})
+		$(".shop-fix :checkbox").prop("checked", true);
+		$(".shopcart-list :checkbox").each(function(){
+			if(!$(this).is(':checked')){
+				$(".shop-fix :checkbox").prop('checked', false);
+				return;
+			}
+		});
+	});
+	
+	//复选
+	$(".shop-fix :checkbox").change(function(){
+		if($(this).is(':checked')){
+			$(".shopcart-list :checkbox").prop("checked", true);
+		}else{
+			$(".shopcart-list :checkbox").prop('checked', false);
+		}
+	});
+	
+	$(".shopcart-list :checkbox").change(function(){
+		$(".shop-fix :checkbox").prop("checked", true);
+		$(".shopcart-list :checkbox").each(function(){
+			if(!$(this).is(':checked')){
+				$(".shop-fix :checkbox").prop('checked', false);
+				return;
+			}
+		});
+	});
+	
+	$("#del").click(function(){
+	  layer.open({
+	    content: '您确定要删除选择的商品吗？'
+	    ,btn: ['确定', '取消']
+	    ,yes: function(index){
+				var _list=[];
+				var i=0;
+				$(".shopcart-list :checkbox").each(function(){
+					if($(this).is(':checked')){
+						_list[i]=$(this).closest('li').find("input[name='rid[]']").val();
+						$(this).closest('li').remove();
+						++i;
+					}
+				});
+				del(_list);
+
+	    	layer.close(index);
+	    }
+	  });
+
+	})
+	
+})
+</script>
+	</body>
+</html>

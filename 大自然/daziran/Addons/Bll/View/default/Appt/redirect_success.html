@@ -1,0 +1,120 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="applicable-device" content="mobile" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<title>预约成功  — 大自然会所</title>
+<link href="{:ADDON_PUBLIC_PATH}/css/public.css" rel="stylesheet" type="text/css" />
+<link href="{:ADDON_PUBLIC_PATH}/css/frozen.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{:ADDON_PUBLIC_PATH}/css/bootstrap1.css"/>
+
+<script src="{:ADDON_PUBLIC_PATH}/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/bootstrap.min.js"></script>
+
+</head>
+
+<body style="background:#F5F5F5">
+<div class="mobile success-bg">
+
+  <!--header 开始-->
+  <header>
+    <div class="header"> <a class="new-a-back" href="{:U("appt_order",array("pid"=>$project["pid"]))}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/iconfont-fanhui.png"></span> </a>
+      <h2>预约成功</h2>
+      <div class="head_right" style="top:13px;"><a href="{:addons_url("Bll://User/my_appt")}" style="color:#FFFFFF; font-size:14px;">我的预约</a></div>
+    </div>
+  </header>
+  <!--header 结束-->
+  <style>
+  .result { text-align:center;}
+  .success-bg { background-color:#F5F5F5}
+  .success,.faile { background:url({:ADDON_PUBLIC_PATH}/images/success.jpg) 0 0 no-repeat; width:137px; height:97px; margin:0 auto; margin-top:35px;}
+  .faile { background:url({:ADDON_PUBLIC_PATH}/images/faile.jpg) 0 0 no-repeat;}
+  .result-font { font-size:16px; font-weight:bold; color:#595C63; margin-top:10px;}
+  .result-notice { font-size:14px; color:#969696; background: url({:ADDON_PUBLIC_PATH}/images/notice.png) left center no-repeat; background-size:17px auto; margin:0 auto; text-indent:19px; text-align:left; display:inline-block}
+  
+  .else-xm { background:#fff; margin-top:15px;}
+  .else-xm-after {     content:".";        
+     display:block;        
+     height:0;        
+     clear:both;        
+     visibility:hidden; }
+  .else-xm-1:after {     content:".";        
+     display:block;        
+     height:0;        
+     clear:both;        
+     visibility:hidden; }
+  .else-xm-1 { border-bottom:1px solid #EFEFEF; padding:20px;}
+  .else-xm-img { width:80px; height:80px; float:left;}
+  .else-xm-font { float:left; margin-left:15px;}
+  .else-xm-font h3 { font-size:16px;}
+  .else-xm-font span { display:block; color:#919497; background:url({:ADDON_PUBLIC_PATH}/images/place.png) left center no-repeat; background-size:15px auto; padding-left:15px; margin-top:4px;}
+  .else-xm-font b { color:#E82B23; font-size:16px;margin-top:4px; display:block;}
+  </style>
+  <div class="view success-bg">
+     <div class="result">
+         <div class="success"></div>
+         <div class="result-font">预约成功</div>
+         <div class="result-font">请等待商家确认回复</div>
+         <p><div class="result-notice"><a id="m">查看预约详情></a></div></p>
+         
+     </div>
+
+
+  </div>
+<!-- 预约详情 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">预约详情</h4>
+      </div>
+      <div class="modal-body">
+				 <ul class="list-group">
+				  <li class="list-group-item"><strong >门店：</strong><span id="shopname">{$shopname}</span></li>
+				  <li class="list-group-item"><strong >项目：</strong><span id="pname">{$pname}</span></li>
+				  <li class="list-group-item"><strong >技师：</strong><span id="tca">{$tca}</span></li>
+				  <li class="list-group-item"><strong >人数：</strong><span id="num">{$order.num}</span></li>
+				  <li class="list-group-item"><strong >价格：</strong><span id="pamount">{$order.pamount}</span></li>
+				  <li class="list-group-item"><strong >预约时间：</strong><span id="yytime">{$order.yytime}</span></li>
+				  
+				  <li class="list-group-item"><strong >订单状态：</strong><span id="statu" style="color:
+				  <php>
+				  	if($order.status==0)
+				  		echo 'green;">已预约';
+				  	else if($order.status==1)
+				  		echo 'green;">已确认预约';
+				  	else if($order.status==2)
+				  		echo 'green;">已到店确认';
+				  	else if($order.status==3)
+				  		echo 'red;">已撤销';
+				  </php></span></li>
+				  <a href="tel:{$lxfs}" style="color: #000000;text-decoration:none"><li class="list-group-item"><strong >服务热线：</strong><span id="lxfs">{$lxfs}</span></li></a>
+				</ul>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+  // dom加载完毕
+  var $modal = $('#myModal');
+
+	$("#m").click(function(){
+		$modal.modal({backdrop: 'static'});
+	});
+  // 测试 bootstrap 居中
+  $modal.on('show.bs.modal', function(){
+    var $this = $(this);
+    var $modal_dialog = $this.find('.modal-dialog');
+    // 关键代码，如没将modal设置为 block，则$modala_dialog.height() 为零
+    $this.css('display', 'block');
+    $modal_dialog.css({'margin-top': Math.max(0, ($(window).height() - $modal_dialog.height()) / 2) });
+  });
+  
+});
+
+</script>
+<include file="./Addons/Bll/View/default/Public/guanzhu.html" />
+</body>
+</html>

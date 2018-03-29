@@ -1,0 +1,168 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>团购券详情— 大自然会所</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+		<link href="{:ADDON_PUBLIC_PATH}/css/amazeui.min.css" rel="stylesheet" type="text/css" />
+		<link href="{:ADDON_PUBLIC_PATH}/css/style-sc.css" rel="stylesheet" type="text/css" />
+		<link href="{:ADDON_PUBLIC_PATH}/css/style.css" rel="stylesheet" type="text/css" />
+		<link href="{:ADDON_PUBLIC_PATH}/css/public.css" rel="stylesheet" type="text/css" />
+		<script src="{:ADDON_PUBLIC_PATH}/js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/layer.js"></script>
+	</head>
+	<body style="background: #efefef;">
+  <!--header 开始-->
+  <header>
+    <div class="header"> <a class="new-a-back" href="{:U("my_card")}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/iconfont-fanhui.png"></span> </a>
+      <h2>团购券详情</h2>
+      <a class="new-a-back2" style="right:0; top:0;" href="{:U("index",array("rand"=>rand(1000,9999)))}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/home.png"></span> </a>
+
+    </div>
+  </header>
+  <!--header 结束-->
+       
+<div class="table-responsive">
+	
+<eq name="tgq.usestatus" value="0">
+<div  class="" style="margin-top: 15px;margin-bottom: 15px;">
+	<div class="layui-m-layermain" style="position: unset;display: table;width: 100%;">
+		<div class="layui-m-layersection">
+			<div class="layui-m-layerchild  layui-m-anim-scale" style="width: 94%;">
+				<h3 style="">付款时请向商家展示</h3>
+				<div class="layui-m-layercont">
+					<img id="barcode" src="{:addons_url("Bll://Api/barCode2",array("code"=>$tgq["rid"]))}" style="height: 79px;">
+					<p id="code18" style="margin-top: 10px;font-size: 20px;">{:substr($tgq["rid"],0,4)} {:substr($tgq["rid"],4,4)} {:substr($tgq["rid"],8,4)}</p>
+					<img id="qrcode" src="{:addons_url("Bll://Api/qrCode2",array("code"=>$tgq["rid"]))}" style="height: 165px;width: 165px;">
+					<p style="color: red;margin-top: 0px;margin-bottom: 10px;">温馨提示：请勿向其他人透露扫码信息！</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</div>
+			
+			<eq name='tgq.ytype' value='2'>
+        <div class='authentication-con clearfix' style="padding: 0 10px 0px">
+             <ul>
+                    <li style="padding-bottom: 0px;"><a class='orgBtn' style='margin-top: 10px;'>申请退款</a></li>
+             </ul>
+        </div>
+      </eq>
+</eq>
+
+  <style>
+  .stars{ float:left; margin-left:10px;}
+  .comment_list .pl_user_top { width:80%;}
+  
+  .group-info { position:relative;}
+  .group-info img { width:100%; height:auto;}
+  .group-info .cont{ position:absolute; z-index:9; bottom:0; left:0; padding:10px 15px; width:100%;box-sizing:border-box; background:-webkit-gradient(linear, 0 0, 0 100%, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.6))); color:#fff;}
+  .group-info .cont h3 { font-size:16px; line-height:18px; margin-bottom:3px;}
+  .group-info .cont p { overflow:hidden; text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical; font-size:12px; line-height:14px;}
+.con { color:#333; font-size:12px; background-color:#fff; }
+.con .tit, .detail-info .hd { height:40px; line-height:42px; padding-left:15px; font-size:14px; font-weight:bold; background-color:#EFEFEF;}
+.con .detail-box > div { margin-top:12px; margin:0 15px;}
+.detail-table th { text-align:left; color:#999; font-weight:normal;}
+.detail-table th, .detail-table td { padding:10px 0;font-size:12px; }
+.detail-table tr { background:url(images/xt.png) repeat-x 0 bottom; background-size:auto 10px;}
+.con p { line-height:20px; font-size:14px; padding:7px 0;}
+.detail-table tr.total .tc { color:#999; text-decoration:line-through;}
+.detail-table tr.total .tc strong { margin-top:0.5rem; color:#06c1ae; display:inline-block;}
+  </style>
+  
+  <div class="con">
+     <div class="detail-box mb-line-b"><h3 class="tit">团购券详情</h3>
+        <div class="detail-content ">
+        <p>【项目名称】{$project.pname}</p>
+        <p>【项目原价】{$project.originalPrice}</p>
+        <p>【团购价格】{$project.pamount}</p>
+        <p>【使用状态】<php>
+        	if($tgq['usestatus']==0) echo '<b style="color: green;">未使用</b>';
+					if($tgq['usestatus']==1) echo '<b style="color: red;">已使用</b>';
+					if($tgq['usestatus']==2) echo '<b style="color: red;">已失效</b>';
+        	</php></p>
+        <div>
+     <div>
+
+
+  </div>
+  <div class="group-info">
+      <img src="{$project.pimg}">
+      
+  </div>
+
+    <div class="con">
+       <div class="detail-box mb-line-b"><h3 class="tit">项目简介</h3>
+          <div class="detail-content ">
+          <p>{$project.premark}</p>
+          <div>
+       <div>
+
+
+    </div>
+
+</div></div></div></div>
+
+
+
+<script>
+function msg(m){
+  layer.open({
+    content: m
+    ,skin: 'msg'
+    ,time: 2 //2秒后自动关闭
+  });
+}
+
+function refund(){
+  $.ajax({
+		async: true,
+		type: 'GET',
+		url: '{:addons_url("Bll://Api/refund")}',
+		data: {
+  		out_trade_no:'{$tgq.rid}',
+  	},
+		dataType: 'json',
+		success: function(data){
+			if(data.result_code == "SUCCESS"){
+				//成功
+				msg('申请退款成功!请留意公众号下发的消息!');
+			}else{
+				//失败
+				msg('申请退款失败,原因:'+data.err_code_des);
+			}
+		},
+		error: function(xhr, type){
+			msg('网络错误,请重试!');
+		}
+	});	
+}
+$(function(){
+	$('.orgBtn').click(function(){
+		layer.open({
+	    content: '<div style="padding: 50px 30px;">您确定要申请退款吗？</br>资金将原路返回(余额支付即时到账,银行卡等支付在三个工作日之内)</div>'
+	    ,btn: ['确定', '取消']
+	    ,yes: function(index){
+	      refund();
+				setTimeout(function () { 
+				  location.href='{:addons_url("Bll://User/my_card")}';
+				}, 4000);
+	      
+	      layer.close(index);
+	    }
+	  });
+
+	})
+})
+</script>
+<include file="./Addons/Bll/View/default/Public/guanzhu.html" />
+	</body>
+</html>

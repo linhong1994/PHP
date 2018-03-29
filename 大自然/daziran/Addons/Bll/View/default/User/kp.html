@@ -1,0 +1,73 @@
+<html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>填写开票信息</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+		<link href="{:ADDON_PUBLIC_PATH}/css/public.css" rel="stylesheet" type="text/css" />
+    <link href="{:ADDON_PUBLIC_PATH}/css/style.css" rel="stylesheet" type="text/css">
+
+		<script src="{:ADDON_PUBLIC_PATH}/js/jquery-3.1.1.min.js"></script>
+	</head>
+
+<body class="secrityBg">
+  <header>
+    <div class="header"> <a class="new-a-back" href="{:U("my_cz")}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/iconfont-fanhui.png"></span> </a>
+      <h2>填写开票信息</h2>
+      <a class="new-a-back2" style="right:0; top:0;" href="{:U("index",array("rand"=>rand(1000,9999)))}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/home.png"></span> </a>
+
+    </div>
+  </header>
+<style>
+.lispan { width:25%;display: inline-block;font-weight:bold;}
+.authentication-con li {
+  padding-bottom: 0px; 
+}
+.shuru {font-size:14px;font-family:Helvetica,"Microsoft YaHei", Arial, Helvetica, sans-serif;background:#fff none repeat scroll 0 0;border:1px solid #ddd;border-radius:5px;color:#666;display:inline-block;font-size:14px;height:45px;padding:0 5px;width: 75%;}
+</style> 
+    <div class="h5-1yyg-v11">
+        <form class='authentication-con clearfix' id='userinfo' action='{:U("kp")}' method='post' style="padding:0 15px 20px">
+        	<input id='orderno' name='orderno' type='hidden' value='{$orderno}'>
+             <ul>
+                <li class='pd20' style='padding-left:0'><span class="lispan">类型：</span><select class="shuru" name="lx" id='lx' > 
+									<option value="个人" <php>if($kp["lx"] == "个人") echo " selected = 'selected'";</php>>个人</option> 
+									<option value="公司" <php>if($kp["lx"] == "公司") echo " selected = 'selected'";</php>>公司</option> 
+									</select> </li>
+                <li id="sw" class='pd20' style='padding-left:0;<php>if($kp["lx"] == "个人") echo "display: none;";</php>'><span class="lispan">税务级别号：</span><input type="text" class='shuru' id='sbh' name='sbh' value="{$kp.sbh}"></li>
+                <li class='pd20' style='padding-left:0'><span class="lispan">全称：</span><input type='text' class='shuru ' id='qc' name='qc' value="{$kp.qc}"></li>
+                <li class='pd20' style='padding-left:0'><span class="lispan">项目：</span><select class="shuru" name="xm" id='xm'> 
+									<option value="足浴" <php>if($kp["xm"] == "足浴") echo " selected = 'selected'";</php>>足浴</option> 
+									<option value="推拿" <php>if($kp["xm"] == "推拿") echo " selected = 'selected'";</php>>推拿</option> 
+									</select> </li>
+                <li class='pd20' style='padding-left:0'><span class="lispan">邮寄地址：</span><input type='text' class='shuru'  id='address' name='address' value="{$kp.address}"></li>
+                <li class='pd20' style='padding-left:0'><span class="lispan">收件人姓名：</span><input type='text' class='shuru'  maxlength='4' id='name' name='name' value="{$kp.name}"></li>
+                <li class='pd20' style='padding-left:0'><span class="lispan">收件人电话：</span><input type="tel" class='shuru '  maxlength='13' id='tel' name='tel' value="{$kp.tel}"></li>
+
+                <li><a class='orgBtn' style='margin-top: 10px;' id='save'>申请</a></li>
+             </ul>
+        </form>
+
+
+    </div> 
+</body>
+<script>
+	$("#lx").change(function(){
+		if($("#lx").val() == "个人")
+		{
+			$("#sw").hide();
+		}else{
+			$("#sw").show();
+		}
+	});
+	$("#save").click(function(){
+		$("#userinfo").submit();
+	});
+</script>
+<include file="./Addons/Bll/View/default/Public/guanzhu.html" />
+</html>

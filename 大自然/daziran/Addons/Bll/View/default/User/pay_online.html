@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=0.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+<title>余额充值 — 大自然会所</title>
+<link rel="stylesheet" type="text/css" href="{:ADDON_PUBLIC_PATH}/css/style2.css" />
+<link href="{:ADDON_PUBLIC_PATH}/css/public.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/jquery-1.8.3.min.js"></script>
+<script src="{:ADDON_PUBLIC_PATH}/js/layer.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+
+<body class="g-acc-bg">
+  <!--header 开始-->
+  <header>
+    <div class="header"> <a class="new-a-back" href="{:U("index")}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/iconfont-fanhui.png"></span> </a>
+      <h2>余额充值</h2>
+      <a class="new-a-back2" style="right:0; top:0;" href="{:U("index",array("rand"=>rand(1000,9999)))}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/home.png"></span> </a>
+
+    </div>
+  </header>
+  <!--header 结束-->
+<style>
+
+.lang-btn {
+    width: 98%;
+    height: 40px;
+    line-height: 40px;
+    margin: 8px 0;
+    cursor: pointer;
+    white-space: nowrap;
+    background-color: #3499DA;
+    font-size: 16px;
+    color: #fff;
+    border: none;
+    letter-spacing: 1px;
+    overflow: hidden;
+    text-align: center;
+    border-radius: 2px;
+    margin-top: 10px;
+}
+.g-Recharge li { overflow: hidden;}
+.g-Recharge li a { overflow: hidden;}
+.pTitle { color: #fff; font-size: 10px;  height: 32px; left:-35px; position: absolute; text-align: center;
+ width: 90px; top:-12px; line-height: 46px; background-color:#B30001 ; z-index: 99;transform:rotate(-30deg); }
+</style>
+<div id="container">
+    
+    <div class="g-accounts-details" style="text-align: center;">
+        <h4 class="gray9" style="font-weight:bold;">您的当前余额：<em class="orange" style="font-weight:bold;font-size: 20px;">￥{:session('userinfo.BALANCE')}</em></h4>
+    </div>
+    <div class="g-Recharge clearfix" id="czk">
+        <ul>
+           <li class="" style="width: 94%;<php>
+           	if(session('userinfo.userid') != 'U000000') echo 'display: none;';
+           </php>">
+                <input id="zdy" type="text" maxlength="8" placeholder="手动输入充值金额(测试)" style="color:#666;line-height: 30px;font-size: 18px;font-weight:bold;" >
+           </li>
+           <volist name='cztclist' id='vo'>
+           <li data-rid='{$vo.rid}' data-czje='{$vo.czje}' data-zsje='{$vo.zsje}'>
+               <a href="javascript:;" style="font-weight:bold;font-size: 18px;">
+               	<eq name='vo.rtype' value='1'>
+               		<div class="pTitle">活动</div>
+             		</eq>
+               	{$vo.czje}元<p style="font-weight:normal;font-size: 12px;line-height: 20px;">赠{$vo.zsje}元</p></a>
+           </li>
+           </volist>
+           
+
+
+        </ul>
+    </div>
+    <div class="g-accounts-details tcid" id="czje" style="text-align: center;">
+        <h4 class="gray6">充值金额<i class="orange">{$cztclist[0]['czje']+0}</i>元，赠送<span>{$cztclist[0]['zsje']+0}</span>元</h4>
+    </div>
+<style>
+
+.shuru {font-size:14px;font-family:Helvetica,"Microsoft YaHei", Arial, Helvetica, sans-serif;border:1px solid #ddd;color:#666;display:inline-block;font-size:16px; font-weight:bold;padding:0 5px;width: 95%;margin: 0; padding: 14px 8px; list-style: none; height: 50px; border-radius: 5px;
+outline: none;
+            /*将默认的select选择框样式清除*/
+            appearance:none;
+            -moz-appearance:none;
+            -webkit-appearance:none;
+            -ms-appearance:none;
+             /*在选择框的最右侧中间显示小箭头图片*/
+           background: url(/Addons/Bll/View/default/Public/images/iconfont-jiantou.png) no-repeat scroll right center #fff; 
+           background-size: 20px auto;
+}
+
+.shuru option{
+    text-align: center;
+    }
+    
+.tjr {
+		width: 90%;
+    margin: 0;
+    padding: 14px 8px;
+    list-style: none;
+    border-radius: 5px;
+    outline: none;
+    font-family: Helvetica,"Microsoft YaHei", Arial, Helvetica, sans-serif;
+    border: 1px solid #ddd;
+    color: #666;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+}
+</style> 
+    <div class="g-accounts-details" style="text-align: center;">
+			<select class="shuru" name="md" id='md' >
+				<option value="">充值门店</option>
+				<volist name="shoplist" id="vo">
+					<option value="{$vo.shopid}">{$vo.shopname}</option>
+				</volist>
+			</select>
+    </div>
+    <div class="g-accounts-details" id="czmd" style="text-align: center;">
+        <h4 class="gray6">门店:<i class="orange">充值门店</i><span>(余额所有门店通用)</span></h4>
+    </div>
+    <div class="g-accounts-details" style="text-align: center;">
+			<input class="tjr" type="text" placeholder="VIP推荐人(选填)" value=""/>	
+    </div>
+ 
+    <div class="g-Total-bt" style="text-align: center;position:static;">
+        <button class="lang-btn" style="background:#C7A770;font-weight:bold;">确认充值(实际入账<span>{$cztclist[0]['czje']+$cztclist[0]['zsje']}</span>元)</button>
+    </div>
+    
+</div>
+
+<script type="text/javascript">
+
+
+$(function(){
+	// 初始状态
+	$("#czk ul li:eq(1)").addClass("checked");
+	// 动作设定
+	$("#czk ul li").click(function(){
+		$(this).siblings().removeClass("checked");
+		if($(this).children("#zdy").length==0){
+			$(this).toggleClass("checked");
+			$("#czje i").text(parseFloat($(this).find("a").text().replace('活动','')));
+		}else{
+			$(this).addClass("checked");
+			var zdy;
+			if($("#zdy").val().length==0 || isNaN($("#zdy").val())) zdy="0";
+			else zdy=parseFloat($("#zdy").val());
+		  $("#czje i").text(zdy);
+		}
+		$("#czje span").text(parseFloat($(this).data('zsje')));
+		$(".lang-btn span").text(parseFloat($("#czje i").text())+parseFloat($("#czje span").text()));
+	});
+	
+	$("#md").change(function(){
+		$("#czmd i").text($("#md").find("option:selected").text());
+	});
+	
+	$("#zdy").keyup(function(){
+		var zdy;
+		if($("#zdy").val().length==0 || isNaN($("#zdy").val())) zdy="0";
+		else zdy=parseFloat($("#zdy").val());
+	  $("#czje i").text(zdy);
+	  $(".lang-btn span").text(parseFloat($("#czje i").text())+parseFloat($("#czje span").text()));
+	});
+	
+	
+	$(".lang-btn").on("click",function(){
+
+			if($(".checked").length == 0){
+	      layer.open({
+			    content: "请选择充值金额！"
+			    ,skin: 'msg'
+			    ,time: 2 //2秒后自动关闭
+			  });
+				return;
+			}
+			if($(".checked").children("#zdy").length !=0 ){
+				if(isNaN($("#zdy").val())){
+		      layer.open({
+				    content: "请正确的金额！"
+				    ,skin: 'msg'
+				    ,time: 2 //2秒后自动关闭
+				  });
+					return;
+				}
+			}
+			if($("#md").find("option:selected").val() == ''){
+	      layer.open({
+			    content: "请选择充值门店！"
+			    ,skin: 'msg'
+			    ,time: 2 //2秒后自动关闭
+			  });
+				return;
+			}
+	  	$.ajax({
+				type: 'GET',
+				async: false,
+				url: '{:addons_url("Bll://Api/wxpay")}',
+				data: {
+					shopid:$("#md").val(),
+					tjr:$(".tjr").val(),
+					fee:$("#czje i").text(),
+					rid:$(".checked").data("rid")
+				},
+				dataType: 'json',
+				success: function(data){
+					if(data.signType == 'error')
+					{
+			      layer.open({
+					    content: data.msg
+					    ,skin: 'msg'
+					    ,time: 2 //2秒后自动关闭
+					  });
+					}else{
+						//调用微信JS api 支付
+						jsApiCall(data);
+					}
+				},
+				error: function(xhr, type){
+				  alert('Ajax error!');
+				}
+			});
+		//}
+	});
+});
+
+
+function jsApiCall(data){
+	WeixinJSBridge.invoke(
+		'getBrandWCPayRequest',
+		JSON.parse(data),
+		function(res){
+			//WeixinJSBridge.log(res.err_msg);
+			if(res.err_msg=="get_brand_wcpay_request:ok"){
+	      layer.open({
+			    content: "支付成功！"
+			    ,skin: 'msg'
+			    ,time: 2 //2秒后自动关闭
+			  });
+				location.href="{:U("cz_success")}";
+			}else if(res.err_msg == "get_brand_wcpay_request:cancel")  {
+	      layer.open({
+			    content: "取消支付！"
+			    ,skin: 'msg'
+			    ,time: 2 //2秒后自动关闭
+			  });
+			  //location.href="{:U("pay_online")}";
+      }
+			else{
+	      layer.open({
+			    content: res.err_code+res.err_desc+res.err_msg
+			    ,skin: 'msg'
+			    ,time: 2 //2秒后自动关闭
+			  });
+				//location.href="{:U("pay_online")}";
+			}
+
+		}
+	);
+}
+
+</script>
+<include file="./Addons/Bll/View/default/Public/guanzhu.html" />
+</body>
+</html>

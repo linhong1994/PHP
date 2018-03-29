@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>{:session('sys.webtitle')}</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+		<link href="/assets/css/amazeui.min.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+		<script src="/assets/js/jquery-3.2.1.min.js"></script>
+		<script src="/assets/js/iscroll.js"></script>
+		<script src="/assets/js/layer_mobile/layer.js"></script>
+	</head>
+	<body>
+		<header data-am-widget="header" class="am-header am-header-default sq-head ">
+			<div class="am-header-left am-header-nav">
+				<a href="{:outo()}" class="">
+					<i class="am-icon-chevron-left"></i>
+				</a>
+			</div>
+			<h1 class="am-header-title">
+  	            <a href="" class="">提交兑换</a>
+            </h1>
+      <div class="am-header-right am-header-nav">
+				<a href="/index.html" class="">
+					<i class="am-icon-home am-icon-sm"></i>
+				</a>
+			</div>
+	    </header>
+	  <form id="myform" action="/exchange.html" method="post">
+	    <div style="height: 49px;"></div>
+	    <h5 class="order-tit">收货人信息</h5>
+	    <div id="dz" class="dz">
+	    {php}
+	    if(count($addrlist)==0) echo '
+	    <input type="hidden" class="addrid" name="addrid" value=""/>
+	    <div class="add-address">
+           <a href="'.url('address').'">+新建收货地址</a>
+           <i class="am-icon-angle-right"></i>
+        </div>
+	    ';else{
+	    	if($mrdz != null){
+	    		echo'
+	    		<input type="hidden" class="addrid" name="addrid" value="'. $mrdz['rid'] .'"/>
+			    <div class="order-name"  type="button" class="am-btn am-btn-primary" data-am-modal="{target: \'#my-alert\'}">
+			    	<a href="javascript:void(0)">
+			    		<p class="order-tele">'. $mrdz['lxr'] .'&nbsp;&nbsp;&nbsp;'. $mrdz['lxfs'] .'</p>
+			    		<p class="order-add">'. $mrdz['province'] .  $mrdz['city'] . $mrdz['county'] . $mrdz['address'] .'</p>
+			    	</a>
+			    	<i class="am-icon-angle-right"></i>
+			    </div>';
+	    	}else{
+	    		echo '
+	   			<input type="hidden" class="addrid" name="addrid" value=""/>
+			    <div class="add-address" data-am-modal="{target: \'#my-alert\'}">
+		       <a href="javascript:void(0)">选择收货地址</a>
+		       <i class="am-icon-angle-right"></i>
+			    </div>';
+	    	}
+	    }
+	    {/php}
+			</div>
+        <div style="background: #eee; height: 10px;"></div>
+        <style>
+		.psfs ul li { padding:0; margin:0; border:0}
+		.psfs ul li span { padding:0.5rem 0; margin:0.6rem 0;}
+        .psfs ul li select { padding:0.5rem; margin:1rem 0; overflow:hidden; border:1px solid #ddd;
+		width:75%;}
+        </style>
+        <div class="psfs">
+            <ul class="address" style="margin: 0px;padding: 0 3%;width: 100%;">
+                <li>
+                   <span>配送方式</span>
+                   <select >
+                      <option selected="selected" value ="快递包邮">快递包邮</option>
+                   </select>
+                </li>
+                <li>
+                   <span>下单门店</span>
+                   <select name="shop">
+                   		{volist name='shop' id='vo'}
+                      <option {php}if($i==1) echo 'selected="selected"';{/php} value ="{$vo.shopid}">{$vo.shopname}</option>
+                      {/volist}
+                   </select>
+                </li>
+            </ul>
+        </div>
+        <div style="background: #eee; height: 10px;"></div>
+        <ul class="shopcart-list" style="padding-bottom: 0;">
+	    	<li>
+	    		<input type="hidden" name="spid" value="{$p.pspecid}"/>
+          <img src="{$p.menuimg}" class="shop-pic" />
+          <div class="order-mid">
+          	<div class="tit">{$p.spmc}</div>
+          	<div class="order-price">￥{$p.origprice} <i>X1</i></div>
+          </div>
+	    	</li>
+	    </ul>
+	    <ul class="order-infor">
+	    	<li class="order-infor-first">
+	    		<span>商品总计：</span>
+	    		<i>{$p.price}</i>
+	    	</li>
+	    	<li class="order-infor-first">
+	    		<span>运费：</span>
+	    		<i>包邮</i>
+	    	</li>
+	    </ul>
+	    <div style="background: #eee; height: 10px;"></div>
+	    <textarea name="remark" placeholder="备注说明" class="bz-infor"></textarea>
+	    <div style="background: #eee; height: 10px;"></div>
+	    <div style="height: 55px;"></div>
+	    <div class="shop-fix">
+	    	<div class="order-text">
+	    		应付积分：<span><b>{$p.price}</b></span>
+	    	</div>
+	    	<a  class="js-btn">立即兑换</a>
+	    </div>
+		</form>
+<!--底部-->
+ <div style="height: 55px;"></div>
+ <div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default sq-foot am-no-layout" id="">
+      <ul class="am-navbar-nav am-cf am-avg-sm-5">   
+          <li>
+            <a href="{:url('index')}" class="">
+                <span class="am-icon-home"></span>
+                <span class="am-navbar-label">首页</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('category')}" class="">
+                <span class="am-icon-comments"></span>
+                <span class="am-navbar-label">分类</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('shopcart')}" class="">
+                <span class="am-icon-shopping-cart"></span>
+                <span class="am-navbar-label">购物车</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('allorder')}" class="">
+                <span class="am-icon-file-text"></span>
+                <span class="am-navbar-label">订单</span>
+            </a>
+          </li>
+ 
+          <li>
+            <a href="{:url('member')}" class="curr">
+                <span class="am-icon-user"></span>
+                <span class="am-navbar-label">我的</span>
+            </a>
+          </li>
+      </ul>
+</div>
+ 
+ 
+<div id="dzxx" style="display: none;">
+					<input type="hidden" class="addrid" name="addrid" value=""/>		
+			    <div class="order-name"  type="button" class="am-btn am-btn-primary" data-am-modal="{target: '#my-alert'}">
+			    	<a href="javascript:void(0)">
+			    		<p class="order-tele"></p>
+			    		<p class="order-add"></p>
+			    	</a>
+			    	<i class="am-icon-angle-right"></i>
+			    </div>
+</div>
+
+
+<style>
+.address-list { margin:0; padding:0;}
+.address-list li .order-add1 { color:#666666; padding:2px 10px;}
+.am-popup .am-modal-footer span.am-modal-btn { background:#CB2527; color:#fff;border-radius:7px;}
+.am-popup { width:300px; max-height:300px; left:50%; margin-left:-150px;padding-bottom:50px; top:50%; margin-top:-150px;}
+.am-modal-hd {position:fixed; z-index:999; background:#fff; width:100%;}
+.am-popup-bd {margin-top:60px;background: #fff;}
+.am-modal-footer { position:fixed; bottom:-3px;}
+.address-list li { font-size:14px; padding:0;}
+.am-popup-inner { padding:0;}
+.yhq .yhq-pic .price span ,.yhq .yhq-gq .price span{ font-size:30px;}
+.yhq .yhq-pic .text ,.yhq .yhq-gq .text { font-size:15px;}
+.yhq .yhq-pic .user ,.yhq .yhq-gq .user { font-size:15px;}
+.yhq .yhq-pic .time ,.yhq .yhq-gq .time { font-size:11px;/*有些字体大小在ios写会失常，例如8px*/}
+.yhq .yhq-pic .price ,.yhq .yhq-gq .price { height:80px; line-height:80px;}
+.yhq .yhq-pic .price span ,.yhq .yhq-gq .price span { padding-top:0;}
+#my-alert-yhj .am-popup-bd { padding:0;}
+.yhq .yhq-pic { height:80px;}
+.yhq-gq { height:80px;}
+.yhq .yhq-pic .info,.yhq-gq .info { margin-top:0;}
+
+.sq-head { z-index:10;}
+</style>
+<!--模态弹层-->
+<!--模态弹层-->
+<div class="am-popup" tabindex="-1" id="my-alert" style="padding-bottom: 0px;">
+  <div class="am-popup-inner">
+    <div class="am-modal-hd">选择收货地址<div class="am-icon-plus" style="position:absolute; right:15px; top:18px; font-size:14px; color:#989898; padding-left:3px">新增地址</div></div>
+    <div class="am-popup-bd">
+      <ul class="address-list">
+      	{volist name='addrlist' id='vo'}
+	    	<li {php}if($i==1) echo 'class="curr"';{/php} data-addrid='{$vo.rid}'>
+	    		<p class="lxfs">{$vo.lxr}&nbsp;&nbsp;{$vo.lxfs}</p>
+	    		<p class="order-add1">{$vo.province .  $vo.city . $vo.county . $vo.address}</p>
+	    	</li>
+	    	{/volist}
+	    </ul>
+    </div>
+  </div>
+</div>
+
+
+<script src="/assets/js/amazeui.min.js"></script>
+<script>
+$(function(){
+	$(".js-btn").click(function(){
+		
+		if($('.dz .addrid').val().length==0){
+		  layer.open({
+		    content: '请选择收货地址!'
+		    ,skin: 'msg'
+		    ,time: 2 //2秒后自动关闭
+		  });
+		}else{
+			$('#myform').submit();
+		}
+	});
+	$('.address-list li').click(function() {
+		$(this).addClass('curr');
+		$(this).siblings().removeClass("curr");
+		$('.addrid').val($('.address-list .curr').data('addrid'));
+  	$('.order-tele').text($('.address-list .curr .lxfs').text());
+  	$('.order-add').text($('.address-list .curr .order-add1').text());
+  	$('#dz').html($('#dzxx').html());
+  	$('#my-alert').modal('close');
+  });
+  $('#mdl1').click(function(){
+  	$('.addrid').val($('.address-list .curr').data('addrid'));
+  	$('.order-tele').text($('.address-list .curr .lxfs').text());
+  	$('.order-add').text($('.address-list .curr .order-add1').text());
+  	$('#dz').html($('#dzxx').html());
+  });
+
+});
+
+
+</script>
+	</body>
+</html>

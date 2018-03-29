@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>{:session('sys.webtitle')}</title>
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+		<link href="/assets/css/amazeui.min.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+		<script src="/assets/js/jquery-3.2.1.min.js"></script>
+		<script src="/assets/js/layer_mobile/layer.js"></script>
+	</head>
+
+	<body style="background: #f0f0f0;">
+		<header data-am-widget="header" class="am-header am-header-default sq-head ">
+			<div class="am-header-left am-header-nav">
+				<a href="{:outo()}" class="">
+					<i class="am-icon-chevron-left"></i>
+				</a>
+			</div>
+			<h1 class="am-header-title">
+  	            <a href="" class="">完成支付</a>
+            </h1>
+      <div class="am-header-right am-header-nav">
+				<a href="/index.html" class="">
+					<i class="am-icon-home am-icon-sm"></i>
+				</a>
+			</div>
+		</header>
+		<div style="height: 49px;"></div>
+		<ul class="order-detail">
+			<li><span>订单号：</span>{:input('oid')}</li>
+			<li><span>订单总价：</span>￥{$order.jsamount}</li>
+		</ul>
+		{eq name='ispay' value='1'}
+		<ul class="pay-style">
+			<li>
+				<img src="/assets/images/dagou.png" width="50" />
+				<span>
+		   	 		<p>已完成支付或已取消!</p>
+		   	 		<p class="descript">您可以前往查看订单详情!</p>
+		   	 	</span>
+
+			</li>
+		</ul>
+		{else/}
+		<ul class="pay-style">
+			<li>
+				<img src="/assets/images/weichong.png" width="50" />
+				<span>
+		   	 		<p>余额支付</p>
+		   	 		<p class="descript">余额支付,优惠多多!</p>
+		   	 	</span>
+				<label class="am-radio-inline">
+				    <input type="radio" name="radio10" value="1" data-am-ucheck checked>
+				 </label>
+			</li>
+			<li>
+				<img src="/assets/images/wei.png" width="50" />
+				<span>
+		   	 		<p>微信支付</p>
+		   	 		<p class="descript">推荐安装微信5.0及以上版本的使用</p>
+		   	 	</span>
+				<label class="am-radio-inline">
+				    <input type="radio" name="radio10" value="2" data-am-ucheck>
+				 </label>
+			</li>
+		</ul>
+		{/eq}
+		<form action="/pay.html" method="post" id="myform">
+			<input type="hidden" name="oid" value="{:input('oid')}" />
+		</form>
+		<input type="button" class="login-btn" value="{eq name='ispay' value='1'}查看详情{else/}确认支付{/eq}">
+		<script src="/assets/js/amazeui.min.js"></script>
+<script>
+$(function(){
+	$(".login-btn").click(function(){
+		if({$ispay}){
+			$(location).attr('href', '/orderdetail/oid/{$order.orderno}.html');
+		}else{
+			if($(":checked").val()==1){
+				$(location).attr('href', '/pay/yue/1/oid/{$order.orderno}.html');
+				//$('#myform').submit();
+			}
+			{php}
+			if($ispay==0){
+				echo	'if($(":checked").val()==2){
+								jsApiCall('.$wxzf.');
+							}';
+			}
+			{/php}
+		}
+	});
+});
+
+{php}
+if($ispay==0){
+echo '
+function jsApiCall(data){
+	WeixinJSBridge.invoke(
+		"getBrandWCPayRequest",
+		data,
+		function(res){
+			//WeixinJSBridge.log(res.err_msg);
+			if(res.err_msg=="get_brand_wcpay_request:ok"){
+	      layer.open({
+			    content: "支付成功！"
+			    ,skin: "msg"
+			    ,time: 2 //2秒后自动关闭
+			  });
+				location.href="/orderdetail/oid/'.$order['orderno'].'.html";
+			}else if(res.err_msg == "get_brand_wcpay_request:cancel")  {
+	      layer.open({
+			    content: "取消支付！"
+			    ,skin: "msg"
+			    ,time: 2 //2秒后自动关闭
+			  });
+			  
+      }
+			else{
+	      layer.open({
+			    content: res.err_code+res.err_desc+res.err_msg
+			    ,skin: "msg"
+			    ,time: 3 //2秒后自动关闭
+			  });
+				
+			}
+
+		}
+	);
+}
+';
+}
+{/php}
+</script>
+	</body>
+
+</html>

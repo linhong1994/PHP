@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="applicable-device" content="mobile" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<title>{$shop.shopname} — 大自然会所</title>
+<link href="{:ADDON_PUBLIC_PATH}/css/public.css" rel="stylesheet" type="text/css" />
+<link href="{:ADDON_PUBLIC_PATH}/css/owl.carousel.css" rel="stylesheet">
+<link href="{:ADDON_PUBLIC_PATH}/css/frozen.css" rel="stylesheet" type="text/css">
+<link href="{:ADDON_PUBLIC_PATH}/css/baoliao.css" rel="stylesheet" type="text/css">
+<link href="{:ADDON_PUBLIC_PATH}/css/index.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="{:ADDON_PUBLIC_PATH}/css/dropload.css"/>
+<link href="{:ADDON_PUBLIC_PATH}/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<script src="{:ADDON_PUBLIC_PATH}/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/dropload.min.js"></script>
+<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/layer.js"></script>	
+<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/bootstrap.min.js"></script>	
+</head>
+
+<body>
+<div class="mobile">
+
+  <!--header 开始-->
+  <header>
+    <div class="header"> <a class="new-a-back" href="{:U("shop_list3")}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/iconfont-fanhui.png"></span> </a>
+      <h2 style="margin-top: 0px;">店面详情</h2>
+      <a class="new-a-back2" style="right:0; top:0;" href="{:addons_url("Bll://User/index",array("rand"=>rand(1000,9999)))}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/home.png"></span> </a>
+    </div>
+  </header>
+  <!--header 结束-->
+  <div class="view w">
+  
+    <div class="m_banner" id="owl">
+        <a href="#" class="item"><img src="{$shop["shopimg"]}"></a>
+     </div>
+  
+    <div class="bl_view_title">{$shop.shopname}</div>
+    <a href="tel:{$shop.lxfs}" style="color: #FF6600;"><div class="bl_view_note">服务热线：{$shop.lxfs} <span style="float: right;width: 20px;"><img src="{:ADDON_PUBLIC_PATH}/images/call.png" /></span></div></a>
+    <div class="bl_view_note" id="address">地址：{$shop.shopdaddr}<span style="float: right;width: 20px;"><img src="{:ADDON_PUBLIC_PATH}/images/map.png" /></span></div>
+
+  </div>
+  
+  <div class="bl_view_content w">
+  	<h1>项目选择</h1>
+  	<div class="bl_view_list">
+		<volist name="projectlist" id="vo">
+			<div class="bl_view_word" style="height: 150px;">
+				<div class="row" style="height: 150px;text-align: center;">
+					<div class="col-xs-7 ">
+						<a href="/index.php/addon/Bll/Appt/project_details3/shopid/{$vo.shopid}/pid/{$vo.pid}.html"><img src="{$vo.pimg}"></a>
+					</div>
+					<div class="col-xs-5" style="padding-left:0px">
+						<a style="color:#FF9846;" href="/index.php/addon/Bll/Appt/project_details3/shopid/{$vo.shopid}/pid/{$vo.pid}.html"><span style="display:block; font-size:16px; margin-bottom:5px; color:#000;text-align: center;">{$vo.pname}</span></a>
+						<div ><s style="font-size:16px; color:#808080;">￥{$vo.originalPrice}元</s>
+						</div>
+						<div><b style="font-size:16px; color:red;">￥{$vo.pamount}元</b>
+						</div>
+						<div  style="text-align: center;	line-height: 40px;height: 40px;">
+							<p><a style="color:#fff;	color: #FFFFFF;background-color: #C7A770;text-align: center;line-height: 40px;float:right;width: 100%;text-decoration: none;font-size: 16px;" data-pid="{$vo.pid}" data-jiage="{$vo.pamount}">点击团购</a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</volist>
+		</div>
+		<div class="bl_more"></div>
+  </div>
+
+  <div class="view w">
+    <div class="bl_view_tag">
+    	<div class="bl_view_user">店铺简介：{$shop.shopmark}</div>
+    </div>
+  </div>
+
+ 
+ <div class="m_popUp" style=" display:none"><div class="m_guide"></div><cite></cite></div>
+  <div class="m_popUp2" style=" display:none"><div class="m_guide2"></div><cite></cite></div>
+ 
+
+
+</div>
+
+
+<div class="modal-body" style="display: none;">
+  <iframe id="map" src="" width="100%"  frameborder="0" >
+	
+	</iframe> 
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin: 50px 10px 10px 10px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">选择购买份数</h4>
+            </div>
+            <div class="modal-body">
+							<div class="row">
+							  <div class="col-lg-12">
+							    <div class="input-group" style="margin-left: 10%;margin-right: 10%;">
+							      <span class="input-group-btn">
+							        <button id="jian" class="btn btn-default" type="button" style="background-color:#C7A770;border-color:#C7A770"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
+							      </span>
+							      <input id="num" type="number" class="form-control" placeholder="1" value="1" max="50" min="1" style="text-align: center;">
+							      <input id="pid" type="hidden" value="">
+							      <input id="jiage" type="hidden">
+							      <span class="input-group-btn">
+							        <button id="jia" class="btn btn-default" type="button" style="background-color:#C7A770;border-color:#C7A770"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+							      </span>
+							    </div><!-- /input-group -->
+							  </div><!-- /.col-lg-6 -->
+
+							</div><!-- /.row -->
+            </div>
+            <div class="modal-footer">
+            		<span>￥<b></b>元</span>
+                <button id="goumai" type="button" class="btn btn-primary" style="background-color:#C7A770;border-color:#C7A770">确认购买</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+ <script type="text/javascript">
+function jsApiCall(data){
+	WeixinJSBridge.invoke(
+		'getBrandWCPayRequest',
+		JSON.parse(data),
+		function(res){
+			//WeixinJSBridge.log(res.err_msg);
+			if(res.err_msg=="get_brand_wcpay_request:ok"){
+	      layer.open({
+			    content: "支付成功！"
+			    ,skin: 'msg'
+			    ,time: 2 //2秒后自动关闭
+			  });
+				location.href="{:addons_url("Bll://User/my_card",array("rand"=>rand(1000,9999)))}";
+			}else if(res.err_msg == "get_brand_wcpay_request:cancel")  {
+	      layer.open({
+			    content: "取消支付！"
+			    ,skin: 'msg'
+			    ,time: 2 //2秒后自动关闭
+			  });
+			  //location.href="{:U("pay_online")}";
+      }
+			else{
+	      layer.open({
+			    content: res.err_code+res.err_desc+res.err_msg
+			    ,skin: 'msg'
+			    ,time: 2 //2秒后自动关闭
+			  });
+				//location.href="{:U("pay_online")}";
+			}
+
+		}
+	);
+}
+$(document).ready(function () {
+
+  $(window).scroll(function () {
+		var scrollHeight = $(document).height();
+		var scrollTop = $(window).scrollTop();
+		var $windowHeight = $(window).innerHeight();
+		scrollTop > 75 ? $(".gotop").fadeIn(200).css("display","block") : $(".gotop").fadeOut(200).css({"background-image":"url(<php>echo ADDON_PUBLIC_PATH;</php>/images/iconfont-fanhuidingbu.png)"});
+	});
+
+	$('.backtop').click(function (e) {
+		$(".gotop").css({"background-image":"url(<php>echo ADDON_PUBLIC_PATH;</php>/images/iconfont-fanhuidingbu_up.png)"});
+		e.preventDefault();
+		$('html,body').animate({ scrollTop:0});
+	});
+
+	$(".bl_view_word p a").on("click",function(){
+		$('#pid').val($(this).data('pid'));
+		$('#jiage').val($(this).data('jiage'));
+		$('#num').val(1);
+		$('.modal-footer b').text(parseFloat($('#jiage').val())*parseFloat($('#num').val()));
+		$('#myModal').modal();
+	});
+	
+	$('#jian').click(function(){
+		if(parseInt($('#num').val()) > 1){
+			$('#num').val(parseInt($('#num').val())-1);
+		}else{
+			$('#num').val(1);
+		}
+		$('.modal-footer b').text(parseFloat($('#jiage').val())*parseFloat($('#num').val()));
+	})
+	
+	$('#jia').click(function(){
+		if(parseInt($('#num').val()) < 50){
+			$('#num').val(parseInt($('#num').val())+1);
+		}else{
+			$('#num').val(50);
+		}
+		$('.modal-footer b').text(parseFloat($('#jiage').val())*parseFloat($('#num').val()));
+	})
+	
+	$('#goumai').click(function(){
+		if(parseInt($('#num').val()) > 50){
+		  layer.open({
+		    content: '购买数量不能大于50!'
+		    ,skin: 'msg'
+		    ,time: 2 //2秒后自动关闭
+		  });
+		}else if(parseInt($('#num').val()) < 1){
+		  layer.open({
+		    content: '购买数量不能小于1!'
+		    ,skin: 'msg'
+		    ,time: 2 //2秒后自动关闭
+		  });
+		}else{
+	  	$.ajax({
+				type: 'GET',
+				async: false,
+				url: '{:addons_url("Bll://Api/wxpay2")}',
+				data: {
+					pid:$('#pid').val(),
+					num:$('#num').val()
+				},
+				dataType: 'json',
+				success: function(data){
+					if(data==0){
+			      layer.open({
+					    content: '获取团购项目失败,请重试!'
+					    ,skin: 'msg'
+					    ,time: 2 //2秒后自动关闭
+					  });
+					}else{
+						//调用微信JS api 支付
+						jsApiCall(data);
+					}
+				},
+				error: function(xhr, type){
+				  alert('Ajax error!');
+				}
+			});
+		}
+	})
+	
+
+	
+	$("#address").click(function(){
+		//$("#map").attr("src","http://uri.amap.com/navigation?from={:session("Lng")},{:session("Lat")},startpoint&to={$shop.longgitude},{$shop.latitude},endpoint&mode=car&policy=1&src=mypage&coordinate=gaode&callnative=0");
+		$("#map").attr("src","http://m.amap.com/navi/?start={:session("Lng")},{:session("Lat")}&dest={$shop.longgitude},{$shop.latitude}&destName={$shop.shopname}&naviBy=car&key=ac262d2172bd0edc6919c0c81fbd2afa");
+		$("#map").height($(window).innerHeight()-60);
+	  layer.open({
+	    type: 1
+	    ,btn: ['关闭导航']
+	    ,content: $(".modal-body").html()
+	    ,anim: 'up'
+	    ,style: ' width: 100%; height: 100%;  border:none;'
+	  });
+		//$('#myModal').modal();
+		//addMarker({$shop.longgitude},{$shop.latitude});
+	});
+});
+</script>
+<include file="./Addons/Bll/View/default/Public/guanzhu.html" />
+</body>
+</html>

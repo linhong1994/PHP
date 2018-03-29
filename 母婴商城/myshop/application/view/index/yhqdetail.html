@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>{:session('sys.webtitle')}</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+		<link href="/assets/css/amazeui.min.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+		<script src="/assets/js/jquery-3.2.1.min.js"></script>
+		<script src="/assets/js/layer_mobile/layer.js"></script>
+	</head>
+	<body style="background: #efefef;">
+		<header data-am-widget="header" class="am-header am-header-default sq-head ">
+			<div class="am-header-left am-header-nav">
+				<a href="{:outo()}" class="">
+					<i class="am-icon-chevron-left"></i>
+				</a>
+			</div>
+			<h1 class="am-header-title">
+  	            <a href="" class="">优惠卷</a>
+            </h1>
+      <div class="am-header-right am-header-nav">
+				<a href="/index.html" class="">
+					<i class="am-icon-home am-icon-sm"></i>
+				</a>
+			</div>
+	    </header>
+	    <div style="height: 49px;"></div>
+		<ul class="yhq">
+		   	<li class="yhq-pic">
+		   		<a href="">
+		   		<div class="price">
+		   			<span>￥{$c.yamount}</span>
+		   			<p>订单满￥{$c.ymintotal}可用</p>
+		   		</div>
+		   		<div class="text">
+		   			<p class="info">{$c.yintegralnum}积分兑换</p>
+		   			<p class="user">全店通用</p>
+		   			<p class="time">起始时间:{:substr($c.ybegindate,0,10)}</p>
+		   			<p class="time">截止时间:{:substr($c.yenddate,0,10)}</p>
+		   		</div>
+		   		</a>
+		   	</li>
+		   	<form id="myform">
+		   		<input type="hidden" name="yid" value="{$c.yid}"/>
+		   	</form>
+		   	
+        <input type="submit" class="login-btn" value="我要兑换">
+		</ul>
+	</body>
+<script type="text/javascript">
+function msg(m){
+  layer.open({
+    content: m
+    ,skin: 'msg'
+    ,time: 2 //2秒后自动关闭
+  });
+}
+function tj(){
+	$('.login-btn').attr({"disabled":"disabled"});
+  $.ajax({
+    type: 'POST',
+    async: false,
+    url: '/yhqdetail.html',
+    data: $('#myform').serialize(),
+    dataType: 'json',
+    success: function(data){
+			msg(data.msg);
+			if(data.code==1){
+	      setTimeout(function(){
+					location.href = data.url;
+	      },1500);
+			}else{
+				$('.login-btn').removeAttr("disabled");
+			}
+    },
+    error: function(xhr, type){
+			msg('网络错误,请重试!');
+			$('.login-btn').removeAttr("disabled");
+    }
+  });	
+}
+
+$(function(){
+	$('.login-btn').click(function(){
+		tj();
+	})
+})
+
+</script>
+</html>

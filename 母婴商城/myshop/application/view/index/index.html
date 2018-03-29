@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>{:session('sys.webtitle')}</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+        <link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+		<link href="/assets/css/amazeui.min.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/style.css" rel="stylesheet" type="text/css">
+        
+		<link href="/assets/js/skin/layer.css" rel="stylesheet" type="text/css">
+    <script src="/assets/js/jquery-3.2.1.min.js"></script>
+		<script src="/assets/js/time.js"></script>
+		<script src="/assets/js/popup.mini.js"></script>
+		<script src="/assets/js/amazeui.min.js"></script><!--一定要放在include/kanjia.js后面，前面的文件先加载内容，后面的轮播控件再添加样式，从上往下-->
+        
+        <script src="/assets/js/layer.js"></script>
+	</head>
+
+	<body>
+    
+<!--    <script>
+    layer.open({
+  title: '新消息'
+  ,btn: ['立即使用'] //可以无限个按钮
+  ,content: '您有1元抽奖币未使用'
+});  
+    </script>-->
+<style>
+  .tips { background-color:#FFC; font-size:14px; padding:10px 10px; border-bottom:1px solid #eee; position:relative;}
+  .tips span { color:#F60}
+.tips b { position:absolute; right:10px; top:12px;}
+.layui-layer-content { text-align:center;}
+.layui-layer-content img { width:150px; height:150px;}
+  </style>
+<div class="tips" id="tips" style="display: none;"><span>新用户点击扫二维码关注</span><b>X</b></div> 
+<script>
+$('#tips span').on('click', function(){
+  layer.open({
+		title: '扫码关注'
+		,btn: ['确定']
+		,content: '<img src="/assets/images/ewm.jpg" />'
+	}); 
+});
+$(".tips b").click(function(){
+	$(".tips").css("display","none");
+})
+$.ajax({
+	async: true,
+	type: 'GET',
+	url: '/index.html',
+	dataType: 'json',
+	success: function(data){
+		if(data.code == 0) $(".tips").show();
+		else $(".tips").hide();
+	}
+});
+</script>
+		<header data-am-widget="header" class="am-header am-header-default sq-head1">
+			<div class="am-header-left am-header-nav">
+		        <a class="category-trigger" href="category">×</a>
+		   </div>
+			<h1 class="am-header-title1">
+		        <div id="test2" class="top-sch-box flex-col">
+                    <div class="centerflex">
+                        <i class="fdj iconfont icon-search sstb"></i>
+                        <div class="sch-txt"> </div>
+                        <span class="shaomiao"><i class="iconfont icon-saoma"></i></span>
+                    </div>
+                </div>
+		    </h1>
+			<div class="am-header-right am-header-nav" >
+			    <a href="{:url('tidings')}" class="">
+		         <div class="messgae">
+		         	{php}
+		         		if($dxx>0){
+		         			echo '<span>'.$dxx.'</span>';
+		         		}
+		         	{/php}
+		         </div>
+		        </a>
+			</div>
+        </header>
+        
+ <script>
+$('#test2').on('click', function(){
+  window.location.href='/search.html';
+});
+</script>
+
+<!--图片轮换-->
+<div class="am-slider am-slider-default" data-am-flexslider id="demo-slider-0">
+  <ul class="am-slides">
+  	{volist name='hdp' id='vo'}
+    <li><a href="{$vo.linkurl}"><img src="{$vo.menuimg}" /></a></li>
+    {/volist}
+  </ul>
+</div>
+<!--导航-->
+{volist name='flt' id='vo'}
+{php}
+if($i%4==1){
+	echo '<ul class="sq-nav">';
+}
+{/php}
+    <li>
+      <div class="am-gallery-item">
+          <a href="{$vo.linkurl}" class="">
+            <img src="{$vo.menuimg}" />
+            <p>{$vo.menuname}</p>
+          </a>
+      </div>
+    </li>
+{php}
+if($i%4==0 || $i==count($flt)){
+	echo '</ul>';
+}
+{/php}    
+{/volist}
+  
+  <style>
+  .big-pic img{ width:100%; height:auto;}
+  </style>
+  {php}
+  if($kpt['menuimg'] != null)
+  echo '<div class="big-pic"><a href="'.$kpt['linkurl'].'"><img src="'.$kpt['menuimg'].'"></div>';
+  {/php}
+  <div class="h-line"></div>
+
+  
+  <style>
+  .rush-buy-header { padding:0 0.3rem 0; border-bottom:1px solid #CE393A; height:30px; line-height:30px;
+  border-left:4px solid #CE393A; }
+  .rush-buy-header:after {     content:".";        
+     display:block;        
+     height:0;        
+     clear:both;        
+     visibility:hidden; }
+  .rush-buy-header h1 { font-size:15px; height:28px; word-break:break-all; white-space:nowrap; text-overflow:ellipsis;  font-weight:normal; float:left; margin:0;}
+  .rush-buy-header h1 span { color:#B4081E; padding:0 5px; font-size:18px;}
+  .desc { border:1px solid #e8e8e8; text-align:center; font-size:10px; display:inline-block; height:20px; padding:5px; line-height:10px; color:#595959; margin-top:5px; float:right; margin-right:10px;}
+  .desc span.jzcq { margin-right:5px; padding-right:5px; border-right:1px solid #e6e6e6;}
+  .rush-buy-ul:after {     content:".";        
+     display:block;        
+     height:0;        
+     clear:both;        
+     visibility:hidden; }
+  li.rush-buy-item { width:150px; background-color:#fff;display: table-cell;padding:0 7px;/*display:inline-block; pading:0;*/  border-width:0px 1px 1px 0px; border-style:solid; border-color:#e0e0e0; }
+  .product-image { background-size:contain; background-repeat:no-repeat; background-position:center center; width:100px; height:100px; margin:5px auto;}
+  .rush-buy-item h3 { font-size:12px; text-align:center; overflow:hidden; color:#000; font-weight:normal; height:16px; }
+  .product-price { margin:3px 0; text-align:center;}
+  .sale-price { color:#ff2d00; font-size:12px;}
+  .original-price{ color:#999; font-size:10px; margin-left:3px;}
+  .index-gd { overflow-x: visible; overflow-y:hidden;-webkit-overflow-scrolling: touch;/*解决ios上滑动卡顿问题*/}
+  .section-item-wrap .scroll { height:160px; }
+  .cx-img img{ width:100%; height:auto;}
+  </style>
+<!--  <script>
+		//设置猜你喜欢滚动条横向动态宽度
+        $(function(){
+			var num=$('.rush-buy-ul').children('li').length;
+			$('.section-item-wrap .scroll').css("width",num*150);
+			});
+	    //设置猜你喜欢滚动条横向动态宽度
+        $(function(){
+			var num=$('#scroll11').children('li').length;
+			$('.section-item-wrap .scroll').css("width",num*150);
+			});
+		
+		//设置猜你喜欢滚动条横向动态宽度
+        $(function(){
+			var num=$('.rush-buy-ul').children('li').length;
+			$(this).children('.scroll').css("width",num*150);
+			});
+        </script>-->
+       
+  <!--促销区-->
+  {volist name='cxzq' id='vo'}
+  <div class="cx-img"><a href="{$vo.url}"><img src="{$vo.img}"></a></div>
+  <div class="section-item-wrap">
+      <div class="rush-buy-header">
+          <h1><span class="am-icon-clock-o"></span>{$vo.name}</h1>
+          <div class="desc" style="display: none;"><span class="jzcq">截止</span><span class="red">2017-9-1-10:30</span></div>
+      </div>
+      <div class="index-gd">
+          <div class="scroll">
+              <ul class="rush-buy-ul">
+              	{volist name='vo.cxdp' id='vp'}
+                <li class="rush-buy-item">
+                    <a href="/detail/pid/{$vp.productid}.html" class=""> 
+                        <div class="product-image" style=" background-image:url({$vp.menuimg})"></div>
+                        <h3>{$vp.cxtitle}</h3>
+                        <div class="product-price"><span class="sale-price">¥{$vp.price}</span><del class="original-price">¥{$vp.origprice}</del></div>
+                    </a>
+                </li>
+                {/volist}
+                <li class="rush-buy-item">
+                    <a href="/goodslist/catid/{$vo.name}/{$vo.s}/{$vo.id}.html" class=""> 
+                        <div class="product-image" style=" background-image:url(/assets/images/more.png)"></div>
+                    </a>
+                </li>
+              </ul>
+           </div>
+       </div>
+  </div>
+  <div class="h-line"></div>
+	{/volist}
+
+ 
+<!--签到-->
+
+ <!--底部-->
+ <div style="height: 55px;"></div>
+ <div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default sq-foot am-no-layout" id="">
+      <ul class="am-navbar-nav am-cf am-avg-sm-5">   
+          <li>
+            <a href="{:url('index')}" class="curr">
+                <span class="am-icon-home"></span>
+                <span class="am-navbar-label">首页</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('category')}" class="">
+                <span class="am-icon-list"></span>
+                <span class="am-navbar-label">分类</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('shopcart')}" class="">
+                <span class="am-icon-shopping-cart"></span>
+                <span class="am-navbar-label">购物车</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('allorder')}" class="">
+                <span class="am-icon-file-text"></span>
+                <span class="am-navbar-label">订单</span>
+            </a>
+          </li>
+ 
+          <li>
+            <a href="{:url('member')}" class="">
+                <span class="am-icon-user"></span>
+                <span class="am-navbar-label">我的</span>
+            </a>
+          </li>
+      </ul>
+</div>
+ 
+ 
+ 
+
+
+	</body>
+</html>

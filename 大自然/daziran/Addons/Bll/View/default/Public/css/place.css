@@ -1,0 +1,18 @@
+@charset "utf-8";
+/* CSS Document */
+
+body, input, button, select, textarea {font:12px/1.5 "Microsoft Yahei","Helvetica Neue"}
+input { display:inline-block;}
+.place { margin:0 auto; width:300px; height:247px; background:url(../images/login.png) center center no-repeat; margin-top:40%; }
+.login_left { width:260px; height:180px; margin:0 auto; padding-top:10px;}
+.login-icon { display:block; height:40px; width:100%; border-bottom:#e9ecee 1px solid; margin-top:20px;}
+.icon-user-line { background:url(../images/place.png) center center no-repeat; width:24px; height:24px; display:inline-block; background-size: 24px auto;  }
+.login_left .log-input { width:200px;}
+.mls { margin-left:30px;}
+.log-input { border:none; height:20px; font-size:16px; padding:20px 2.5%; line-height:20px; color:#000000;
+background:#fff;}
+.log-i { position:absolute; top:8px;}
+.pos { position:relative;}
+.icon-lock-line { background:url(../images/time.png) center center no-repeat; width:24px; height:24px; display:inline-block; background-size: 24px auto;  }
+
+.lang-btn { width:100%; height:40px; line-height:40px; display:inline-block; vertical-align:middle; cursor:pointer; white-space:nowrap; background-color:#3499DA; font-size:16px; color:#fff; border:none; letter-spacing:1px; overflow:hidden; text-align:center; border-radius:2px; margin-top:10px;}

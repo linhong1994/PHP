@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>{:session('sys.webtitle')}</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+		<link href="/assets/css/amazeui.min.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+		<script src="/assets/js/jquery-1.10.2.min.js"></script>
+	</head>
+	<body style="background: #efefef;">
+		<header data-am-widget="header" class="am-header am-header-default sq-head ">
+			<div class="am-header-left am-header-nav">
+				<a href="{:outo()}" class="">
+					<i class="am-icon-chevron-left"></i>
+				</a>
+			</div>
+			<h1 class="am-header-title">
+  	            <a href="" class="">积分兑换</a>
+            </h1>
+      <div class="am-header-right am-header-nav">
+				<a href="/index.html" class="">
+					<i class="am-icon-home am-icon-sm"></i>
+				</a>
+			</div>
+	    </header>
+	    <div style="height: 49px;"></div>
+	    <ul class="j-change">
+	    	<li><a href=""><img src="/assets/images/j_06.png" width="30"/>&nbsp;积分：<span>{:session('user.integral')} </span></a></li>
+	    	<li><a href="{:url('integralrecords')}"><img src="/assets/images/j_03.png"  width="28"/>&nbsp;兑换记录</a></li>
+	    </ul>
+	    <div class="j-box">
+
+	    	<ul data-am-widget="gallery" class="am-gallery pro-list am-avg-sm-2 am-avg-md-2 am-avg-lg-4 am-gallery-default am-no-layout">
+	    		
+	    		{volist name='list' id='vo'}
+		      <li>
+		        <div class="am-gallery-item">
+		            <a href="{:url('yhqdetail/yid/'.$vo.yid)}" class="">
+		              <img src="/assets/images/game.png">
+		              	<span style="color:#CD2D2F; display:block;text-align:center; font-size:14px; font-weight:bold;">{$vo.yname}</span>
+		              	<div class="am-gallery-desc"><i class="iconfont">&#xe604;</i><span>所需积分{$vo.yintegralnum}</span></div>
+		            </a>
+		        </div>
+		      </li>
+					{/volist}
+		      
+		    </ul>
+	    </div>
+	</body>
+</html>

@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>我的卡券 — 大自然会所</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+		<link href="{:ADDON_PUBLIC_PATH}/css/amazeui.min.css" rel="stylesheet" type="text/css" />
+		<link href="{:ADDON_PUBLIC_PATH}/css/style-sc.css" rel="stylesheet" type="text/css" />
+		<link href="{:ADDON_PUBLIC_PATH}/css/public.css" rel="stylesheet" type="text/css" />
+		<script src="{:ADDON_PUBLIC_PATH}/js/jquery-3.1.1.min.js"></script>
+		
+		<script src="{:ADDON_PUBLIC_PATH}/js/dropload.min.js"></script>
+	</head>
+	<body style="background: #efefef;">
+  <!--header 开始-->
+  <header>
+    <div class="header"> <a class="new-a-back" href="{:U("index")}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/iconfont-fanhui.png"></span> </a>
+      <h2>我的卡券</h2>
+      <a class="new-a-back2" style="right:0; top:0;" href="{:U("index",array("rand"=>rand(1000,9999)))}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/home.png"></span> </a>
+
+    </div>
+  </header>
+  <!--header 结束-->
+	    <div class="whitebar">
+	    <div data-am-widget="tabs" class="am-tabs am-tabs-d2">
+			<ul class="am-tabs-nav am-cf" >
+			    <li class="<php>if($type===0)echo "am-active";</php>"><a href="{:U("my_card")}">可使用</a></li>
+			    <li class="<php>if($type===1)echo "am-active";</php>"><a href="{:U("my_card",array("type"=>"1"))}">已使用</a></li>
+			    <li class="<php>if($type===2)echo "am-active";</php>"><a href="{:U("my_card",array("type"=>"2"))}">已失效</a></li>
+			</ul>
+		</div>
+		</div>
+		<ul class="yhq">
+
+		   	
+		</ul>
+<script>
+$(function(){
+  // 页数
+  var page = 0;
+  // 每页展示10个
+  var size = 6;
+if({$type}==1){
+	var cs='yhq-gq';
+	var gq='<div class="gy-pic"><img src="{:ADDON_PUBLIC_PATH}/images/shiyong.png"/></div>';
+	
+}
+else if({$type}==2){
+	var cs='yhq-gq';
+	var gq='<div class="gy-pic"><img src="{:ADDON_PUBLIC_PATH}/images/shixiao.png"/></div>';
+	
+}else if({$type}==3){
+	var cs='yhq-gq';
+	var gq='<div class="gy-pic"><img src="{:ADDON_PUBLIC_PATH}/images/tuikuan.png"/></div>';
+	
+}else{
+	var cs='yhq-pic';
+	var gq='';
+}
+  // dropload
+  $('#container').dropload({
+    scrollArea : window,
+    domDown : {
+        domClass   : 'dropload-down',
+        domRefresh : '<div class="dropload-refresh">↑上拉加载更多</div>',
+        domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
+        domNoData  : '<div class="dropload-noData">暂无数据</div>'
+    },
+
+    loadDownFn : function(me){
+      page++;
+      // 拼接HTML
+      var result = '';
+      $.ajax({
+        type: 'GET',
+		    async: false,
+        url: '{:addons_url("Bll://Api/getCard")}',
+        data: {
+        	userid:'{$userinfo.userid}',
+        	type:{$type},
+        	page:page,
+        	size:size
+        },
+        dataType: 'json',
+        success: function(data){
+          if( (data!=null) && (data.length>0) ){
+            for(var i=0; i<data.length; i++){
+            	if(data[i].ytype == 2 || data[i].ytype == 3){
+		            result += ''  
+							   	+'<li class="'+cs+'">'
+							   		+'<a' ;
+							  if({$type} == 0){
+							  	result += ''  
+							   	+' href="http://weixin.dzrspa.cn/index.php/addon/Bll/User/tgq_details/rid/'+data[i].rid+'.html"' ;
+							  }
+							  result += ''  
+            				+'>'
+							   		+'<div class="price">' 
+							   			+'<span>￥'+data[i].yamount+'</span>';
+							  if(data[i].ytype == 2){
+							  	result += ''  
+							   			+'<p>团购券</p>';
+							  }
+							  if(data[i].ytype == 3){
+							  	result += ''  
+							   			+'<p>项目券</p>';
+							  }
+							  result += ''  
+							   		+'</div>' 
+							   		+'<div class="text">' 
+							   			+'<p class="info">'+data[i].yname+'</p>'
+							   			+'<p class="time" style="font-size:15px">'+data[i].shopname+'</p>'
+							   			+'<p class="time">起止时间：</p>' 
+							   			+'<p class="time">'+data[i].ybegindate.substr(0,10)+'至'+data[i].yenddate.substr(0,10)+'</p>' 
+							   		+'</div>' 
+							   		+'</a>';
+							  if(data[i].usestatus ==1)
+							  	result += ''
+							  		+'<div class="gy-pic"><img src="{:ADDON_PUBLIC_PATH}/images/shiyong.png"/></div>';
+							  if(data[i].usestatus ==2)
+							  	result += ''
+							  		+'<div class="gy-pic"><img src="{:ADDON_PUBLIC_PATH}/images/shixiao.png"/></div>';
+							  if(data[i].usestatus ==3)
+							  	result += ''
+							  		+'<div class="gy-pic"><img src="{:ADDON_PUBLIC_PATH}/images/tuikuan.png"/></div>';
+							  result += ''
+							   	+'</li>' ;
+            		
+            	}else{
+		            result += ''  
+							   	+'<li class="'+cs+'">'
+							   		+'<a href="http://weixin.dzrspa.cn/index.php/addon/Bll/User/coupon_details/rid/'+data[i].rid+'.html">'
+							   		+'<div class="price">' 
+							   			+'<span>￥'+data[i].yamount+'</span>' 
+							   			+'<p>订单满￥'+data[i].ymintotal+'可用</p>' 
+							   		+'</div>' 
+							   		+'<div class="text">' 
+							   			+'<p class="info">'+data[i].yname+'</p>'
+							   			+'<p class="time" style="font-size:15px">可用余额：￥'+data[i].yue+'</p>'
+							   			+'<p class="time">起止时间：</p>' 
+							   			+'<p class="time">'+data[i].ybegindate.substr(0,10)+'—'+data[i].yenddate.substr(0,10)+'</p>' 
+							   		+'</div>' 
+							   		+'</a>' 
+							   		+'<a href="http://weixin.dzrspa.cn/index.php/addon/Bll/User/coupon_details/rid/'+data[i].rid+'.html">'+gq+'</a>'
+							   	+'</li>' ;
+            	}
+            }
+          // 如果没有数据
+          }else{
+            // 锁定
+            me.lock();
+            // 无数据
+            me.noData();
+          }
+          // 为了测试，延迟1秒加载
+          setTimeout(function(){
+            // 插入数据到页面，放到最后面
+            $('.yhq').append(result);
+            // 每次数据插入，必须重置
+            me.resetload();
+          },1);
+        },
+        error: function(xhr, type){
+          alert('Ajax error!');
+          // 即使加载出错，也得重置
+          me.resetload();
+        }
+      });
+    },
+    threshold : 10
+  });
+});
+</script>
+<include file="./Addons/Bll/View/default/Public/guanzhu.html" />
+	</body>
+</html>

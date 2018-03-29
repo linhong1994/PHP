@@ -1,0 +1,166 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="applicable-device" content="mobile" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<title>技师详情  — 大自然会所</title>
+<link href="{:ADDON_PUBLIC_PATH}/css/public.css" rel="stylesheet" type="text/css" />
+<link href="{:ADDON_PUBLIC_PATH}/css/frozen.css" rel="stylesheet" type="text/css">
+<link href="{:ADDON_PUBLIC_PATH}/css/baoliao.css" rel="stylesheet" type="text/css">
+<link href="{:ADDON_PUBLIC_PATH}/css/index.css" rel="stylesheet" type="text/css" />
+	<script src="{:ADDON_PUBLIC_PATH}/js/jquery-3.1.1.min.js"></script>
+	<script src="{:ADDON_PUBLIC_PATH}/js/dropload.min.js"></script>
+
+
+</head>
+
+<body>
+<div class="mobile">
+
+  <!--header 开始-->
+  <header>
+    <div class="header"> <a class="new-a-back" href="{:U("appt_order",array("pid"=>$pid))}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/iconfont-fanhui.png"></span> </a>
+      <h2>技师详情</h2>
+      <a class="new-a-back2" style="right:0; top:0;" href="{:addons_url("Bll://User/index",array("rand"=>rand(1000,9999)))}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/home.png"></span> </a>
+    </div>
+  </header>
+  <!--header 结束-->
+  
+  <style>
+  .stars{ float:left; margin-left:10px;}
+  .comment_list .pl_user_top { width:80%;}
+  
+  .group-info { position:relative;text-align:center;}
+  .group-info img { width:120px; height:auto;margin-bottom:10px;margin-top:10px;}
+  .group-info .cont{ position:absolute; z-index:9; bottom:0; left:0; padding:10px 15px; width:100%;box-sizing:border-box; background:-webkit-gradient(linear, 0 0, 0 100%, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.6))); color:#fff;}
+  .group-info .cont h3 { font-size:16px; line-height:18px; margin-bottom:3px;}
+  .group-info .cont p { overflow:hidden; text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical; font-size:12px; line-height:14px;}
+  </style>
+  <div class="group-info">
+      <img src="{$technician.timg}">
+      
+  </div>
+
+<style>
+.con { color:#333; font-size:12px; background-color:#fff; }
+.con .tit, .detail-info .hd { height:40px; line-height:42px; padding-left:15px; font-size:14px; font-weight:bold; background-color:#EFEFEF;}
+.con .detail-box > div { margin-top:12px; margin:0 15px;}
+.detail-table th { text-align:left; color:#999; font-weight:normal;}
+.detail-table th, .detail-table td { padding:10px 0;font-size:12px; }
+.detail-table tr { background:url({:ADDON_PUBLIC_PATH}/images/xt.png) repeat-x 0 bottom; background-size:auto 10px;}
+.con p { line-height:20px; font-size:14px; padding:7px 0;}
+.detail-table tr.total .tc { color:#999; text-decoration:line-through;}
+.detail-table tr.total .tc strong { margin-top:0.5rem; color:#06c1ae; display:inline-block;}
+</style>
+    <div class="con">
+       <div class="detail-box mb-line-b"><h3 class="tit">技师简介</h3>
+          <div class="detail-content ">
+          <p>{$technician.tremark}</p>
+          <div>
+       <div>
+
+
+    </div>
+
+</div></div></div></div>
+
+<style>
+.pl_user_comment span { width:30px; height:12px; line-height:12px; background-color:#03B38F; border-radius:20px; color:#fff; font-size:8px; padding:0 5px}
+</style>
+  <div class="bl_comment w">
+  	<h1>TA们的牛评（{$evnum}）</h1>
+    <div class="comment_list">
+    	<ul id="list">
+
+      </ul>
+    </div>
+  </div>
+  
+</div>
+
+<script>
+$(function(){
+  // 页数
+  var page = 0;
+  // 每页展示10个
+  var size = 6;
+
+  // dropload
+  $('.comment_list').dropload({
+    scrollArea : window,
+    domDown : {
+        domClass   : 'dropload-down',
+        domRefresh : '<div class="dropload-refresh">↑上拉加载更多</div>',
+        domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
+        domNoData  : ''
+    },
+
+    loadDownFn : function(me){
+      page++;
+      // 拼接HTML
+      var result = '';
+      $.ajax({
+        type: 'GET',
+		    async: false,
+        url: '{:addons_url("Bll://Api/getTechEvaluate")}',
+        data: {
+        	tid:'{$technician.tid}',
+        	page:page,
+        	size:size
+        },
+        dataType: 'json',
+        success: function(data){
+          if( (data!=null) && (data.length>0) ){
+            for(var i=0; i<data.length; i++){
+	            result += ''
+			        	+'<li>'
+								+'<div class="pl_user_img"><img src="'+data[i].headimg+'" /></div>'
+			          +'<div class="pl_user_top">'
+			              +'<div class="pl_user_name">'+data[i].username+'</div>'
+			              +'<span class="stars">';
+			        for(var j=0;j<5;j++){
+			        	if(j<data[i].evalgrade)
+			        		result += ''
+				        		+'<i class="text-icon icon-star"></i>';
+			        	else
+			        		result += ''
+				        		+'<i class="text-icon icon-star-gray"></i>';
+			        }
+			        
+							result += ''
+			                +'<em class="star-text">'+data[i].evalgrade+'</em>'
+			              +'</span>'
+			              +'<div class="pl_user_time">'+data[i].evaltime+'</div>'
+			          +'</div>'
+			          +'<div class="pl_user_comment">'+data[i].evalremark+'</div>'
+			          +'</li>';
+            }
+          // 如果没有数据
+          }else{
+            // 锁定
+            me.lock();
+            // 无数据
+            me.noData();
+          }
+          // 为了测试，延迟1秒加载
+          setTimeout(function(){
+            // 插入数据到页面，放到最后面
+            $('#list').append(result);
+            // 每次数据插入，必须重置
+            me.resetload();
+          },1);
+        },
+        error: function(xhr, type){
+          alert('Ajax error!');
+          // 即使加载出错，也得重置
+          me.resetload();
+        }
+      });
+    },
+    threshold : 10
+  });
+});
+</script>
+<include file="./Addons/Bll/View/default/Public/guanzhu.html" />
+</body>
+</html>

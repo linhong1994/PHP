@@ -1,0 +1,206 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="applicable-device" content="mobile" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<title>大自然会所</title>
+<link href="{:ADDON_PUBLIC_PATH}/css/public.css" rel="stylesheet" type="text/css" />
+<link href="{:ADDON_PUBLIC_PATH}/css/frozen.css" rel="stylesheet" type="text/css">
+<link href="{:ADDON_PUBLIC_PATH}/css/baoliao.css" rel="stylesheet" type="text/css">
+<link href="{:ADDON_PUBLIC_PATH}/css/style.css" rel="stylesheet" type="text/css">
+<script src="{:ADDON_PUBLIC_PATH}/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/layer.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+</head>
+<style>
+.active-header { background:url({$pic}) center 0 / 100% auto  no-repeat; height:75%; width:100%;}
+.active-mobile { padding-top:50%;}
+.active-mobile-nu { margin:0 auto;background-color:rgba(0,0,0,0.25); border-radius: 10px; width:90%; margin:0 auto; padding:10px;}
+.active-mobile h2{ text-align:center; color:#FF0; margin-bottom:5px;}
+input.rText { height:35px; width:190px; font-size:20px; text-align:center; margin-bottom:10px;}
+input.center { text-align:center; margin:0 auto; display:block;margin-bottom:10px;}
+a.small { height:35px; width:80px; font-size:20px; line-height:35px; display:inline-block; margin-left:10px;}
+.dfdfd { text-align:center;} 
+.dfdfd input.rText { display:inline-block; width:100px;}
+a.big { height:35px; width:120px;font-size:20px; line-height:35px; display:block; width:190px; margin:0 auto;}
+.active-center { padding-top:10px; }
+.active-center h2 { font-size:25px; text-align:center; }
+.active-center div span { display:block;}
+.active-bt { color: #fff; text-align:center; font-size:22px;;background-color:rgba(0,0,0,0.25); height:50px; line-height:50px; font-weight:bold;}
+</style>
+
+<body >
+<div class="active-header">
+   <div class="active-bt">{$coupon.yname}</div>
+   <div class="active-mobile">
+       <form class="active-mobile-nu" id="bind_mobile" action="{:U("active")}" method="post">
+       	<input id="yid" name="yid" type="hidden" value="{$coupon.yid}">
+           <h2>
+           	<php>
+							if(!$cbind){
+	           		if($mbind) echo "已绑定过手机号，请直接领取";
+	           		else echo "请输入手机号领取优惠券";	
+							}
+           	</php>
+           </h2>
+           <input type="text" class="rText center" style="background-color: #FFFFFF;color: #000000;opacity:1" placeholder="请输入手机号码" maxlength="11" id="mobile" name="mobile">
+           <div class="dfdfd">
+              <input type="text" class="rText" placeholder="请输入验证码" maxlength="6" id="verify" name="verify"><a class="orgBtn small" id="get">获取验证码</a>
+           </div>
+           <a class="orgBtn big"  id="bind">
+           	<php>
+							if($cbind){
+	           		echo "已领取过";	
+							}else{
+								echo "马上领取";	
+							}
+           	</php>
+           </a>
+       </form>
+   </div>
+
+</div>
+<div class="active-center">
+   <h2>活动细则</h2>
+   <div style="font-size: 18px;">
+      {$coupon.yremark}
+   </div>
+</div>
+<script>
+var cbind={$cbind};
+var mbind={$mbind};
+
+
+
+function msg(m){
+  layer.open({
+    content: m
+    ,skin: 'msg'
+    ,time: 2 //2秒后自动关闭
+  });
+}
+var countdown;
+function settime() {
+	if (countdown == 0) {
+		$("#get").removeAttr("disabled");
+		$("#get").text("重新发送");
+		return;
+	} else {
+		$("#get").attr("disabled", "disabled");
+		$("#get").text("重新发送("+countdown+"s)");
+		countdown--; 
+	}
+	setTimeout(function() { 
+		settime() 
+	},1000) 
+}
+
+$(function(){
+
+	if(mbind){
+		$("#mobile").val("{$mobile}");
+		$("#mobile").attr("disabled",true); 
+		$("#verify").attr("disabled",true);
+		$(".dfdfd").hide();
+	}
+	$("#get").on("click",function(){
+		if(mbind){
+			msg("已绑定手机号，请直接领取！");
+			return;
+		}
+		if($("#mobile").val().length == 11){
+		  $.ajax({
+		    type: 'POST',
+		    async: false,
+		    url: '{:addons_url("Bll://Api/getVerify")}',
+		    data: {
+		    	mobile:$("#mobile").val(),
+		    	userid:"{$userid}"
+		    },
+		    dataType: 'json',
+		    success: function(data){
+					switch(data["state"]){
+					case 0:
+						msg(data["mag"]);
+						break;
+					case 1:
+						$("#get").attr("disabled", "disabled");
+						$("#get").addClass("lang-btn-dis");
+						msg(data["msg"]);
+						$("#get").text(data["msg"]);
+						break;
+					case 2:
+						countdown=data["time"];
+						settime();
+						msg(data["msg"]);
+						break;
+					case 3:
+						countdown=60;
+						settime();
+						msg(data["msg"]);
+						break;
+					}
+		    },
+		    error: function(xhr, type){
+		      alert("短信服务器故障！");
+		    }
+		  });
+		}else{
+		  msg('请输入正确手机号码！');
+		}
+	});
+	
+
+	$("#bind").on("click",function(){
+		if(!cbind){
+			if(mbind){
+				$("#bind_mobile").submit();
+				return;
+			}
+			if($("#mobile").val().length == 11){
+				if($("#verify").val().length == 6){
+					$("#bind_mobile").submit();
+				}else{
+					msg('请输入6位验证码！');
+				}
+	
+			}else{
+			  msg('请输入正确手机号码！');
+			}
+		}
+
+	});
+})
+
+
+
+wx.config({  
+  debug: false,  
+  appId: '{$appid}', // 必填，公众号的唯一标识
+  timestamp: '{$timestamp}', // 必填，生成签名的时间戳
+  nonceStr: '{$nonceStr}', // 必填，生成签名的随机串
+  signature: '{$signature}',// 必填，签名，见附录1
+  jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo','onMenuShareQZone'] 
+});
+wx.ready(function () {
+  // 2. 分享接口
+  // 2.1 监听“分享给朋友”，按钮点击、自定义分享内容及分享结果接口
+  wx.onMenuShareAppMessage({
+      title: '大自然会所',
+      desc: '点击领取VIP现金抵用券',
+      link: 'http://weixin.dzrspa.cn/index.php/addon/Bll/User/active/yid/Y0008.html',
+      imgUrl: 'http://wx.dzrspa.cn/Files/logo.jpg',
+  });
+  // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
+  wx.onMenuShareTimeline({
+      title: '大自然会所',
+      desc: '点击领取VIP现金抵用券',
+      link: 'http://weixin.dzrspa.cn/index.php/addon/Bll/User/active/yid/Y0008.html',
+      imgUrl: 'http://wx.dzrspa.cn/Files/logo.jpg',
+  });
+});
+</script>
+
+<include file="./Addons/Bll/View/default/Public/guanzhu.html" />
+</body>
+</html>

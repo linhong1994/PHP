@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width">
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="{:ADDON_PUBLIC_PATH}/css/bootstrap.min.css"/>
+	<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<div class="container-fluid" >
+
+<a href="{:U("edit_technician")}" class="btn btn-default" role="button">添加技师</a>
+<volist name="technician" id="vo">
+<div class="row">
+	<a href='{:U('edit_technician',array('tid' => $vo['tid']))}'>
+	<div class="col-xs-4">
+	<img src="{$vo.techheadimg}" class="img-responsive center-block" style="height: 100px;">
+	</div>
+	<div class="col-xs-8 " style="color: #000000;">
+		<div class="container-fluid">
+			<div class="row">
+				<h5><strong>{$vo.techname}</strong></h5>
+				<h6>
+					<php>
+					if($vo["techsex"]==0) echo "女";
+					elseif($vo["techsex"]==1) echo "男";
+					else echo "保密";
+					</php>
+				</h6>
+				<div class="col-xs-12 pull-left" style="padding-left: 0px;padding-right: 0px;">
+					{$vo.tremark}
+				</div>
+			</div>
+		</div>
+	</div>
+	</a>
+</div>
+</volist>
+
+
+
+</div>
+
+</body>
+</html>

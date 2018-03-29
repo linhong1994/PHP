@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" type="text/css" href="/assets/css/share.css" />
+
+<script src="/assets/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<title>{:session('sys.webtitle')}</title>
+</head>
+
+<body>
+<div id="container">
+<div class="inv-ad">
+    <img src="/assets/images/inv-ad2.jpg" />
+</div>
+
+<div class="inv-con gray9">
+    <a id="z-set-2" class="orangeBtn" href="javascript:;">立即分享</a>
+    <p>点击上面的按钮分享页面或者分享二维码给好友</p>
+    <div style="text-align:center; margin:10px 0;"><img src="/qrcode.html" width="163" height="168" /></div>
+</div>
+
+<div class="inv-count clearfix">
+  <ul>
+    <li style="width:100%;">
+        <em class="orange" style="font-size:26px;">{$num}</em>
+        <i class="colorbbb" style="font-size:18px;">邀请好友</i>
+    </li>
+  </ul>
+</div>
+
+<div class="ann_btn">
+    <a href="/invitelist.html">邀请记录<s class="fr"></s></a>
+</div>
+
+
+</div>
+
+<div style="display: none;" class="m_popUp"><div class="m_guide"></div><cite></cite></div>
+<script type="text/javascript" src="/assets/js/jquery-1.7.2.min.js"></script>
+
+<script>
+
+//分享透明黑底
+$(document).ready(function () {
+	$('#z-set-2').click(function() {
+		$(".m_popUp").show();
+	   });
+
+	$('.m_popUp').click(function() {
+		$(".m_popUp").hide();
+	   });
+	});
+	
+wx.config({  
+  debug: false,  
+  appId: '{$appid}', // 必填，公众号的唯一标识
+  timestamp: '{$timestamp}', // 必填，生成签名的时间戳
+  nonceStr: '{$nonceStr}', // 必填，生成签名的随机串
+  signature: '{$signature}',// 必填，签名，见附录1
+  jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo','onMenuShareQZone'] 
+});
+
+
+wx.ready(function(){
+  // 2. 分享接口
+  // 2.1 监听“分享给朋友”，按钮点击、自定义分享内容及分享结果接口
+  wx.onMenuShareAppMessage({
+      title: '{:session('sys.webtitle')}',
+      desc: '好友:{:session('user.name')}向您推荐了{:session('sys.webtitle')}!',
+      link: 'http://bljwx.qzzs.cn/index/sponsor/{:session('user.userid')}.html',
+      imgUrl: '{:session('user.headimg')}',
+  });
+  // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
+  wx.onMenuShareTimeline({
+      title: '{:session('sys.webtitle')}',
+      desc: '好友:{:session('user.name')}向您推荐了{:session('sys.webtitle')}!',
+      link: 'http://bljwx.qzzs.cn/index/sponsor/{:session('user.userid')}.html',
+      imgUrl: '{:session('user.headimg')}',
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width">
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="{:ADDON_PUBLIC_PATH}/css/bootstrap.min.css"/>
+	<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="//webapi.amap.com/maps?v=1.3&key=ac262d2172bd0edc6919c0c81fbd2afa"></script>
+</head>
+<body>
+<div class="container-fluid" >
+<div class="row" id="map" style="height: 300px;"></div>
+
+<div class="row" id="list">
+	<p class="text-center">定位中...</p>
+	<div class="row" onclick="getShop('qw',118.593938,24.89539)">
+		<div class="col-xs-12">
+			<div class="col-xs-4"><img src="{:ADDON_PUBLIC_PATH}/img/timg.jpg" class="img-responsive"></div>
+			<div class="col-xs-8">
+				<div class="col-xs-12">大自然</div>
+				<div class="colo-xs-12">
+					<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+				</div>
+				<div class="col-xs-12 text-right">距离100米</div>
+			</div>
+		</div>
+	</div>
+
+	
+	
+	
+</div>
+
+</div>
+
+
+<script>
+var shoplist;
+var infoWindow;
+var marker = new AMap.Marker({
+});
+//初始地图
+var map = new AMap.Map('map', {
+  resizeEnable: true,
+  zoom:11
+});
+
+//添加控件
+AMap.plugin(['AMap.ToolBar','AMap.Scale','Geolocation'],
+  function(){
+  	map.addControl(new AMap.ToolBar());
+    map.addControl(new AMap.Scale());
+    map.addControl(new AMap.Geolocation());
+});
+//获取位置
+map.plugin('AMap.Geolocation', function() {
+  geolocation = new AMap.Geolocation({
+    enableHighAccuracy: true,//是否使用高精度定位，默认:true
+    timeout: 10000,          //超过10秒后停止定位，默认：无穷大
+    buttonOffset: new AMap.Pixel(10, 50),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+    zoomToAccuracy: false,      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+    buttonPosition:'LB'//定位按钮位置
+  });
+  map.addControl(geolocation);
+  geolocation.getCurrentPosition();
+  AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
+  AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
+});
+
+//解析定位结果
+function onComplete(data) {
+  var Lng=data.position.getLng();//经度
+  var Lat=data.position.getLat();//纬度
+  var accuracy=data.accuracy;//精度
+	$.ajax({
+		type: 'POST',
+		url: '{:addons_url("Bll://Api/getShopList")}',
+		data: {jd:Lng,wd:Lat},
+		dataType: 'json',
+		success: function(data){
+			shoplist=data;
+		  var arrLen = data.length;
+		  if(arrLen > 0){
+		  	var result="";
+		  	for(var i=0; i<arrLen;i++){
+		  		result += '<div class="row" onclick="getShop('+ i +')"><div class="col-xs-12"><div class="col-xs-4"><img src="{:ADDON_PUBLIC_PATH}/img/timg.jpg" class="img-responsive"></div><div class="col-xs-8"><div class="col-xs-12">'+data[i].shopname+'</div><div class="colo-xs-12"><span class="glyphicon glyphicon-star" aria-hidden="true"></span><span class="glyphicon glyphicon-star" aria-hidden="true"></span><span class="glyphicon glyphicon-star" aria-hidden="true"></span><span class="glyphicon glyphicon-star" aria-hidden="true"></span><span class="glyphicon glyphicon-star" aria-hidden="true"></span></div><div class="col-xs-12 text-right">距离'+data[i].distance+'</div></div></div></div>';
+				}
+		  	$("#list").html(result);
+		// 如果没有数据
+		}else{
+			alert('数量不够!');
+		    }
+		  },
+		error: function(xhr, type){
+		  alert(xhr.status);
+		}
+	});  
+}
+//解析定位错误信息
+function onError(data) {
+	$.ajax({
+		type: 'POST',
+		url: '{:addons_url("Bll://Api/getShopList")}',
+		data: {jd:118.593938,wd:24.89539},
+		dataType: 'json',
+		success: function(data){
+			shoplist=data;
+		  var arrLen = data.length;
+		  if(arrLen > 0){
+		  	var result="";
+		  	for(var i=0; i<arrLen;i++){
+		  		result += '<div class="row" onclick="getShop('+ i +')"><div class="col-xs-12"><div class="col-xs-4"><img src="{:ADDON_PUBLIC_PATH}/img/timg.jpg" class="img-responsive"></div><div class="col-xs-8"><div class="col-xs-12">'+data[i].shopname+'</div><div class="colo-xs-12"><span class="glyphicon glyphicon-star" aria-hidden="true"></span><span class="glyphicon glyphicon-star" aria-hidden="true"></span><span class="glyphicon glyphicon-star" aria-hidden="true"></span><span class="glyphicon glyphicon-star" aria-hidden="true"></span><span class="glyphicon glyphicon-star" aria-hidden="true"></span></div><div class="col-xs-12 text-right">距离'+data[i].distance+'</div></div></div></div>';
+				}
+		  	$("#list").html(result);
+		// 如果没有数据
+		}else{
+			alert('数量不够!');
+		    }
+		  },
+		error: function(xhr, type){
+		  alert(xhr.status);
+		}
+	}); 
+}
+
+function getShop(i){
+	var lng = shoplist[i].longgitude;
+	var lat = shoplist[i].latitude
+  if (marker) {
+    marker.setMap(null);
+    marker = null;
+  }
+  marker = new AMap.Marker({
+    icon: "http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+    position: [lng, lat]
+  });
+  marker.setMap(map);
+  
+  infoWindow = new AMap.InfoWindow({
+  	closeWhenClickMap: true,
+    content: shoplist[i].shopname
+  });
+  infoWindow.open(map, [lng, lat]);
+  
+	AMap.event.addListener(marker, 'click', function(e){
+    infoWindow.open(map, [lng, lat]);
+	}); 
+}
+</script>
+</body>
+</html>

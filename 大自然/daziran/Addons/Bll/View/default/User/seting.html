@@ -1,0 +1,68 @@
+<html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>绑定手机 — 大自然会所</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+		<link href="{:ADDON_PUBLIC_PATH}/css/public.css" rel="stylesheet" type="text/css" />
+    <link href="{:ADDON_PUBLIC_PATH}/css/style.css" rel="stylesheet" type="text/css">
+		<script src="{:ADDON_PUBLIC_PATH}/js/jquery-3.1.1.min.js"></script>
+	</head>
+
+<body class="secrityBg">
+  <header>
+    <div class="header"> <a class="new-a-back" href="{:U("index")}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/iconfont-fanhui.png"></span> </a>
+      <h2>绑定手机</h2>
+      <a class="new-a-back2" style="right:0; top:0;" href="{:U("index",array("rand"=>rand(1000,9999)))}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/home.png"></span> </a>
+
+    </div>
+  </header>
+    
+    <div class="h5-1yyg-v11">
+
+        <div class="update-pwd clearfix" style="margin-left: 10px;margin-right: 10px;">
+             <ul>
+                  <li class="gray6" style="height: 35px;line-height: 35px;">手机号： 
+                  <php>
+                  if($mobile!=null && strlen($mobile)==11) echo $mobile . "<a  href='" . U("bind_mobile") . "' style='float:right; border: 0px solid #C7A770;    background: #C7A770 none repeat scroll 0 0;border-radius: 5px;    display: block;   width: 30%;text-align: center;color: #fff !important;'>更换</a>";
+                  else echo "未绑定";
+                  </php> </li>		
+              </ul>
+
+
+        </div>
+        <php>
+        if($mobile!=null && strlen($mobile)==11) echo "
+        <form class='authentication-con clearfix' id='userinfo' action='" . U("seting") . "' method='post'>
+        	<input id='shopid' name='shopid' type='hidden' value='{$shopid}'>
+             <ul>
+                <li class='pd20' style='padding-left:0'><span style='width:15%;display: inline-block;'>姓名：</span><input type='text' class='rText'  maxlength='4' id='username' name='username' style='width: 85%;' value='" . $userinfo["username"] . "'></li>
+
+                    <li><a class='orgBtn' style='margin-top: 10px;' id='save'>保存</a></li>
+             </ul>
+        </form>";
+        else echo "
+        <div class='authentication-con clearfix'>
+             <ul>
+                    <li><a class='orgBtn' style='margin-top: 10px;' href='" . U("bind_mobile") . "'>绑定</a></li>
+             </ul>
+        </div>";
+        </php>
+
+    </div> 
+</body>
+<script>
+	var va = "{$userinfo.sex}";
+	$("input[type='radio'][name='sex'][value='"+va+"']").attr("checked", "checked");
+	$("#save").click(function(){
+		$("#userinfo").submit();
+	});
+</script>
+<include file="./Addons/Bll/View/default/Public/guanzhu.html" />
+</html>

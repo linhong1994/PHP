@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>{:session('sys.webtitle')}</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+		<link href="/assets/css/amazeui.min.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+		<script src="/assets/js/jquery-3.2.1.min.js"></script>
+		<script src="/assets/js/layer_mobile/layer.js"></script>
+		<script src="/assets/js/area.js"></script>
+	</head>
+	<style>
+		.address li select { width: 100%;} 
+	</style>
+	<body>
+		<header data-am-widget="header" class="am-header am-header-default sq-head ">
+			<div class="am-header-left am-header-nav">
+				<a href="{:outo()}" class="">
+					<i class="am-icon-chevron-left"></i>
+				</a>
+			</div>
+			<h1 class="am-header-title">
+  	            <a href="" class="">{$titele}</a>
+            </h1>
+      <div class="am-header-right am-header-nav">
+				<a href="/index.html" class="">
+					<i class="am-icon-home am-icon-sm"></i>
+				</a>
+			</div>
+	    </header>
+
+	    <div style="height: 60px;"></div>
+	    <form id="myform">
+	    	<input type="hidden" id="rid" name="rid" value=""  />
+		    <ul class="address">
+		    	<li>
+		    		<select class="add-select"  id="province" name="province"></select>
+		    	</li>
+		    	<li>
+		    		<select class="add-select"  id="city" name="city"></select>
+		    	</li>
+		    	<li>
+		    		<select class="add-select"  id="county" name="county" ></select>
+		    	</li>
+		    	<li><input type="text" class="add-input" id="address" name="address" placeholder="详细地址" /></li>
+		    	<li><input type="text" class="add-input" id="lxr" name="lxr" placeholder="收货人" /></li>
+		    	<li><input type="text" class="add-input" id="lxfs" name="lxfs" placeholder="联系方式" /></li>
+		    </ul>
+		    <div class="moren">
+		    	<label class="am-checkbox am-warning">
+	                 <input type="checkbox" checked="checked" id="ifmr" name="ifmr" value="1" data-am-ucheck checked>设为默认
+	            </label>
+	            
+		    </div>
+		  </form>
+		    <input type="submit" class="login-btn" value="确认提交" >
+
+
+	</body>
+<script type="text/javascript">
+_init_area();
+function msg(m){
+  layer.open({
+    content: m
+    ,skin: 'msg'
+    ,time: 2 //2秒后自动关闭
+  });
+}
+function tj(){
+	$('.login-btn').attr({"disabled":"disabled"});
+  $.ajax({
+    type: 'POST',
+    async: false,
+    url: '/address.html',
+    data: $('#myform').serialize(),
+    dataType: 'json',
+    success: function(data){
+			msg(data.msg);
+			if(data.code==1){
+	      setTimeout(function(){
+					location.href = data.url;
+	      },1500);
+			}else{
+				$('.login-btn').removeAttr("disabled");
+			}
+    },
+    error: function(xhr, type){
+			msg('网络错误,请重试!');
+			$('.login-btn').removeAttr("disabled");
+    }
+  });	
+}
+var data = {$useraddr};
+if(data!=0){
+	$('#rid').val(data.rid);
+	$('#province option').each(function(){
+		if($(this).val() == data.province){
+			$(this).attr("selected", "selected");
+		}
+	});
+	$('#province option').trigger('change');
+	$('#city option').each(function(){
+		if($(this).val() == data.city){
+			$(this).attr("selected", "selected");
+		}
+	});
+	$('#city option').trigger('change');
+	$('#county option').each(function(){
+		if($(this).val() == data.county){
+			$(this).attr("selected", "selected");
+		}
+	});
+	$('#address').val(data.address);
+	$('#lxr').val(data.lxr);
+	$('#lxfs').val(data.lxfs);
+	if(data.ifmr){
+		$('#ifmr').attr("checked", "checked");
+	}else{
+		$('#ifmr').removeAttr("checked");
+	}
+}
+$('.login-btn').click(function(){
+	tj();
+})
+
+</script>
+<script src="/assets/js/amazeui.min.js"></script> 
+</html>

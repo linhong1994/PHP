@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>{:session('sys.webtitle')}</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+		<link href="/assets/css/amazeui.min.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/check.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/dropload.css" rel="stylesheet" type="text/css" />
+		<script src="/assets/js/jquery-3.2.1.min.js"></script>
+		<script src="/assets/js/layer_mobile/layer.js"></script>
+		<script src="/assets/js/dropload.min.js"></script>
+	</head>
+	<body>
+		<header data-am-widget="header" class="am-header am-header-default sq-head ">
+			<div class="am-header-left am-header-nav">
+				<a href="{:outo()}" class="">
+					<i class="am-icon-chevron-left"></i>
+				</a>
+			</div>
+			<h1 class="am-header-title">
+  	            <a href="" class="">全部订单</a>
+            </h1>
+      <div class="am-header-right am-header-nav">
+				<a href="/index.html" class="">
+					<i class="am-icon-home am-icon-sm"></i>
+				</a>
+			</div>
+	    </header>
+	    <div style="height: 49px;"></div>
+	    <ul class="order-style">
+	    	<li {php}if($type==0) echo 'class="current"';{/php}><a href="{:url('allorder',['type'=>0])}">全部</a></li>
+	    	<li {php}if($type==1) echo 'class="current"';{/php}><a href="{:url('allorder',['type'=>1])}">待付款</a></li>
+	    	<li {php}if($type==2) echo 'class="current"';{/php}><a href="{:url('allorder',['type'=>2])}">待发货</a></li>
+	    	<li {php}if($type==3) echo 'class="current"';{/php}><a href="{:url('allorder',['type'=>3])}">待收货</a></li>
+	    	<li {php}if($type==4) echo 'class="current"';{/php}><a href="{:url('allorder',['type'=>4])}">待评价</a></li>
+	    </ul>
+			<div id="list">
+			<div id="out-list">
+
+	    </div>
+	    </div>
+ <!--底部-->
+ <div style="height: 55px;"></div>
+ <div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default sq-foot am-no-layout" id="">
+      <ul class="am-navbar-nav am-cf am-avg-sm-5">   
+          <li>
+            <a href="{:url('index')}" class="">
+                <span class="am-icon-home"></span>
+                <span class="am-navbar-label">首页</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('category')}" class="">
+                <span class="am-icon-list"></span>
+                <span class="am-navbar-label">分类</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('shopcart')}" class="">
+                <span class="am-icon-shopping-cart"></span>
+                <span class="am-navbar-label">购物车</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('allorder')}" class="curr">
+                <span class="am-icon-file-text"></span>
+                <span class="am-navbar-label">订单</span>
+            </a>
+          </li>
+ 
+          <li>
+            <a href="{:url('member')}" class="">
+                <span class="am-icon-user"></span>
+                <span class="am-navbar-label">我的</span>
+            </a>
+          </li>
+      </ul>
+      
+</div>
+<script>
+var tj=1;//允许提交
+function msg(m){
+  layer.open({
+    content: m
+    ,skin: 'msg'
+    ,time: 2 //2秒后自动关闭
+  });
+}
+function qx(oid,$this){
+	if(tj){
+		tj=0;
+	  $.ajax({
+	    type: 'POST',
+	    async: true,
+	    url: '/allorder.html',
+	    data: {
+	    	oid:oid
+	    },
+	    dataType: 'json',
+	    success: function(data){
+				msg(data.msg);
+				if(data.code==1){
+		      console.log( $this.closest('.list')[0].remove());
+				}
+				tj=1;
+				
+				
+	    },
+	    error: function(xhr, type){
+				msg('网络错误,请重试!');
+				tj=1;
+	    }
+	  });	
+	}
+}
+function qr(oid,$this){
+	if(tj){
+		tj=0;
+	  $.ajax({
+	    type: 'POST',
+	    async: true,
+	    url: '/orderdetail.html',
+	    data: {
+	    	oid:oid
+	    },
+	    dataType: 'json',
+	    success: function(data){
+				msg(data.msg);
+				if(data.code==1){
+		      setTimeout(function(){
+						location.href = data.url;
+		      },1500);
+				}else{
+					tj=1;
+				}
+	    },
+	    error: function(xhr, type){
+				msg('网络错误,请重试!');
+				tj=1;
+	    }
+	  });	
+  }
+}
+// 页数
+var page = 0;
+// 每页展示10个
+var size = 6;
+var dropload;
+$(function(){
+  // dropload
+  dropload=$('#list').dropload({
+    scrollArea : window,
+    // 下拉刷新模块显示内容
+    domUp : {
+      domClass   : 'dropload-up',
+      // 下拉过程显示内容
+      domRefresh : '<div class="dropload-refresh">↓下拉刷新</div>',
+      // 下拉到一定程度显示提示内容
+      domUpdate  : '<div class="dropload-update">↑释放更新</div>',
+      // 释放后显示内容
+      domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>'
+    },
+		domDown : {
+		  domClass   : 'dropload-down',
+		  // 滑动到底部显示内容
+		  domRefresh : '<div class="dropload-refresh">↑上拉加载更多</div>',
+		  // 内容加载过程中显示内容
+		  domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
+		  // 没有更多内容-显示提示
+		  domNoData  : '<div class="dropload-noData">无更多数据！</div>'
+		},
+    // 1 . 下拉刷新 回调函数
+    loadUpFn : function(me){
+			page = 1;
+      // 拼接HTML
+      var result = '';
+      $.ajax({
+        type: 'POST',
+		    async: false,
+        url: '/allorder.html',
+        data: {
+        	page:page,
+        	size:size,
+        	type:{$type}
+        },
+        dataType: 'json',
+        success: function(data){
+          for(var i=0; i<data.length; i++){
+						result+='<div class="list">'
+					    +'<div class="c-comment">'
+							+'<span class="c-comment-num">微信支付</span>'
+							+'<span class="c-comment-suc">';
+						if(data[i].status==1) result+='待付款';
+						if(data[i].status==2) result+='待发货';
+						if(data[i].status==3) result+='待收货';
+						if(data[i].status==4) result+='待评价';
+						if(data[i].status==5) result+='已完成';
+						if(data[i].status==9) result+='已取消';
+						result+=''
+							+'</span>'
+							+'</div>'
+							+'<div class="c-comment-list" style="border: 0;">'
+								+'<a href="/orderdetail/oid/'+data[i].orderno+'.html">';		
+						if(data[i].zsjf<0){
+							result+='<p>应付积分：'+(-data[i].zsjf);
+						}else{
+							result+='<p>应付金额：￥'+data[i].amount+'     实付金额：<span>￥'+data[i].jsamount+'</span> <b>省</b><span>￥'+data[i].yhamount+'</span> </p>';
+						}
+						result+=''
+								+'<p>订单编号：'+data[i].orderno+'</p>'
+								+'<p>下单时间：'+data[i].insertdate+'</p>'
+					            +'</a>'
+							+'</div>'
+							+'<div class="c-com-btn">'
+						if(data[i].status==1){
+							if(data[i].zsjf<0){
+								result+= '<a class="canelpay qx" data-oid="'+ data[i].orderno +'">取消订单</a><a href="/tureexchange/p/1/eid/'+ data[i].orderno+'.html" class="oncepay">立即支付</a>'	;
+							}else{
+								result+= '<a class="canelpay qx" data-oid="'+ data[i].orderno +'">取消订单</a><a href="/pay/oid/'+data[i].orderno+'.html" class="oncepay">立即支付</a>'; //<a href="" class="canelpay">取消订单</a>
+							}
+	
+						}
+						if(data[i].status==2){
+							result+= '	'	;
+						}
+						if(data[i].status==3){
+							result+= '<a class="canelpay qr" data-oid="'+ data[i].orderno +'">确认收货</a>';
+						}
+						if(data[i].status==4){
+							result+= '<a href="/myassess/oid/'+data[i].orderno +'.html" class="oncepay">立即评价</a>';	
+						}
+						if(data[i].status==5){
+							result+= '';	
+						}
+						if(data[i].status==9){
+							result+= '';	
+						}
+						result+=''
+							+'</div>'
+							+'<div class="clear"></div></div>';
+          }
+
+          // 为了测试，延迟1秒加载
+          setTimeout(function(){
+            // 插入数据到页面，放到最后面
+            $('#out-list').html(result);
+            // 每次数据插入，必须重置
+            me.resetload();
+            // 重置页数，重新获取loadDownFn的数据
+            page = 1;
+            // 解锁loadDownFn里锁定的情况
+            me.unlock();
+            me.noData(false);
+          },1);
+        },
+        error: function(xhr, type){
+          alert('数据获取失败!');
+          // 锁定
+          me.lock();
+          // 无数据
+          me.noData();
+          // 即使加载出错，也得重置
+          me.resetload();
+        }
+      });
+    },
+    // 2 . 上拉加载更多 回调函数
+    loadDownFn : function(me){
+      page++;
+      // 拼接HTML
+      var result = '';
+      $.ajax({
+        type: 'POST',
+		    async: false,
+        url: '/allorder.html',
+        data: {
+        	page:page,
+        	size:size,
+        	type:{$type}
+        },
+        dataType: 'json',
+        success: function(data){
+          if( (data!=null) && (data.length>0) ){
+            for(var i=0; i<data.length; i++){
+						result+='<div class="list">'
+					    +'<div class="c-comment">'
+							+'<span class="c-comment-num">';
+						if(data[i].status!=1){
+							if(data[i].payway==0) result+='微信支付';
+							if(data[i].payway==1) result+='余额支付';
+							if(data[i].payway==2) result+='积分兑换';
+						}else{
+							if(data[i].zsjf < 0)
+								result+='积分订单';
+							else
+								result+='商品订单';
+						}
+						result+=''
+							+'</span>'
+							+'<span class="c-comment-suc">';
+						if(data[i].status==1) result+='待付款';
+						if(data[i].status==2) result+='待发货';
+						if(data[i].status==3) result+='待收货';
+						if(data[i].status==4) result+='待评价';
+						if(data[i].status==5) result+='已完成';
+						if(data[i].status==9) result+='已取消';
+						result+=''
+							+'</span>'
+							+'</div>'
+							+'<div class="c-comment-list" style="border: 0;">'
+								+'<a href="/orderdetail/oid/'+data[i].orderno+'.html">';		
+						if(data[i].zsjf<0){
+							result+='<p>应付积分：'+(-data[i].zsjf);
+						}else{
+							result+='<p>应付金额：￥'+data[i].amount+'     实付金额：<span>￥'+data[i].jsamount+'</span> <b>省</b><span>￥'+data[i].yhamount+'</span> </p>';
+						}
+						result+=''
+								+'<p>订单编号：'+data[i].orderno+'</p>'
+								+'<p>下单时间：'+data[i].insertdate+'</p>'
+					            +'</a>'
+							+'</div>'
+							+'<div class="c-com-btn">'
+						if(data[i].status==1){
+							if(data[i].zsjf<0){
+								result+= '<a class="canelpay qx" data-oid="'+ data[i].orderno +'">取消订单</a><a href="/tureexchange/p/1/eid/'+ data[i].orderno+'.html" class="oncepay">立即支付</a>'	;
+							}else{
+								result+= '<a class="canelpay qx" data-oid="'+ data[i].orderno +'">取消订单</a><a href="/pay/oid/'+data[i].orderno+'.html" class="oncepay">立即支付</a>'; //<a href="" class="canelpay">取消订单</a>
+							}
+	
+						}
+						if(data[i].status==2){
+							result+= '	'	;
+						}
+						if(data[i].status==3){
+							result+= '<a class="canelpay qr" data-oid="'+ data[i].orderno +'">确认收货</a>';
+						}
+						if(data[i].status==4){
+							result+= '<a href="/myassess/oid/'+data[i].orderno +'.html" class="oncepay">立即评价</a>';	
+						}
+						if(data[i].status==5){
+							result+= '';	
+						}
+						if(data[i].status==9){
+							result+= '';	
+						}
+						result+=''
+							+'</div>'
+							+'<div class="clear"></div></div>';
+            }
+          // 如果没有数据
+          }else{
+            // 锁定
+            me.lock();
+            // 无数据
+            me.noData();
+          }
+          // 为了测试，延迟1秒加载
+          setTimeout(function(){
+            // 插入数据到页面，放到最后面
+            $('#out-list').append(result);
+            // 每次数据插入，必须重置
+            me.resetload();
+          },1);
+        },
+        error: function(xhr, type){
+          alert('数据获取失败!');
+          // 锁定
+          me.lock();
+          // 无数据
+          me.noData();
+          // 即使加载出错，也得重置
+          me.resetload();
+        }
+      });
+    },
+    threshold : 50
+  });
+	$('#list').on("click",'.qx',function(){
+		$this=$(this)
+	  layer.open({
+	    content: '您确定要取消该订单吗？'
+	    ,btn: ['确定', '取消']
+	    ,yes: function(index){
+	    	qx($this.data('oid'),$this);
+	    	layer.close(index);
+	    }
+	  });
+	})
+	
+	$('#list').on("click",'.qr',function(){
+		$this=$(this)
+	  layer.open({
+	    content: '您确定已收到货物？'
+	    ,btn: ['确定', '取消']
+	    ,yes: function(index){
+	    	qr($this.data('oid'));
+	    	layer.close(index);
+	    }
+	  });
+	})
+})
+</script>
+	</body>
+</html>

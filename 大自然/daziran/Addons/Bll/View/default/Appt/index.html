@@ -1,0 +1,245 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="author" content="m.178hui.com" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="format-detection" content="telephone=no">
+<title>大自然会所</title>
+<link rel="stylesheet" type="text/css" href="{:ADDON_PUBLIC_PATH}/css/bootstrap1.css"/>
+<link href="{:ADDON_PUBLIC_PATH}/css/public.css" rel="stylesheet" type="text/css" />
+<link href="{:ADDON_PUBLIC_PATH}/css/place.css" rel="stylesheet" type="text/css" />
+<link href="{:ADDON_PUBLIC_PATH}/css/DateTimePicker.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/bootstrap.min.js"></script>
+<script src="{:ADDON_PUBLIC_PATH}/js/DateTimePicker.js"></script>
+<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/layer.js"></script>
+<script type="text/javascript" src="//webapi.amap.com/maps?v=1.3&key=ac262d2172bd0edc6919c0c81fbd2afa"></script>
+</head>
+
+<body style=" ">
+<include file="./Addons/Bll/View/default/Public/lh.html" />
+  <!--header 开始-->
+    <div class="header"> 
+    	<a class="new-a-back" href="{:U("index2")}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/iconfont-fanhui.png"></span> </a>
+      <h2>预约服务</h2>
+      <a class="new-a-back2" style="right:0; top:0;" href="{:addons_url("Bll://User/index",array("rand"=>rand(1000,9999)))}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/home.png"></span> </a>
+    </div>
+  <!--header 结束-->
+<form class="place" action="{:U("shop_list")}" method="post">
+	<input type="hidden"  name="jwd" id="jwd">
+   <div class="login_left pos">
+      <label class="login-icon pos">
+          <i class="icon-user-line log-i"></i>
+          <input type="text" id="location" name="location" class="log-input mls" placeholder="请选择位置" autocomplete="off"  readonly>
+      </label>
+      <label class="login-icon pos">
+          <i class="icon-lock-line log-i"></i>
+          <input type="datetime" id="yytime" name="yytime" class="log-input mls" placeholder="请选择到店时间" autocomplete="off" data-field="datetime" readonly>
+      </label>
+      <button class="lang-btn" disabled="disabled" style="background:#C7A770 ;">确定</button>
+      <label class="login-icon pos" style="color: #808080;text-align: center;">注：预约时间超出10分钟未到店，将取消预约</label>
+   </div>
+</form>
+
+<!-- 地图 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">选择所在位置</h4>
+      </div>
+      <div class="modal-body">
+        <div id="map" style="height: 400px;"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" id="qd" class="btn btn-primary" data-dismiss="modal">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 日期选择器 -->
+<div id="dtBox" class="dtpicker-overlay dtpicker-mobile" style="display: none;">
+	<div class="dtpicker-bg">
+		<div class="dtpicker-cont">
+			<div class="dtpicker-content">
+				<div class="dtpicker-subcontent">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+var jd=null,wd=null,dw=1;
+var marker, map = new AMap.Map('map', {
+  resizeEnable: true,
+  zoom:16,
+});
+//地图中添加地图操作ToolBar插件
+map.plugin(['AMap.ToolBar','AMap.Scale'], function() {
+	map.addControl(new AMap.ToolBar());
+  map.addControl(new AMap.Scale());
+});
+map.on('click', function(e) {
+ // alert('您在[ '+e.lnglat.getLng()+','+e.lnglat.getLat()+' ]的位置点击了地图！');
+	jd=e.lnglat.getLng();
+	wd=e.lnglat.getLat();
+  addMarker(e.lnglat.getLng(),e.lnglat.getLat());
+  //$("#location").val(e.lnglat.getLng()+","+e.lnglat.getLat());
+  //$("#longgitude").val(e.lnglat.getLng());
+  //$("#latitude").val(e.lnglat.getLat());
+});
+function addMarker(x,y) {
+  if (marker) {
+      marker.setMap(null);
+        marker = null;
+  }
+  //http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png
+  marker = new AMap.Marker({
+      icon: "http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+      position: [x, y]
+  });
+  marker.setMap(map);
+}
+//获取位置
+map.plugin('AMap.Geolocation', function() {
+  geolocation = new AMap.Geolocation({
+    enableHighAccuracy: true,//是否使用高精度定位，默认:true
+    timeout: 5000,          //超过10秒后停止定位，默认：无穷大
+    buttonOffset: new AMap.Pixel(10, 50),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+    showMarker: false,        //定位成功后在定位到的位置显示点标记，默认：true
+    showCircle: false,        //定位成功后用圆圈表示定位精度范围，默认：true
+    zoomToAccuracy: false,      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+    buttonPosition:'LB'//定位按钮位置
+  });
+  map.addControl(geolocation);
+  geolocation.getCurrentPosition();
+  AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
+  AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
+});
+
+//解析定位结果
+function onComplete(data) {
+	dw=1;
+  var Lng=data.position.getLng();//经度
+  var Lat=data.position.getLat();//纬度
+  var accuracy=data.accuracy;//精度
+	addMarker(Lng,Lat);
+	jd=Lng;
+	wd=Lat;
+	//逆地理编码
+  var geocoder = new AMap.Geocoder({
+    radius: 1000,
+    extensions: "all"
+  });        
+  geocoder.getAddress([jd,wd], function(status, result) {
+    if (status === 'complete' && result.info === 'OK') {
+      $("#location").val(result.regeocode.formattedAddress);
+    }else{
+    	$("#location").val(jd+","+wd);
+    }
+  });	
+  $("#jwd").val(jd+","+wd);
+  $(".lang-btn").removeAttr("disabled");
+	//$("#location").val(Lng+","+Lat);
+  //$("#longgitude").val(Lng);
+  //$("#latitude").val(Lat);
+}
+//解析定位错误信息
+function onError(data) {
+	dw=0;
+	jd=null,wd=null;
+	$(".lang-btn").removeAttr("disabled");
+	alert("获取当前位置失败，请手动查找！");
+}
+
+
+$(function(){
+  $('.lang-btn').click(function(){
+		if($("#jwd").val().length<5){
+		  layer.open({
+		    content: '请选择所在位置！'
+		    ,skin: 'msg'
+		    ,time: 2 //2秒后自动关闭
+		  });
+		  return false;
+		}
+		if($("#yytime").val().length < 5){
+		  layer.open({
+		    content: '请选择到店时间！'
+		    ,skin: 'msg'
+		    ,time: 2 //2秒后自动关闭
+		  });
+		  return false;		
+		}
+  });
+  $('#location').click(function(){
+		$('#myModal').modal();
+		if($("#jwd").val().length>5){
+			jd=$("#jwd").val().split(",")[0];
+			wd=$("#jwd").val().split(",")[1];
+			addMarker(jd,wd);
+		}
+  });
+  $('#qd').click(function(){
+		if(jd!=null && wd!=null) {
+			if(dw){
+				//逆地理编码
+			  var geocoder = new AMap.Geocoder({
+			    radius: 1000,
+			    extensions: "all"
+			  });        
+			  geocoder.getAddress([jd,wd], function(status, result) {
+			    if (status === 'complete' && result.info === 'OK') {
+			      $("#location").val(result.regeocode.formattedAddress);
+			    }else{
+			    	$("#location").val(jd+","+wd);
+			    }
+			  });	
+			}else{
+				$("#location").val(jd+","+wd);
+			}
+
+		  $("#jwd").val(jd+","+wd);
+		}
+  });
+});
+
+var dt = new Date(), min="",max="",year="",month="",day="",hours="",minutes="";
+dt.setTime(dt.getTime()+30*60*1000);
+year=dt.getFullYear();
+month=dt.getMonth()+1;
+if(month<10) month = "0"+month;
+day=dt.getDate();
+if(day<10) day = "0"+day;
+hours=dt.getHours();
+if(hours<10) hours = "0"+hours;
+minutes=dt.getMinutes();
+if(minutes<10) minutes = "0"+minutes;
+min = year +"-"+ month +"-"+ day +" "+ hours +":"+ minutes;
+
+dt = new Date(dt.getFullYear(),dt.getMonth()+1,dt.getDate(),dt.getHours()+24,dt.getMinutes());
+console.log(dt);
+year=dt.getFullYear();
+month=dt.getMonth();
+if(month<10) month = "0"+month;
+day=dt.getDate();
+if(day<10) day = "0"+day;
+hours=dt.getHours();
+if(hours<10) hours = "0"+hours;
+minutes=dt.getMinutes();
+max = year +"-"+ month +"-"+ day +" "+ hours +":"+ minutes;
+//console.log(max);
+$("#dtBox").DateTimePicker({
+	dateTimeFormat: "yyyy-MM-dd HH:mm",
+	minDateTime:min,
+	maxDateTime:max
+});
+$("#yytime").val(min);
+</script>
+<include file="./Addons/Bll/View/default/Public/guanzhu.html" />
+</body>
+</html>

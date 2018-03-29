@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>{:session('sys.webtitle')}</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+		<link href="/assets/css/amazeui.min.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+		<script src="/assets/js/jquery-3.2.1.min.js"></script>
+		<script src="/assets/js/time.js"></script>
+	</head>
+    <style>
+    li.am-active {border-left: 3px solid #cb2527;}
+	li.am-active a {color: #cb2527;}
+	.am-nav-tabs>li.am-active>a, .am-nav-tabs>li.am-active>a:focus, .am-nav-tabs>li.am-active>a:hover { border:none;}
+	.am-nav-tabs>li>a { margin-right:0;line-height:4rem; padding:0}
+	.am-nav-tabs>li { margin-left:0;}
+	.am-tabs-bd { border:none;}
+	
+	.am-avg-sm-2>li:nth-of-type(2n+1) { clear: none;}
+	.am-avg-sm-2>li:nth-of-type(n) { clear: none;}
+	.list-right .am-gallery-default .am-gallery-item img { width:6rem; height:6rem;}
+	.list-right .am-gallery-default .am-gallery-title { font-size:12px;}
+	.am-avg-sm-2>li { width:33%;}
+	.am-gallery-default .am-gallery-title { height:18px;}
+	
+	.sm-title { font-size:1.6rem; color:#3A3A3A; text-indent:2rem; border-bottom:1px solid #CCC}
+    </style>
+	<body>
+		<header data-am-widget="header" class="am-header am-header-default sq-head ">
+			<div class="am-header-left am-header-nav">
+				<a href="{:outo()}" class="">
+					<i class="am-icon-chevron-left"></i>
+				</a>
+			</div>
+			<h1 class="am-header-title">
+  	            <a href="" class="">商品分类</a>
+            </h1>
+      <div class="am-header-right am-header-nav">
+				<a href="/index.html" class="">
+					<i class="am-icon-home am-icon-sm"></i>
+				</a>
+			</div>
+	    </header>
+	    <div class="content-list am-tabs" data-am-tabs="{noSwipe: 1}">
+	    	<div class="list-left am-tabs-nav am-nav am-nav-tabs"  style="top: 50px;">
+	    		{volist name='list' id='vo'}
+	    		<li class="{eq name='i' value='1'}am-active{/eq}"><a href="#tab-4-{$i}">{$vo.catname}</a></li>
+	    		{/volist}
+	    	</div>
+	    	<div class="list-right am-tabs-bd am-tabs-bd-ofv" >
+	    		{volist name='list' id='vo' key="i"}
+	    		<ul  id="tab-4-{$i}" data-am-widget="gallery" class="am-gallery am-avg-sm-2 am-avg-md-2 am-avg-lg-4 am-gallery-default am-no-layout am-tab-panel {eq name='i' value='1'}am-active{/eq}">
+	    			{volist name='vo.l2' id='l2' key="j"}
+	    			<div class="am-avg-sm-2 am-avg-md-2">
+              <div class="sm-title">{$l2.catname}</div>
+              {volist name='l2.l3' id='l3' key="k"}        
+				      <li>
+				        <div class="am-gallery-item">
+				            <a href="{:url('goodslist',['catid'=>$l3.catid])}" class="">
+				              <img src="{$l3.catimg}">
+				                <h3 class="am-gallery-title">{$l3.catname}</h3>
+				            </a>
+				        </div>
+				      </li>
+
+
+				      {/volist}
+				    </div>
+				    {/volist}
+				</ul>
+				{/volist}
+
+	    	</div>
+	    </div>
+	    
+	   <!--底部-->
+ <div style="height: 55px;"></div>
+ <div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default sq-foot am-no-layout" id="">
+      <ul class="am-navbar-nav am-cf am-avg-sm-5">   
+          <li>
+            <a href="{:url('index')}" class="">
+                <span class="am-icon-home"></span>
+                <span class="am-navbar-label">首页</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('category')}" class="curr">
+                <span class="am-icon-list"></span>
+                <span class="am-navbar-label">分类</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('shopcart')}" class="">
+                <span class="am-icon-shopping-cart"></span>
+                <span class="am-navbar-label">购物车</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('allorder')}" class="">
+                <span class="am-icon-file-text"></span>
+                <span class="am-navbar-label">订单</span>
+            </a>
+          </li>
+ 
+          <li>
+            <a href="{:url('member')}" class="">
+                <span class="am-icon-user"></span>
+                <span class="am-navbar-label">我的</span>
+            </a>
+          </li>
+      </ul>
+</div>
+ 
+<style>
+	/*兼容ios微信下拉问题*/
+	body {height: 100%;}
+	.content-list { height: 100%;}
+	.sq-head { position: relative;}
+	.list-left { position: absolute; height: 100%; }
+	.list-right {height: 100%;}
+	.list-right ul {height: 100%;overflow-y:scroll;-webkit-overflow-scrolling: touch;}
+</style>
+
+<script src="/assets/js/amazeui.min.js"></script>
+
+</body>
+<script>
+$(function(){
+	if({$tab}!=0){
+		$(".list-left li").removeClass('am-active');
+		$(".list-left li").each(function(){
+      if($(this).find('a').attr("href")=="#tab-4-{$tab}"){
+      	$(this).addClass('am-active');
+      }
+		});
+		$('ul').removeClass('am-active');
+		$('ul').removeClass('am-in');
+		$('#tab-4-{$tab}').addClass('am-active');
+		$('#tab-4-{$tab}').addClass('am-in');
+	}
+})
+</script>
+</html>

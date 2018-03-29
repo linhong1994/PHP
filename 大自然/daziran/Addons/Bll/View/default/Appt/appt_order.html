@@ -1,0 +1,283 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="applicable-device" content="mobile" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<title>预约订单  — 大自然会所</title>
+<link href="{:ADDON_PUBLIC_PATH}/css/public.css" rel="stylesheet" type="text/css" />
+<link href="{:ADDON_PUBLIC_PATH}/css/frozen.css" rel="stylesheet" type="text/css">
+<link href="{:ADDON_PUBLIC_PATH}/css/baoliao.css" rel="stylesheet" type="text/css">
+<link href="{:ADDON_PUBLIC_PATH}/css/index.css" rel="stylesheet" type="text/css" />
+	<script src="{:ADDON_PUBLIC_PATH}/js/jquery-3.1.1.min.js"></script>
+	<script src="{:ADDON_PUBLIC_PATH}/js/dropload.min.js"></script>
+<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/layer.js"></script>	
+
+
+</head>
+
+<body>
+<div class="mobile">
+
+  <!--header 开始-->
+  <header>
+    <div class="header"> <a class="new-a-back" href="{:U("shop_details",array("shopid"=>$project["shopid"]))}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/iconfont-fanhui.png"></span> </a>
+      <h2>预约订单</h2>
+      <a class="new-a-back2" style="right:0; top:0;" href="{:addons_url("Bll://User/index",array("rand"=>rand(1000,9999)))}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/home.png"></span> </a>
+
+    </div>
+  </header>
+  <!--header 结束-->
+  
+<style>
+.stars{ float:left; margin-left:10px;}
+.comment_list .pl_user_top { width:80%;}
+
+.group-info { position:relative;}
+.group-info img { width:100%; height:auto;}
+.group-info .cont{ position:absolute; z-index:9; bottom:0; left:0; padding:10px 15px; width:100%;box-sizing:border-box; background:-webkit-gradient(linear, 0 0, 0 100%, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.6))); color:#fff;}
+.group-info .cont h3 { font-size:16px; line-height:18px; margin-bottom:3px;}
+.group-info .cont p { overflow:hidden; text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical; font-size:12px; line-height:14px;}
+
+.con { color:#333; font-size:12px; background-color:#fff; }
+.con .tit, .detail-info .hd { height:40px; line-height:42px; padding-left:15px; font-size:14px; font-weight:bold; background-color:#EFEFEF;}
+.con .detail-box > div { margin-top:12px; margin:0 15px;}
+.detail-table th { text-align:left; color:#999; font-weight:normal;}
+.detail-table th, .detail-table td { padding:10px 0;font-size:12px; }
+.detail-table tr { background:url(images/xt.png) repeat-x 0 bottom; background-size:auto 10px;}
+.con p { line-height:20px; font-size:14px; padding:7px 0;}
+.detail-table tr.total .tc { color:#999; text-decoration:line-through;}
+.detail-table tr.total .tc strong { margin-top:0.5rem; color:#06c1ae; display:inline-block;}
+.gmlb .sp-choice div a { padding:7px 10px; border:1px solid #DCDCDC;border-radius:5px; font-size:12px; margin-right:6px; margin-bottom:7px; display:inline-block;color: #000000; font-family: sans-serif; box-sizing: border-box; min-width: 50px; text-align: center;}
+.gmlb .sp-choice div a.current { border:1px solid #C40000;}
+</style>
+
+
+<style>
+.pl_user_comment span { width:30px; height:12px; line-height:12px; background-color:#03B38F; border-radius:20px; color:#fff; font-size:8px; padding:0 5px}
+
+.comment_list:after {     content:".";        
+     display:block;        
+     height:0;        
+     clear:both;        
+     visibility:hidden; }
+</style>
+ <!--购买详细列表-->
+ <form class="gmlb" action="{:U("appt_order")}" method="post" >
+    <div class="tpsm">
+        <div class="pic"><img id="pimg" src="{$project.pimg}" width="91" height="90"></div>
+        <div class="priec-text">
+            <span id="pname">{$project.pname}</span>
+            <span class="red" data-pamount="{$project.pamount}">￥{$project.pamount}</span>
+            
+        </div>
+    </div>
+    <div class="clearfoot"></div>
+    <div class="sp-choice">
+        <h2>技师</h2>
+        <div id="tlist">
+        <php>
+        	foreach($project["idcd"] as $key=>$value){
+        		if(strpos($key,"x")){
+        			$key=substr($key,0,-1);
+        			echo "<a class='byy' data-tid='$key' style='background-color: #DBDBDB;'>$value</a>";
+        		}else{
+	        		echo "<a class='js' data-tid='$key'>$value</a>";
+	        	}
+        	}
+        </php>
+        </div>
+
+        <input id="tid" name="tid" type="hidden" value="">
+        <input id="shopid" name="shopid" type="hidden" value="{$project.shopid}">
+        <input id="pid" name="pid" type="hidden" value="{$project.pid}">
+        <input id="pamount" name="pamount" type="hidden" value="{$project.pamount}">
+    </div>
+			  <div class="bl_comment " >
+			  	<h1>选择技师查看评价</h1>
+			    <div class="comment_list">
+
+			    </div>
+			  </div>
+    <div class="d-amount" style="margin-top: 10px;">
+        <h4>人数：</h4>
+        <div class="d-stock">
+          <a class="decrease">-</a>
+            <input id="num" readonly class="text_box" name="num" type="text" value="1">
+           <a class="increase">+</a>
+        </div>
+    </div>
+    <a class="red-button" style="margin-bottom:50px;background: #C7A770;">确定</a>
+ </form> 
+</div>
+
+<script>
+var jspj;
+$(function(){
+  $('.decrease').click(function(){
+  	if($("#num").val()>1){
+  			$("#pamount").val((parseFloat($("#pamount").val())-parseFloat($(".red").data("pamount"))).toFixed(2));
+  		$(".red").text("￥"+$("#pamount").val());
+  		$("#num").val($("#num").val()-1);
+  	}
+  });
+  $(".increase").click(function(){
+		$("#pamount").val((parseFloat($("#pamount").val())+parseFloat($(".red").data("pamount"))).toFixed(2));
+		$(".red").text("￥"+$("#pamount").val());
+  	$("#num").val(parseInt($("#num").val())+1);
+  });
+  $('.red-button').click(function(){
+  	var tlist = new Array(),len=0;
+  	$(".js").each(function(){
+  		if($(this).hasClass("current"))
+  			len = tlist.push($(this).data("tid"));
+  	});
+  	if(len > 0){
+  		if(len == $("#num").val()){
+	  		$("#tid").val(tlist.join());
+	  		$(".gmlb").submit();
+  		}else{
+			  layer.open({
+			    content: '选择技师数与预约人数不符！'
+			    ,skin: 'msg'
+			    ,time: 2 //2秒后自动关闭
+			  });
+  		}
+  	}else{
+		  layer.open({
+		    content: '请选择技师！'
+		    ,skin: 'msg'
+		    ,time: 2 //2秒后自动关闭
+		  });
+  	}
+  });	
+	$('.byy').click(function(){
+			$("h1").css({"color":"#FF6600"});
+		$("h1").text($(this).text()+"号技师已被预约！");
+  	$('.comment_list').html('<div class="pl_user_comment"><a href="/index.php/addon/Bll/Appt/tech_evaluate/pid/{$project.pid}/tcd/'+$(this).text()+'/tid/'+$(this).data("tid")+'.html">查看技师详情</a></div>');
+	});
+  $('.js').click(function(){
+		$("h1").css({"color":""});
+  	if($(this).hasClass('current')){
+  		$(this).removeClass('current');
+  		$("h1").text("");
+		  $('.comment_list').html('');
+  		$("#tlist").children("a").each(function(){
+  			if($(this).hasClass("current")){
+			  	$.ajax({
+			  		async: false,
+						type: 'GET',
+						url: '{:addons_url("Bll://Api/getTechEvaluate")}',
+						data: {
+							tid:$(this).data("tid"),
+							page:1,
+							size:1
+						},
+						dataType: 'json',
+						success: function(data){
+							jspj=data;
+						},
+						error: function(xhr, type){
+						  alert('Ajax error!');
+						}
+					});
+					var result="";
+				  if( (jspj!=null) && (jspj.length>0) ){
+				  	var remark = jspj[0].evalremark;
+				  	if (remark.length >100)
+					  	remark = remark.substr(0,100)+"......";
+				  	$("h1").text($(this).text()+"号技师最新评价:");
+				  	result+= ''
+							+'<div class="pl_user_img">'
+								+'<img src="'+jspj[0].headimg+'">'
+							+'</div>'
+							+'<div class="pl_user_top">'
+								+'<div class="pl_user_name">'+jspj[0].username+'</div>'
+								+'<span class="stars">';
+						for(var j=0;j<5;j++){
+			      	if(j<jspj[0].evalgrade)
+			      		result += ''
+			        		+'<i class="text-icon icon-star"></i>';
+			      	else
+			      		result += ''
+			        		+'<i class="text-icon icon-star-gray"></i>';
+			      }
+						result += ''
+									+'<em class="star-text">'+jspj[0].evalgrade+'</em>'
+								+'</span>'
+								+'<div class="pl_user_time">'+jspj[0].evaltime+'</div>'
+							+'</div>'
+							+'<div class="pl_user_comment">'+remark+'</div>'
+							+'<div class="pl_user_comment"><a href="/index.php/addon/Bll/Appt/tech_evaluate/pid/{$project.pid}/tcd/'+$(this).text()+'/tid/'+$(this).data("tid")+'.html">查看更多评价</a></div>';
+							$('.comment_list').html(result);
+				  }else{
+				  	$("h1").text($(this).text()+"号技师暂无评价！");
+				  	result='<div class="pl_user_comment"><a href="/index.php/addon/Bll/Appt/tech_evaluate/pid/{$project.pid}/tcd/'+$(this).text()+'/tid/'+$(this).data("tid")+'.html">查看技师详情</a></div>';
+				  	$('.comment_list').html(result);
+				  }
+				  return false;
+  			}
+  		});
+  	}else{
+  		$(this).addClass('current');
+	  	$.ajax({
+	  		async: false,
+				type: 'GET',
+				url: '{:addons_url("Bll://Api/getTechEvaluate")}',
+				data: {
+					tid:$(this).data("tid"),
+					page:1,
+					size:1
+				},
+				dataType: 'json',
+				success: function(data){
+					jspj=data;
+				},
+				error: function(xhr, type){
+				  alert('Ajax error!');
+				}
+			});
+			var result="";
+		  if( (jspj!=null) && (jspj.length>0) ){
+		  	var remark = jspj[0].evalremark;
+		  	if (remark.length >100)
+			  	remark = remark.substr(0,100)+"......";
+		  	$("h1").text($(this).text()+"号技师最新评价:");
+		  	result+= ''
+					+'<div class="pl_user_img">'
+						+'<img src="'+jspj[0].headimg+'">'
+					+'</div>'
+					+'<div class="pl_user_top">'
+						+'<div class="pl_user_name">'+jspj[0].username+'</div>'
+						+'<span class="stars">';
+				for(var j=0;j<5;j++){
+	      	if(j<jspj[0].evalgrade)
+	      		result += ''
+	        		+'<i class="text-icon icon-star"></i>';
+	      	else
+	      		result += ''
+	        		+'<i class="text-icon icon-star-gray"></i>';
+	      }
+				result += ''
+							+'<em class="star-text">'+jspj[0].evalgrade+'</em>'
+						+'</span>'
+						+'<div class="pl_user_time">'+jspj[0].evaltime+'</div>'
+					+'</div>'
+					+'<div class="pl_user_comment">'+remark+'</div>'
+					+'<div class="pl_user_comment"><a href="/index.php/addon/Bll/Appt/tech_evaluate/pid/{$project.pid}/tcd/'+$(this).text()+'/tid/'+$(this).data("tid")+'.html">查看更多评价</a></div>';
+					$('.comment_list').html(result);
+		  }else{
+		  	$("h1").text($(this).text()+"号技师暂无评价！");
+				  	result='<div class="pl_user_comment"><a href="/index.php/addon/Bll/Appt/tech_evaluate/pid/{$project.pid}/tcd/'+$(this).text()+'/tid/'+$(this).data("tid")+'.html">查看技师详情</a></div>';
+				  	$('.comment_list').html(result);
+		  }
+  	}
+
+  });
+  
+});
+
+</script>
+<include file="./Addons/Bll/View/default/Public/guanzhu.html" />
+
+</body>
+</html>

@@ -1,0 +1,113 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="author" content="m.178hui.com" />
+<meta name="applicable-device" content="mobile" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<title>门店详情 — 大自然会所·触摸版</title>
+<link href="css/public.css" rel="stylesheet" type="text/css" />
+<link href="css/owl.carousel.css" rel="stylesheet">
+<link href="frozenui/css/frozen.css" rel="stylesheet" type="text/css">
+<link href="css/baoliao.css" rel="stylesheet" type="text/css">
+<link href="css/index.css" rel="stylesheet" type="text/css" />
+
+<script src="js/jquery-1.8.3.min.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script>
+$(window).load(function() {
+	$("#status").fadeOut();
+	$("#preloader").delay(350).fadeOut("slow");
+})
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".shaixuan").click(function(event){
+		event.stopPropagation(); 
+		$(".shaixuan_box").show();
+		$(".shaixuan_box").animate({right:'100%'});
+		$("html,body").css("overflow","hidden");
+	});
+	$(document).click(function(event){
+		$(".shaixuan_box").animate({right:'-100%'});
+		$(".shaixuan_box").hide(5);
+		$("html,body").css("overflow","");
+	});    
+});
+</script>
+</head>
+
+<body>
+<div class="mobile">
+	<!--页面加载 开始-->
+  <div id="preloader">
+    <div id="status">
+      <p class="center-text"><span>拼命加载中···</span></p>
+    </div>
+  </div>
+  <!--页面加载 结束--> 
+  <!--header 开始-->
+  <header>
+    <div class="header"> <a class="new-a-back" href="javascript:history.go(-1)"> <span><img src="images/iconfont-fanhui.png"></span> </a>
+      <h2>店面详情</h2>
+      <div class="head_right" style="top:13px;"><a href="baoliao.html" style="color:#FFFFFF; font-size:14px;">返回列表</a></div>
+    </div>
+  </header>
+  <!--header 结束-->
+  <div class="view w">
+  
+    <div class="m_banner" id="owl">
+        <a href="#" class="item"><img src="images/ad02.jpg"></a>
+        <a href="#" class="item"><img src="images/ad02.jpg"></a>
+     </div>
+  
+    <div class="bl_view_title"><span class="bl_type" style="background-color:#53bf1e;">活动</span>大自然会所（泉秀店）</div>
+    <div class="bl_view_note">手机端：立减10元</div>
+    <div class="bl_view_tag">
+    	<div class="bl_view_user">喜欢：2人喜欢</div>
+        <div class="bl_view_time">位置：<5km</div>
+    </div>
+  </div>
+  
+  <div class="bl_view_content w">
+  	<h1>经纪人选择</h1>
+    <style>
+    .jjr-item { padding:10px; border-bottom:1px solid #F0F0F0; position:relative;}
+	.jjr-item .pic {  width:66px; height:66px; margin-top:7px; display:table-cell;}
+	.jjr-item .pic img { border-radius:3px; width:100%; height:100%;}
+	.jjr-item .content { padding-top:6px;display:table-cell; vertical-align:top;padding-left:10px; font-size:12px;}
+	.jjr-item .content .name { font-size:16px; padding-bottom:2px;}
+	.jjr-item .content .name h3 { color:#323232; margin-bottom:2px; font-size:14px; font-weight:400;}
+	.jjr-item .stars i { margin-right:0;}
+	.jjr-item .intro { color:#999;}
+	.jjr-item .buy-small { position:absolute; right:0; top:30px; width:80px;}
+	.jjr-item .go_buy a { border-radius:10px; font-size:14px;}
+	.jjr-item .item-star b { color:#333; font-weight:normal;}
+    </style>
+    <div class="jjr-item">
+         <a href="product-2-view.html">
+             <div class="pic"><img src="images/111.png"></div>
+             <div class="content">
+                 <div class="name">
+                    <h3>经纪人1号</h3>
+                 </div>
+                 <div class="item-star">
+                     <span class="stars">
+                         <i class="text-icon icon-star"></i>
+                         <i class="text-icon icon-star"></i>
+                         <i class="text-icon icon-star"></i>
+                         <i class="text-icon icon-star-gray"><i class="text-icon icon-star-half"></i></i>
+                         <i class="text-icon icon-star-gray"></i>
+                      </span>
+                      <b>价格:￥579</b>
+                 </div>
+                 <div class="intro">
+                        <span>浦西万达广场</span>
+                 </div>
+             </div>
+         </a>
+         <div class="go_buy buy-small"><a href="#">点击预约</a></div>
+    </div>
+
+</div>
+</body>
+</html>

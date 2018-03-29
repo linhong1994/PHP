@@ -1,0 +1,65 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="applicable-device" content="mobile" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<title>预约失败— 大自然会所</title>
+<link href="{:ADDON_PUBLIC_PATH}/css/public.css" rel="stylesheet" type="text/css" />
+<link href="{:ADDON_PUBLIC_PATH}/css/frozen.css" rel="stylesheet" type="text/css">
+<link href="{:ADDON_PUBLIC_PATH}/css/baoliao.css" rel="stylesheet" type="text/css">
+
+<script src="{:ADDON_PUBLIC_PATH}/js/jquery-1.8.3.min.js"></script>
+
+</head>
+
+<body style="background:#F5F5F5">
+<div class="mobile success-bg">
+
+  <!--header 开始-->
+  <header>
+    <div class="header"> <a class="new-a-back" href="{:U("appt_order",array("pid"=>$project["pid"]))}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/iconfont-fanhui.png"></span> </a>
+      <h2>预约失败</h2>
+      <div class="head_right" style="top:13px;"><a href="{:U("index")}" style="color:#FFFFFF; font-size:14px;">重新预约</a></div>
+    </div>
+  </header>
+  <!--header 结束-->
+  <style>
+  .result { text-align:center;}
+  .success-bg { background-color:#F5F5F5}
+  .success,.faile { background:url({:ADDON_PUBLIC_PATH}/images/success.jpg) 0 0 no-repeat; width:137px; height:97px; margin:0 auto; margin-top:35px;}
+  .faile { background:url({:ADDON_PUBLIC_PATH}/images/faile.jpg) 0 0 no-repeat;}
+  .result-font { font-size:16px; font-weight:bold; color:#595C63; margin-top:10px;}
+  .result-notice { font-size:14px; color:#969696; background: url({:ADDON_PUBLIC_PATH}/images/notice.png) left center no-repeat; background-size:17px auto; margin:0 auto; text-indent:19px; text-align:left; display:inline-block}
+  
+  .else-xm { background:#fff; margin-top:15px;}
+  .else-xm-after {     content:".";        
+     display:block;        
+     height:0;        
+     clear:both;        
+     visibility:hidden; }
+  .else-xm-1:after {     content:".";        
+     display:block;        
+     height:0;        
+     clear:both;        
+     visibility:hidden; }
+  .else-xm-1 { border-bottom:1px solid #EFEFEF; padding:20px;}
+  .else-xm-img { width:80px; height:80px; float:left;}
+  .else-xm-font { float:left; margin-left:15px;}
+  .else-xm-font h3 { font-size:16px;}
+  .else-xm-font span { display:block; color:#919497; background:url({:ADDON_PUBLIC_PATH}/images/place.png) left center no-repeat; background-size:15px auto; padding-left:15px; margin-top:4px;}
+  .else-xm-font b { color:#E82B23; font-size:16px;margin-top:4px; display:block;}
+  </style>
+  <div class="view success-bg">
+     <div class="result">
+         <div class="success faile"></div>
+         <div class="result-font">预约失败</div>
+         <div class="result-notice">请重试，如多次出现请联系客服！</div>
+     </div>
+
+
+  </div>
+
+</div>
+<include file="./Addons/Bll/View/default/Public/guanzhu.html" />
+</body>
+</html>

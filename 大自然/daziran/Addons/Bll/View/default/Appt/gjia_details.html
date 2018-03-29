@@ -1,0 +1,88 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="author" content="m.178hui.com" />
+<meta name="applicable-device" content="mobile" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<title>门店详情 — 大自然会所·触摸版</title>
+<link href="{:ADDON_PUBLIC_PATH}/css/public.css" rel="stylesheet" type="text/css" />
+<link href="{:ADDON_PUBLIC_PATH}/css/owl.carousel.css" rel="stylesheet">
+<link href="{:ADDON_PUBLIC_PATH}/css/frozen.css" rel="stylesheet" type="text/css">
+<link href="{:ADDON_PUBLIC_PATH}/css/baoliao.css" rel="stylesheet" type="text/css">
+<link href="{:ADDON_PUBLIC_PATH}/css/index.css" rel="stylesheet" type="text/css" />
+
+<script src="{:ADDON_PUBLIC_PATH}/js/jquery-1.8.3.min.js"></script>
+<script src="{:ADDON_PUBLIC_PATH}/js/owl.carousel.min.js"></script>
+
+
+</head>
+
+<body>
+<div class="mobile">
+
+  <!--header 开始-->
+  <header>
+    <div class="header"> <a class="new-a-back" href="{:U("shop_details2",array("shopid"=>$shopid))}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/iconfont-fanhui.png"></span> </a>
+      <h2>管家详情</h2>
+    </div>
+  </header>
+  <!--header 结束-->
+  <div class="view w">
+    
+    <style>
+    .technician-box { margin-box:10px; position:relative; background-color:#fff;}
+	.technician-box .technician-info { position:relative; height:104px; overflow:hidden;}
+	.technician-box .technician-info .background-image { position:relative; padding-bottom:100%;}
+	.technician-box .technician-info .background-image img {webkit-filter:blur(5px);position:absolute; left:0; top:-50%; margin-top:70px;}
+	.technician-box img { display:block; width:100%;}
+	.technician-box.hairdresser .technician-info .background-mask {background:rgba(0,0,0,.6)/*灰色透明遮罩层*/; position:absolute; left:0; top:0; width:100%; height:100%;}
+	.technician-box .technician-info .avatar { position:absolute; left:15px; top:15px; width:70px; height:70px; border-radius:50%; border:2px solid #fff; overflow:hidden;}
+	.technician-box .technician-info .technician-wrapper { position:absolute; left:102px; top:15px; right:0; bottom:15px;}
+	.technician-box .technician-info .technician-wrapper .technician-name { height:20px; line-height:20px; font-size:17px; color:#fff;}
+	.technician-box .technician-info .technician-wrapper .technician-name span { display:inline-block; max-width:73%; vertical-align:top; white-space:nowrap; word-wrap:normal; text-overflow:ellipsis; overflow:hidden;}
+	.technician-box .technician-info .technician-wrapper .score { height:18px; line-height:18px; font-size:12px; color:#fff; overflow:hidden;}
+	.technician-box .technician-info .technician-wrapper .score li { position:relative; float:left; margin-right:16px;}
+    </style>
+    <!--经纪人基本信息-->
+    <div class="technician-box  hairdresser ">
+        <div class="technician-info">
+            <div class="background-image"><img src="{$gjia.pimg}" alt=""></div>
+            <span class="background-mask"></span>
+            <img class="avatar" src="{$gjia.pimg}" alt="">
+            <div class="technician-wrapper">
+                <p class="technician-name"><span>{$gjia.username}</span></p>
+                <span class="stars">
+                 	<php>
+                 		for($i=0;$i<5;++$i){
+                 			if($i<=$gjia['grade']){
+                 				echo '<i class="text-icon icon-star"></i>';
+                 			}else{
+                 				echo '<i class="text-icon icon-star-gray"></i>';
+                 			}
+                 		}
+                  </php>
+                </span>
+                <ul class="score">
+                    <a href="tel:{$gjia.mobile}">服务热线:{$gjia.mobile}</a>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+    .work-box { display:block;background-color:#fff; position:relative; color:#333}
+	.work-box dt { display:block; height:44px; line-height:44px; padding-left:15px; position:relative; border-bottom:1px solid #c40000;}
+	.work-box dt a {color:#333}
+    </style>
+    <div class="work-box J_work">
+       <dt><a>简介</a></dt>
+       <div style="padding:7px;">
+           {$gjia.remark}
+       </div>
+    </div>
+    
+  </div>  
+
+</div>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>{:session('sys.webtitle')}</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+		<link href="/assets/css/amazeui.min.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/dropload.css" rel="stylesheet" type="text/css" />
+		<script src="/assets/js/jquery-3.2.1.min.js"></script>
+		<script src="/assets/js/layer_mobile/layer.js"></script>
+		<script src="/assets/js/dropload.min.js"></script>
+	</head>
+	<body style="background: #efefef;">
+		<header data-am-widget="header" class="am-header am-header-default sq-head ">
+			<div class="am-header-left am-header-nav">
+				<a href="{:outo()}" class="">
+					<i class="am-icon-chevron-left"></i>
+				</a>
+			</div>
+			<h1 class="am-header-title">
+  	            <a href="" class="">优惠卷</a>
+            </h1>
+      <div class="am-header-right am-header-nav">
+				<a href="/index.html" class="">
+					<i class="am-icon-home am-icon-sm"></i>
+				</a>
+			</div>
+	    </header>
+	    <div style="height: 49px;"></div>
+	    <div class="whitebar">
+	    <div data-am-widget="tabs" class="am-tabs am-tabs-d2">
+			<ul class="am-tabs-nav am-cf" style="position: fixed; top: 49px;">
+			    <li class="{php}if($type===0)echo "am-active";{/php}"><a href="/yhq/type/0">可使用</a></li>
+			    <li class="{php}if($type===1)echo "am-active";{/php}"><a href="/yhq/type/1">已使用</a></li>
+			    <li class="{php}if($type===2)echo "am-active";{/php}"><a href="/yhq/type/2">已过期</a></li>
+			</ul>
+			<div style="height: 49px;"></div>
+		</div>
+		</div>
+		<div id="list">
+		<ul class="yhq">
+
+
+		</ul>
+		</div> 
+
+<script>
+// 页数
+var page = 0;
+// 每页展示10个
+var size = 10;
+var dropload;
+if({$type}==2){
+	var cs='yhq-gq';
+	var gq='<div class="gy-pic"><img src="/assets/images/guoqi.png"/></div>';
+	
+}else{
+	var cs='yhq-pic';
+	var gq='';
+}
+$(function(){
+
+  // dropload
+  dropload=$('#list').dropload({
+    scrollArea : window,
+    // 下拉刷新模块显示内容
+    domUp : {
+      domClass   : 'dropload-up',
+      // 下拉过程显示内容
+      domRefresh : '<div class="dropload-refresh">↓下拉刷新</div>',
+      // 下拉到一定程度显示提示内容
+      domUpdate  : '<div class="dropload-update">↑释放更新</div>',
+      // 释放后显示内容
+      domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>'
+    },
+		domDown : {
+		  domClass   : 'dropload-down',
+		  // 滑动到底部显示内容
+		  domRefresh : '<div class="dropload-refresh">↑上拉加载更多</div>',
+		  // 内容加载过程中显示内容
+		  domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
+		  // 没有更多内容-显示提示
+		  domNoData  : '<div class="dropload-noData">无更多数据！</div>'
+		},
+    // 1 . 下拉刷新 回调函数
+    loadUpFn : function(me){
+			page = 1;
+      // 拼接HTML
+      var result = '';
+      $.ajax({
+        type: 'POST',
+		    async: false,
+        url: '/yhq.html',
+        data: {
+        	type:{$type},
+        	page:page,
+        	size:size
+        },
+        dataType: 'json',
+        success: function(data){
+          for(var i=0; i<data.length; i++){
+          	result += ''
+					   	+'<li class="'+cs+'">'
+					   		+'<div class="price">'
+					   			+'<span>￥'+data[i].yamount+'</span>'
+					   			+'<p>满￥'+data[i].ymintotal+'可用</p>'
+					   		+'</div>'
+					   		+'<div class="text">'
+					   			+'<p class="info">'+data[i].yname+'</p>'
+					   			+'<p class="user">全店通用</p>';
+					  if({$type}==0)
+					  	result += ''
+					   			+'<p class="time">起始时间:'+data[i].ybegindate.substr(0,10)+'</p>'
+					   			+'<p class="time">截止时间:'+data[i].yenddate.substr(0,10)+'</p>';
+					  if({$type}==1)
+					  	result += ''
+					   			+'<p class="time">使用时间:'+data[i].usetime.substr(0,10)+'</p>';
+					  if({$type}==2)
+					  	result += ''
+					   			+'<p class="time">截止时间:'+data[i].yenddate.substr(0,10)+'</p>';
+					  result += ''
+					   		+'</div>'
+					   		+gq
+					   	+'</li>';
+          }
+
+          // 为了测试，延迟1秒加载
+          setTimeout(function(){
+            // 插入数据到页面，放到最后面
+            $('.yhq').html(result);
+            // 每次数据插入，必须重置
+            me.resetload();
+            // 重置页数，重新获取loadDownFn的数据
+            page = 1;
+            // 解锁loadDownFn里锁定的情况
+            me.unlock();
+            me.noData(false);
+          },1);
+        },
+        error: function(xhr, type){
+          alert('数据获取失败!');
+          // 锁定
+          me.lock();
+          // 无数据
+          me.noData();
+          // 即使加载出错，也得重置
+          me.resetload();
+        }
+      });
+    },
+    // 2 . 上拉加载更多 回调函数
+    loadDownFn : function(me){
+      page++;
+      // 拼接HTML
+      var result = '';
+      $.ajax({
+        type: 'POST',
+		    async: false,
+        url: '/yhq.html',
+        data: {
+        	type:{$type},
+        	page:page,
+        	size:size
+        },
+        dataType: 'json',
+        success: function(data){
+          if( (data!=null) && (data.length>0) ){
+            for(var i=0; i<data.length; i++){
+	          	result += ''
+						   	+'<li class="'+cs+'">'
+						   		+'<div class="price">'
+						   			+'<span>￥'+data[i].yamount+'</span>'
+						   			+'<p>满￥'+data[i].ymintotal+'可用</p>'
+						   		+'</div>'
+						   		+'<div class="text">'
+						   			+'<p class="info">'+data[i].yname+'</p>'
+						   			+'<p class="user">全店通用</p>';
+						  if({$type}==0)
+						  	result += ''
+						   			+'<p class="time">起始时间:'+data[i].ybegindate.substr(0,10)+'</p>'
+						   			+'<p class="time">截止时间:'+data[i].yenddate.substr(0,10)+'</p>';
+						  if({$type}==1)
+						  	result += ''
+						   			+'<p class="time">使用时间:'+data[i].usetime.substr(0,10)+'</p>';
+						  if({$type}==2)
+						  	result += ''
+						   			+'<p class="time">截止时间:'+data[i].yenddate.substr(0,10)+'</p>';
+						  result += ''
+						   		+'</div>'
+						   		+gq
+						   	+'</li>';
+            }
+          // 如果没有数据
+          }else{
+            // 锁定
+            me.lock();
+            // 无数据
+            me.noData();
+          }
+          // 为了测试，延迟1秒加载
+          setTimeout(function(){
+            // 插入数据到页面，放到最后面
+            $('.yhq').append(result);
+            // 每次数据插入，必须重置
+            me.resetload();
+          },1);
+        },
+        error: function(xhr, type){
+          alert('数据获取失败!');
+          // 锁定
+          me.lock();
+          // 无数据
+          me.noData();
+          // 即使加载出错，也得重置
+          me.resetload();
+        }
+      });
+    },
+    threshold : 50
+  });
+  
+
+
+
+});
+</script>
+	</body>
+</html>

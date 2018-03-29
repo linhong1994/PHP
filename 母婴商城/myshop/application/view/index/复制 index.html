@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>{:session('sys.webtitle')}</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+        <link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+		<link href="/assets/css/amazeui.min.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/style.css" rel="stylesheet" type="text/css">
+        
+		<link href="/assets/js/skin/layer.css" rel="stylesheet" type="text/css">
+        
+		<script src="/assets/js/jquery-1.10.2.min.js"></script>
+		<script src="/assets/js/time.js"></script>
+		<script src="/assets/js/popup.mini.js"></script>
+         
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/amazeui.min.js"></script><!--一定要放在include/kanjia.js后面，前面的文件先加载内容，后面的轮播控件再添加样式，从上往下-->
+        
+        <script src="/assets/js/layer.js"></script>
+	</head>
+
+	<body>
+    
+<!--    <script>
+    layer.open({
+  title: '新消息'
+  ,btn: ['立即使用'] //可以无限个按钮
+  ,content: '您有1元抽奖币未使用'
+});  
+    </script>-->
+    
+		<header data-am-widget="header" class="am-header am-header-default sq-head1">
+			<div class="am-header-left am-header-nav">
+		        <a class="category-trigger" href="category">×</a>
+		   </div>
+			<h1 class="am-header-title1">
+		        <div id="test2" class="top-sch-box flex-col">
+                    <div class="centerflex">
+                        <i class="fdj iconfont icon-search sstb"></i>
+                        <div class="sch-txt">澳洲奶粉</div>
+                        <span class="shaomiao"><i class="iconfont icon-saoma"></i></span>
+                    </div>
+                </div>
+		    </h1>
+			<div class="am-header-right am-header-nav">
+			    <a href="{:url('tidings')}" class="">
+		         <div class="messgae"><span>10</span></div>
+		        </a>
+			</div>
+        </header>
+        
+ <script>
+$('#test2').on('click', function(){
+  layer.open({
+  type: 2,
+  area: ['100%', '100%'],
+  shadeClose: true, //点击遮罩关闭
+  content: 'search.html'
+  });
+});
+</script>
+        
+<div style="height: 49px;"></div>
+<!--图片轮换-->
+<div class="am-slider am-slider-default" data-am-flexslider id="demo-slider-0">
+  <ul class="am-slides">
+  	{volist name='hdp' id='vo'}
+    <li><img src="{$vo.menuimg}" /></li>
+    {/volist}
+  </ul>
+</div>
+<!--导航-->
+ <ul class="sq-nav">
+      <li>
+        <div class="am-gallery-item">
+            <a href="{:url('category')}" class="">
+              <img src="/assets/images/4icon.png" />
+              <p>宝宝奶粉</p>
+            </a>
+        </div>
+      </li>
+      <li>
+        <div class="am-gallery-item">
+            <a href="{:url('category')}" class="index-qd">
+              <img src="/assets/images/icon3-.png" />
+              <p>宝宝零食</p>
+            </a>
+        </div>
+      </li>
+      <li>
+        <div class="am-gallery-item">
+            <a href="{:url('category')}" class="">
+              <img src="/assets/images/6icon.png" />
+              <p>宝宝洗护</p>
+            </a>
+        </div>
+      </li>
+      <li>
+        <div class="am-gallery-item">
+            <a href="{:url('category')}" class="">
+              <img src="/assets/images/5icon.png" />
+              <p>宝宝衣服</p>
+            </a>
+        </div>
+      </li>
+  </ul>
+  <ul class="sq-nav">
+  	<li>
+        <div class="am-gallery-item">
+            <a href="{:url('category')}" class="">
+              <img src="/assets/images/icon4.png" />
+              <p>宝宝玩具</p>
+            </a>
+        </div>
+      </li>
+      <li>
+        <div class="am-gallery-item">
+            <a href="{:url('category')}" class="">
+              <img src="/assets/images/icon5.png" />
+              <p>免税海滩</p>
+            </a>
+        </div>
+      </li>
+      <li>
+        <div class="am-gallery-item">
+      <a href="{:url('recharge')}" class="">
+              <img src="/assets/images/3icon1.png" />
+              <p>充值</p>
+            </a>
+        </div>
+      </li>
+      <li>
+        <div class="am-gallery-item">
+      <a href="{:url('yhq')}" class="">
+              <img src="/assets/images/3icon2.png" />
+              <p>优惠卷</p>
+            </a>
+        </div>
+      </li>
+      
+  </ul>
+  <div class="h-line"></div>
+  <!--不规则展示-->
+  <div class="product-bot">
+  	<div class="product-bot-lf"><a href="/integral"><img src="/assets/images/s3.png"/></a></div>
+  	<div class="product-bot-lr">
+  		<div class="top"><a href="/recommend'"><img src="/assets/images/s4.png"/></a></div>
+  		<div class="bot">
+  			<div class="bot-lf"><a href="/integralexchange"><img src="/assets/images/s5.png"/></a></div>
+  			<div class="bot-lr"><a href="/integralexchange2"><img src="/assets/images/s6.png"/></a></div>
+  		</div>
+  	</div>
+  </div>
+  <!--不规则展示-->
+  <div class="h-line"></div>
+  
+  <style>
+  .big-pic img{ width:100%; height:auto;}
+  </style>
+  <div class="big-pic"><img src="/assets/images/ycf.png"></div>
+  <div class="h-line"></div>
+  
+  <!-- 一元云购-->
+  <div class="sq-title">
+ 	<img src="/assets/images/ts.png" width="26"/>
+ 	促销优惠区
+ 	<span style="font-size:12px; float:right;"><a style="color:#CB2527" href="/goodslist/sy/1.html">更多>></a></span>
+  </div>
+  <ul data-am-widget="gallery" class="am-gallery pro-list am-avg-sm-2 am-avg-md-2 am-avg-lg-4 am-gallery-default"  >
+			{volist name='l1' id='vo'}
+      <li>
+        <div class="am-gallery-item">
+            <a href="/detail/pid/{$vo.productid}.html" class="">
+              <div class="list-bg-pic" style=" background-image:url({$vo.menuimg})"></div>
+                <h3 class="am-gallery-title">{$vo.spmc}</h3>
+                <div class="am-gallery-desc">￥{$vo.price}</div>
+            </a>
+        </div>
+      </li>
+      {/volist}
+
+
+  </ul>
+  
+  <!--不规则展示-->
+  <div class="h-line"></div>
+  <!-- 商城精选-->
+  <div class="sq-title">
+ 	<img src="/assets/images/qd.png" width="26"/>
+ 	商城精选
+ 	<span style="font-size:12px; float:right;"><a style="color:#CB2527" href="/goodslist/sy/1.html">更多>></a></span>
+  </div>
+  <ul data-am-widget="gallery" class="am-gallery pro-list am-avg-sm-2 am-avg-md-2 am-avg-lg-4 am-gallery-default"  >
+			{volist name='l2' id='vo'}
+      <li>
+        <div class="am-gallery-item">
+            <a href="/detail/pid/{$vo.productid}.html" class="">
+              <div class="list-bg-pic" style=" background-image:url({$vo.menuimg})"></div>
+                <h3 class="am-gallery-title">{$vo.spmc}</h3>
+                <div class="am-gallery-desc">￥{$vo.price}</div>
+            </a>
+        </div>
+      </li>
+      {/volist}
+  </ul>
+  
+  <!--不规则展示-->
+  <div class="h-line"></div>
+  <!-- 品牌特卖-->
+  <div class="sq-title">
+ 	<img src="/assets/images/ph.png" width="26"/>
+ 	品牌特卖
+ 	<span style="font-size:12px; float:right;"><a style="color:#CB2527" href="/goodslist/sy/1.html">更多>></a></span>
+  </div>
+  <ul data-am-widget="gallery" class="am-gallery pro-list am-avg-sm-2 am-avg-md-2 am-avg-lg-4 am-gallery-default"  >
+			{volist name='l3' id='vo'}
+      <li>
+        <div class="am-gallery-item">
+            <a href="/detail/pid/{$vo.productid}.html" class="">
+              <div class="list-bg-pic" style=" background-image:url({$vo.menuimg})"></div>
+                <h3 class="am-gallery-title">{$vo.spmc}</h3>
+                <div class="am-gallery-desc">￥{$vo.price}</div>
+            </a>
+        </div>
+      </li>
+      {/volist}
+  </ul>
+<!--签到
+<div class="qd-box">
+	<div class="popup-title">
+			<span>签到成功</span>
+			<div class="popup-close"><i class="iconfont">&#xe602</i></div>
+	</div>
+	<div class="dq-text">
+		<img src="/assets/images/qiandao.png" width="40" />&nbsp; 您已连续签到3天
+	</div>
+</div>
+<!--签到-->
+
+ <!--底部-->
+ <div style="height: 55px;"></div>
+ <div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default sq-foot am-no-layout" id="">
+      <ul class="am-navbar-nav am-cf am-avg-sm-5">   
+          <li>
+            <a href="{:url('index')}" class="curr">
+                <span class="am-icon-home"></span>
+                <span class="am-navbar-label">首页</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('category')}" class="">
+                <span class="am-icon-comments"></span>
+                <span class="am-navbar-label">分类</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('shopcart')}" class="">
+                <span class="am-icon-shopping-cart"></span>
+                <span class="am-navbar-label">购物车</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('allorder')}" class="">
+                <span class="am-icon-file-text"></span>
+                <span class="am-navbar-label">订单</span>
+            </a>
+          </li>
+ 
+          <li>
+            <a href="{:url('member')}" class="">
+                <span class="am-icon-user"></span>
+                <span class="am-navbar-label">我的</span>
+            </a>
+          </li>
+      </ul>
+</div>
+ 
+ 
+ 
+ 
+
+
+	</body>
+</html>

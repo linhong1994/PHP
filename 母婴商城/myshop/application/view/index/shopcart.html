@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>{:session('sys.webtitle')}</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+		<link href="/assets/css/amazeui.min.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+		<script src="/assets/js/jquery-3.2.1.min.js"></script>
+		<script src="/assets/js/layer_mobile/layer.js"></script>
+	</head>
+	<body>
+		<header data-am-widget="header" class="am-header am-header-default sq-head ">
+			<div class="am-header-left am-header-nav">
+				<a href="{:outo()}" class="">
+					<i class="am-icon-chevron-left"></i>
+				</a>
+			</div>
+			<h1 class="am-header-title">
+  	    <a href="" class="">购物车</a>
+      </h1>
+	    {php}
+	    if(count($car)){
+	    	echo '
+      	<div class="bianji">编辑</div>';
+	    }
+	    {/php}
+	    </header>
+	    <div style="height: 49px;"></div>
+<div id='container'>
+	    {php}
+	    if(!count($car)){
+	    	echo '
+		    <!--购物车空的状态-->
+		    <div class="login-logo">
+		    	<img src="/assets/images/care.png">
+		    	<p>亲、您的购物车还是空空的哦，快去装满它!</p>
+		    	<a href="'.url('index').'" class="goshopping">前去逛逛</a>
+		    </div>';
+	    }
+	    {/php}
+	    <form class="shopcart-list" action="/shopcart.html" method="post">
+	    	{volist name='car' id='vo'}
+	    	<li>
+	    		<label class="am-checkbox am-warning">
+                 <input type="checkbox"   data-am-ucheck checked>
+                </label>
+                <a href="/detail/pid/{$vo.productid}.html"><img src="{$vo.menuimg}" class="shop-pic" /></a>
+                <div class="shop-list-mid">
+                	<div class="tit"><a href="detail">{$vo.spmc}</a></div>
+                	<b class="shop-list-price" data-dj="{$vo.price}">￥{$vo.price} </b>
+                </div>
+                <div class="list-cart1">
+	                <div class="d-stock">
+			                <a class="decrease">-</a>
+			                <input class='id' name='spid[]' type="hidden" value="{$vo.pspecid}" />
+			                <input class="text_box" name="num[]"   type="number" value="{$vo.num}" min="1">
+			                <a class="increase">+</a>
+	                </div>
+                </div>
+              
+	    	</li>
+	    	{/volist}
+
+<!--	    	<div style="height: 10px; background: #eee;"></div>-->
+	    </form>
+	    {php}
+	    if(count($car)){
+	    	echo '
+		    <div class="shop-fix">
+		    	
+		    	<label class="am-checkbox am-warning">
+	               <input type="checkbox"   data-am-ucheck checked>
+	            </label>
+	            <a class="del">全选</a>
+	            <a id="js" class="js-btn">去结算</a>
+	            <div class="js-text">
+	            	<P>合计：<b>￥</b></P>
+	            	<p class="js-car" style="display: none;">免费配送</p>
+	            </div>
+		    </div> 
+        <div class="shop-fix edit">
+	    	<label class="am-checkbox am-warning">
+               <input type="checkbox" checked="checked" value="" data-am-ucheck checked>
+            </label>
+            <a class="del">全选</a>
+            <a id="del" class="js-btn">删除</a>
+            </div>
+	    </div>';
+	    }
+	    {/php}
+</div>
+<div style="display: none;" id="kong">
+  <!--购物车空的状态-->
+  <div class="login-logo">
+  	<img src="/assets/images/care.png">
+  	<p>亲、您的购物车还是空空的哦，快去装满它!</p>
+  	<a href="/index.html" class="goshopping">前去逛逛</a>
+  </div>
+</div>
+
+<!--底部-->
+ <div style="height: 55px;"></div>
+ <div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default sq-foot am-no-layout" id="">
+      <ul class="am-navbar-nav am-cf am-avg-sm-5">   
+          <li>
+            <a href="{:url('index')}" class="">
+                <span class="am-icon-home"></span>
+                <span class="am-navbar-label">首页</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('category')}" class="">
+                <span class="am-icon-list"></span>
+                <span class="am-navbar-label">分类</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('shopcart')}" class="curr">
+                <span class="am-icon-shopping-cart"></span>
+                <span class="am-navbar-label">购物车</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('allorder')}" class="">
+                <span class="am-icon-file-text"></span>
+                <span class="am-navbar-label">订单</span>
+            </a>
+          </li>
+ 
+          <li>
+            <a href="{:url('member')}" class="">
+                <span class="am-icon-user"></span>
+                <span class="am-navbar-label">我的</span>
+            </a>
+          </li>
+      </ul>
+</div>
+ 
+ 
+ 
+<script>
+function renew(){
+	var zj=0;
+	$(".shopcart-list :checked").each(function(){
+		var li=$(this).closest('li');
+		zj+=parseFloat(li.find('.shop-list-price').data('dj'))*li.find('.text_box').val();
+	});
+	$('.js-text b').text('￥'+zj);
+	
+}
+function change(id,num){
+		  $.ajax({
+		    type: 'POST',
+		    async: true,
+		    url: '/shopcart.html',
+		    data: {
+		    	spid:id,
+		    	num:num
+		    },
+		    dataType: 'json',
+		  });	
+}
+function del(idlist){
+		  $.ajax({
+		    type: 'POST',
+		    async: true,
+		    url: '/shopcart.html',
+		    data: {
+		    	spid:idlist
+		    },
+		    dataType: 'json',
+		  });	
+}
+
+function kong(){
+	$('.bianji').remove();
+	$('.shopcart-list').remove();
+	$('.shop-fix').remove();
+	$('#container').html($('#kong').html());
+}
+	$(function(){
+		renew();
+		//复选
+		$(".shop-fix :checkbox").change(function(){
+			if($(this).is(':checked')){
+				$(".shopcart-list :checkbox").prop("checked", true);
+			}else{
+				$(".shopcart-list :checkbox").prop('checked', false);
+			}
+			renew();
+		});
+		
+		$(".shopcart-list :checkbox").change(function(){
+			$(".shop-fix :checkbox").prop("checked", true);
+			$(".shopcart-list :checkbox").each(function(){
+				if(!$(this).is(':checked')){
+					$(".shop-fix :checkbox").prop('checked', false);
+					return;
+				}
+			});
+			renew();
+		});
+		//加减 编辑
+		$('[name="num[]"]').click(function(){
+			$(this).select();
+		})
+		$('[name="num[]"]').change(function(){
+			if($(this).val() < 1 ) $(this).val(1);
+			renew();
+		})
+		$('.increase').click(function(){
+			var self = $(this);
+			var current_num = parseInt(self.siblings('.text_box').val());
+			current_num += 1;
+			self.siblings('.text_box').val(current_num);
+			change(self.siblings('.id').val(),current_num);
+			renew();
+		})		
+		$('.decrease').click(function(){
+			var self = $(this);
+			var current_num = parseInt(self.siblings('.text_box').val());
+			if(current_num > 1){
+				current_num -= 1;
+				self.siblings('.text_box').val(current_num);
+				change(self.siblings('.id').val(),current_num);
+			}else{
+			  layer.open({
+			    content: '您确定要删除该商品吗？'
+			    ,btn: ['确定', '取消']
+			    ,yes: function(index){
+			    	change(self.siblings('.id').val(),0);
+			    	self.closest('li').remove();
+			    	if($('.shopcart-list li').length<1){
+			    		kong();
+			    	}
+			    	renew();
+			    	layer.close(index);
+			    }
+			  });
+			}
+			renew();
+		});
+		//编辑
+		$(".bianji").click(function() {
+	    if ($(".shop-fix").css('display') == 'block') {
+        $(".shop-fix").css("display", "none");
+        $(".edit").css("display", "block");
+				$(this).text("完成");
+	    }else {
+        $(".shop-fix").css("display", "block");
+        $(".edit").css("display", "none");
+				$(this).text("编辑");
+	    }
+	    $(".shopcart-list :checkbox").each(function(){
+				if($(this).is(':checked')){
+					$(this).prop("checked", false);
+				}else{
+					$(this).prop("checked", true);
+				}
+				
+			})
+			$(".shop-fix :checkbox").prop("checked", true);
+			$(".shopcart-list :checkbox").each(function(){
+				if(!$(this).is(':checked')){
+					$(".shop-fix :checkbox").prop('checked', false);
+					return;
+				}
+			});
+	    renew();
+		});
+		//提交
+		$('#js').click(function(){
+			$(".shopcart-list :checkbox").each(function(){
+				if(!$(this).is(':checked')){
+					$(this).closest('li').find('input').remove();
+				}
+			});
+			$('.shopcart-list').submit();
+		});
+		$("#del").click(function(){
+		  layer.open({
+		    content: '您确定要删除选择的商品吗？'
+		    ,btn: ['确定', '取消']
+		    ,yes: function(index){
+					var _list=[];
+					var i=0;
+					$(".shopcart-list :checkbox").each(function(){
+						if($(this).is(':checked')){
+							_list[i]=$(this).closest('li').find("input[name='spid[]']").val();
+							$(this).closest('li').remove();
+							++i;
+						}
+					});
+					del(_list);
+		    	if($('.shopcart-list li').length<1){
+		    		kong();
+		    	}
+		    	renew();
+		    	layer.close(index);
+		    }
+		  });
+
+		})
+	})
+</script>
+<script src="/assets/js/amazeui.min.js"></script>   
+	</body>
+</html>

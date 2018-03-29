@@ -1,0 +1,307 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="applicable-device" content="mobile" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<title>大自然会所</title>
+<link href="{:ADDON_PUBLIC_PATH}/css/public.css" rel="stylesheet" type="text/css" />
+<link href="{:ADDON_PUBLIC_PATH}/css/owl.carousel.css" rel="stylesheet">
+<link href="{:ADDON_PUBLIC_PATH}/css/frozen.css" rel="stylesheet" type="text/css">
+<link href="{:ADDON_PUBLIC_PATH}/css/baoliao.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/jquery-3.1.1.min.js"></script>
+<script src="{:ADDON_PUBLIC_PATH}/js/owl.carousel.min.js"></script>
+<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/layer.js"></script>
+
+</head>
+<style>
+#owl { max-width:100%; width:100%; max-height:92%;}
+.view { padding-left:6px;}
+.new-a-back span img { width:30px;}
+.new-a-back2 span img { width:30px;}
+</style>
+
+<body style="background:#F5F5F5">
+<include file="./Addons/Bll/View/default/Public/gs.html" />
+<div class="mobile success-bg">
+
+  <!--header 开始-->
+  <header>
+    <div class="header"> 
+      <a class="new-a-back" href="javascript:void(0);"> <span><img src="{:ADDON_PUBLIC_PATH}/images/user00.png"></span> </a>
+      <h2></h2>
+      <a class="new-a-back2" style="right:0; top:0;display: none;" href="{:U("index",array("rand"=>rand(1000,9999)))}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/home.png"></span> </a>
+    </div>
+  </header>
+  <!--header 结束-->
+ 
+<style>
+.sidebar .sidebar-container { position:fixed; left:0; top:0; bottom:0; width:60%; left:-60%;
+height:100%;box-shadow:4px 0 18px 6px rgba(0,0,0,.12);background-color:#C4A56E; z-index:120; color:#fff;}
+.sidebar .sidebar-container .user { color:#666; text-align:center; margin:30px 0 10px 0; color:#fff; }
+.sidebar .sidebar-container .user:after {     content:".";        
+     display:block;        
+     height:0;        
+     clear:both;        
+     visibility:hidden; }
+.menu-list { }
+.mfic-person { display: inline-block; vertical-align:middle;}
+.mfic-person img { width:40px; height:40px;border-radius: 20px;}
+.mfic-person span { display: inline-block;}
+.sidebar .sidebar-container .menu-list ul li { padding:0 8px; border-bottom:1px solid #b39665}
+.sidebar .sidebar-container .menu-list ul li div { display:block; padding:10px 0; text-decoration:none;}
+.mfic-side-trip { vertical-align:middle; display:inline-block; margin-right:10px;}
+.mfic-side-trip img { width:17px; height:17px;}
+.sidebar .sidebar-mask { position:fixed; left:0; right:0; bottom:0; width:100%; height:100%;
+background-color:rgba(37,38,45,.4); z-index:119; display:none;}
+.menu-list .text{ font-size:1.1em; vertical-align:middle;}
+
+.owl-pagination { display:none;}
+.vip { display:block; background:#B9965E; border-radius:10px; width:70px; height:20px; line-height:20px; color:#fff; font-size:12px; }
+.vip img { width:14px; height:14px; vertical-align:sub;}
+</style>    
+<script type="application/javascript">
+document.querySelector('body').addEventListener('touchmove', function(e) {
+    e.preventDefault();
+})
+    $(document).ready(function () {
+         $('.new-a-back').click(function () {
+             $(".sidebar-container").animate({ left: "0" }, 500);
+			 $('.sidebar-mask').show();
+         });
+		 $('.sidebar-mask').click(function () {
+             $(".sidebar-container").animate({ left: "-60%" }, 500);
+			 $('.sidebar-mask').hide();
+         });
+	});
+</script>
+<div class="sidebar-container"></div>
+    <div class="sidebar">
+        <div class="sidebar-container">
+           <div class="user"><i class="mfic-person" style="float:left; margin-left:20%;"><img src="{$userinfo.headimg}"></i> <div style="float:left"><span>{$userinfo.username}</span><span class="vip"><img src="{:ADDON_PUBLIC_PATH}/images/Vvip.png">
+           	<php>
+           		if(session("userinfo")["grade"]==2) echo "银卡VIP";
+           		elseif(session("userinfo")["grade"]==3) echo "金卡VIP";
+           		elseif(session("userinfo")["grade"]==4) echo "钻石VIP";
+           		elseif(session("userinfo")["grade"]==5) echo "黑钻VIP";
+           		else echo "普卡VIP";
+           	</php>
+           </span></div></div>
+           <div class="menu-list">
+              <ul>
+              	
+              	<a href="{:U('pay_online')}" style="color: #FFFFFF;text-decoration:none">
+                <li>
+                   <div>
+                      <i class="mfic-side-trip"><img src="{:ADDON_PUBLIC_PATH}/images/cart00.png"></i>
+                      <span class="text">余额/充值：¥{$userinfo.BALANCE}</span>
+                   </div>
+                </li>
+                </a>
+                
+                <a href="{:U('my_card')}" style="color: #FFFFFF;text-decoration:none">
+                <li>
+                   <div>
+                      <i class="mfic-side-trip"><img src="{:ADDON_PUBLIC_PATH}/images/jsc00.png"></i>
+                      <span class="text">卡卷：{$kqnum}张</span>
+                   </div>
+                </li>
+                </a>
+                
+                <a href="{:U("vip_card")}" style="color: #FFFFFF;text-decoration:none">
+                <li style="display: none;">
+                   <div>
+                      <i class="mfic-side-trip"><img src="{:ADDON_PUBLIC_PATH}/images/message00.png"></i>
+                      <span class="text">我的会员卡</span>
+                   </div>
+                </li>
+                </a>
+                
+                <a href="{:U("my_appt")}" style="color: #FFFFFF;text-decoration:none">
+                <li>
+                   <div>
+                      <i class="mfic-side-trip"><img src="{:ADDON_PUBLIC_PATH}/images/order00.png"></i>
+                      <span class="text">我的预约：{$apptnum}条</span>
+                   </div>
+                </li>
+                </a>
+                
+                <a href="{:U("my_order")}" style="color: #FFFFFF;text-decoration:none;display: none;">
+                <li>
+                   <div>
+                      <i class="mfic-side-trip"><img src="{:ADDON_PUBLIC_PATH}/images/order00.png"></i>
+                      <span class="text">结算记录：{$jsnum}笔</span>
+                   </div>
+                </li>
+                </a> 
+                <a href="{:U("my_cz")}" style="color: #FFFFFF;text-decoration:none">
+                <li>
+                   <div>
+                      <i class="mfic-side-trip"><img src="{:ADDON_PUBLIC_PATH}/images/order00.png"></i>
+                      <span class="text">充值记录：{$cznum}笔</span>
+                   </div>
+                </li>
+                </a> 
+                <a href="{:U("funds_details")}" style="color: #FFFFFF;text-decoration:none">
+                <li>
+                   <div>
+                      <i class="mfic-side-trip"><img src="{:ADDON_PUBLIC_PATH}/images/order00.png"></i>
+                      <span class="text">资金明细：{$zjnum}笔</span>
+                   </div>
+                </li>
+                </a> 
+                <a  style="color: #FFFFFF;text-decoration:none">
+                <li>
+                   <div>
+                      <i class="mfic-side-trip"><img src="{:ADDON_PUBLIC_PATH}/images/order00.png"></i>
+                      <span class="text">我的积分：{$userinfo.INTEGRAL}</span>
+                   </div>
+                </li>
+                </a>
+
+
+
+                <a href="{:U("seting")}" style="color: #FFFFFF;text-decoration:none">
+                <li>
+                   <div>
+                      <i class="mfic-side-trip"><img src="{:ADDON_PUBLIC_PATH}/images/photos00.png"></i>
+                      <span class="text">绑定手机</span>
+                   </div>
+                </li>
+                </a>
+              </ul>
+           </div>
+        </div>
+        
+        <div class="sidebar-mask"></div>
+    </div>
+    <div class="m_banner" id="owl">
+    	<volist name="adlist" id="vo">
+            <a class="item"><img src="{$vo.menuimg}"></a>
+      </volist>
+    </div>
+     
+  </div>
+
+<style>
+.footer { background:#fff none repeat scroll 0 0;  bottom:5; clear:both; height:75px; width:100%; z-index:100;z-index:99;  position:absolute; 
+margin:auto;  left: 0; bottom: 0; right: 0; border-top:1px solid #C7A770 ;}
+.footer a { color:#888; display:block; float:left; height:44px; padding-top:4px; text-align:center; width:50%; font-size:12px;}
+.footer a i { background: url({:ADDON_PUBLIC_PATH}/images/yy01.png) 0 0 /48px auto no-repeat; display:block; margin:0 auto; height:48px; width:48px;}
+.footer li.f_personal i {background-position:0 -57px; margin-bottom:2px; position:relative; height:48px; width:48px;background: url({:ADDON_PUBLIC_PATH}/images/sd.png) 0 0 /48px auto no-repeat; }
+</style>
+<div class="footer">
+   <ul>
+      <li class="f_home"><a href="{:addons_url("Bll://Appt/index3",array("rand"=>rand(0,999)))}" class="hover"><i></i>预约</a></li>
+      <li class="f_personal"><a class="hover"><i></i>买单</a></li>
+   </ul>
+</div>
+
+<div id="codepay" style="display: none;">
+	
+		<img id="barcode" src="{:addons_url("Bll://Api/barCode")}" style="height: 79px;width: 287px;">
+	
+		<p id="code18" style="margin-top: 10px;font-size: 20px;"></p>
+		<img id="qrcode" src="{:addons_url("Bll://Api/qrCode")}" style="height: 165px;width: 165px;">
+		<p style="color: red;margin-top: 0px;margin-bottom: 10px;">温馨提示：请勿向其他人透露扫码信息！</p>
+</div>
+<div id="payok" style="display: none;">
+		<p style="margin-top: 10px;margin-bottom: 20px;font-size: 20px;">支付金额：<span id="pay"></span>元</p>
+</div>
+<script>
+var countdown=0,ispay=0,payamount,paycode;
+function opencode(){
+	//layer.closeAll();
+	$("#code18").text(paycode);
+  layer.open({
+    title: "向商家付款(60s刷新)"
+    ,content: $("#codepay").html()
+  });	
+}
+function msg(m){
+  layer.open({
+    content: m
+    ,skin: 'msg'
+    ,time: 2 //2秒后自动关闭
+  });
+}
+function getpay(){
+	$.ajax({
+		async: true,
+		type: 'GET',
+		url: '{:addons_url("Bll://Api/isPay")}',
+		dataType: 'json',
+		success: function(data){
+			
+			payamount=data.payamount;
+			ispay=data.isused;
+		},
+		error: function(xhr, type){
+		  getpay();
+		}
+	});	
+}
+
+function makecode(){
+	$.ajax({
+		async: false,
+		type: 'GET',
+		url: '{:addons_url("Bll://Api/makeCode")}',
+		dataType: 'json',
+		success: function(data){
+			countdown=data.countdown;
+			paycode=data.paycode;
+		},
+		error: function(xhr, type){
+		  alert('Ajax error!');
+		}
+	});	
+}
+
+function settime() {
+	
+	if (countdown == 0) {
+		makecode();
+		opencode();
+	} else {
+		$("h3").text("向商家付款("+countdown+"s刷新)");
+		countdown--; 
+	}
+	if(ispay==1) {
+		ispay=0;
+		countdown = 0;
+		$("h3").text("支付成功");
+		$("#pay").text(payamount);
+		$(".layui-m-layercont").html($("#payok").html());
+		return;
+	}else{
+		getpay();
+	}
+	if($("h3").length==0) {
+		countdown = 0;
+		return;
+	}
+	setTimeout(function() { 
+		settime() 
+	},1000) 
+}
+
+
+
+$(function(){
+	$(".f_personal").unbind("click").click(function(){
+		if("{:session('userinfo.mobile')}".length<10){
+			msg('请先绑定手机号!');
+			setTimeout(function() { 
+				location.href='{:U("seting")}';
+			},2000) 
+		}else{
+			settime();
+		}
+		
+	});
+});
+
+</script>
+<include file="./Addons/Bll/View/default/Public/guanzhu.html" />
+</body>
+</html>

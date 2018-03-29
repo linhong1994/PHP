@@ -1,0 +1,4 @@
+<?php
+//000000000000
+ exit();?>
+a:6:{s:5:"items";a:8:{i:0;a:2:{i:0;s:6:"hidden";i:1;s:2:"id";}i:1;a:3:{i:0;s:4:"text";i:1;s:5:"title";i:2;s:6:"标题";}i:2;a:3:{i:0;s:5:"image";i:1;s:3:"pic";i:2;s:6:"封面";}i:3;a:5:{i:0;s:4:"text";i:1;s:6:"author";i:2;s:6:"作者";i:3;s:0:"";i:4;s:5:"admin";}i:4;a:5:{i:0;s:4:"text";i:1;s:4:"view";i:2;s:9:"阅读量";i:3;s:0:"";i:4;s:1:"0";}i:5;a:3:{i:0;s:8:"textarea";i:1;s:5:"intro";i:2;s:6:"简介";}i:6;a:3:{i:0;s:8:"ckeditor";i:1;s:7:"content";i:2;s:6:"内容";}i:7;a:6:{i:0;s:5:"radio";i:1;s:6:"status";i:2;s:12:"立即启用";i:3;s:0:"";i:4;a:2:{i:0;s:3:"否";i:1;s:3:"是";}i:5;i:1;}}s:5:"table";s:9:"ccxx_news";s:8:"validate";s:4:"News";s:9:"auto_time";a:2:{i:0;s:11:"create_time";i:1;s:11:"update_time";}s:6:"format";s:0:"";s:7:"go_back";s:31:"/admin.php/ccxx/news/index.html";}

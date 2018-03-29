@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>{:session('sys.webtitle')}</title>
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+		<link href="/assets/css/amazeui.min.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/dropload.css" rel="stylesheet" type="text/css" />
+		<script src="/assets/js/jquery-3.2.1.min.js"></script>
+		<script src="/assets/js/layer_mobile/layer.js"></script>
+		<script src="/assets/js/dropload.min.js"></script>
+		<style>
+			.same-product-search {
+				border: 1px solid #eee;
+				min-height: 44px;
+				font-size: 14px;
+				background: #fff;
+				padding: 10px 10px;
+			}
+			
+			.same-product-search .name {
+				text-align: left;
+				padding-right: 1em;
+				float: left
+			}
+			
+			.same-product-search .content {
+				font-size: 0.35rem;
+				color: #929292;
+				padding-right: 0.32rem;
+				float: right
+			}
+			
+			.shop-list-mid .tit a {
+				color: #909090;
+				font-size: 1.4rem;
+				display: -webkit-box;
+				-webkit-line-clamp: 1;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+				white-space: normal;
+				text-overflow: ellipsis;
+			}
+			
+			.list-pro li {
+				float: left;
+				width: calc(100%/2 - 3%*2);
+			}
+			
+			.shop-list-mid {
+				float: none;
+			}
+			
+			.list-pic1 {
+				float: none;
+				width: 100%;
+				display: block;
+				margin: 0 auto;
+			}
+			
+			.shop-list-mid .tit a {
+				-webkit-line-clamp: 2;
+				height: 42px;
+			}
+			
+			.list-pro {
+				padding-bottom: 20px;
+			}
+			
+			.list-bg-pic {
+				width: 100%;
+				height: 150px;
+				background-size: contain;
+				background-position: center center;
+				background-repeat: no-repeat;
+				margin: 0 auto;
+			}
+			
+			.tips {
+				background-color: #FFC;
+				font-size: 12px;
+				padding: 5px 10px;
+				border-bottom: 1px solid #eee;
+			}
+			
+			.tips span {
+				color: #F60
+			}
+		</style>
+	</head>
+
+	<body>
+		<header data-am-widget="header" class="am-header am-header-default sq-head ">
+			<div class="am-header-left am-header-nav">
+				<a href="{:outo()}" class="">
+					<i class="am-icon-chevron-left"></i>
+				</a>
+			</div>
+			<h1 class="am-header-title">
+  	            <a href="" class="">{$cate.catname}</a>
+            </h1>
+      <div class="am-header-right am-header-nav">
+				<a href="/index.html" class="">
+					<i class="am-icon-home am-icon-sm"></i>
+				</a>
+			</div>
+		</header>
+		<div style="height: 49px;"></div>
+
+		<div class="cate-search2" style="display: none;">
+			<input type="text" class="cate-input1" placeholder="请输入您要搜索的产品关键词" />
+			<input type="button" class="cate-btn1" />
+		</div>
+
+		{eq name='cx' value='1'}
+		<div class="same-product-search">
+			<span class="yhxx">优惠</span>
+			<div class="yhxx-cell">
+				<a>
+					{volist name='cxlist' id='vo'} {php}if($i!=1) echo '<br>';{/php}
+					<span>{$i}.{$vo.yhxx}</span> {/volist}
+				</a>
+			</div>
+		</div>
+		{/eq}
+		<div style="height: 51px;">
+			<ul class="list-nav1">
+				<li class="{eq name='sort' value='0'}current{/eq}">
+					<a href="
+	    		{php}
+	    		echo url('/goodslist/sort/0/catid/'.$cate['catid'].$s);
+	    		{/php}">新品</a>
+				</li>
+				<li class="{php}if($sort==1 || $sort==2) echo 'current';{/php}">
+					<a href="
+	    		{php}
+	    		if($sort==1){
+	    			echo url('/goodslist/sort/2/catid/'.$cate['catid'].$s);
+	    		}else{
+	    			echo url('/goodslist/sort/1/catid/'.$cate['catid'].$s);
+	    		}
+	    		{/php}
+	    		"><i class="{php}if($sort==1) echo 'list-price-top';elseif($sort==2) echo 'list-price-bot';else echo 'list-price';{/php}">价格</i></a>
+				</li>
+			</ul>
+		</div>
+		<div id="list">
+			<ul class="list-pro">
+				<!--<li>
+	    		<a href="{:url('detail')}"><img src="/assets/images/test10.png" class="list-pic1" /></a>
+	    		<div class="shop-list-mid" style="width: 90%;">
+                	<div class="tit"><a href="detail">法国加力果</a></div>
+                	<div class="am-gallery-desc">￥52</div>
+                </div>
+	    	</li>-->
+
+			</ul>
+		</div>
+		<script src="/assets/js/amazeui.min.js"></script>
+		<script>
+			$(function() {
+				// 页数
+				var page = 0;
+				// 每页展示10个
+				var size = 6;
+				// dropload
+				$('#list').dropload({
+					scrollArea: window,
+					// 下拉刷新模块显示内容
+					domUp: {
+						domClass: 'dropload-up',
+						// 下拉过程显示内容
+						domRefresh: '<div class="dropload-refresh">↓下拉刷新</div>',
+						// 下拉到一定程度显示提示内容
+						domUpdate: '<div class="dropload-update">↑释放更新</div>',
+						// 释放后显示内容
+						domLoad: '<div class="dropload-load"><span class="loading"></span>加载中...</div>'
+					},
+					domDown: {
+						domClass: 'dropload-down',
+						// 滑动到底部显示内容
+						domRefresh: '<div class="dropload-refresh">↑上拉加载更多</div>',
+						// 内容加载过程中显示内容
+						domLoad: '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
+						// 没有更多内容-显示提示
+						domNoData: '<div class="dropload-noData">无更多数据！</div>'
+					},
+					// 1 . 下拉刷新 回调函数
+					loadUpFn: function(me) {
+						page = 1;
+						// 拼接HTML
+						var result = '';
+						$.ajax({
+							type: 'POST',
+							async: false,
+							url: '/goodslist{$s}.html',
+							data: {
+								catid: '{$cate.catid}',
+								sort: {$sort},
+								page: page,
+								size: size
+							},
+							dataType: 'json',
+							success: function(data) {
+								if((data != null) && (data.length > 0)) {
+									for(var i = 0; i < data.length; i++) {
+										result += '' +
+											'<li>' +
+											'<a href="/detail/sort/{$sort}/pid/' + data[i].productid + '.html"><div  style=" background-image:url(' + data[i].menuimg + ')" class="list-bg-pic"></div></a>' +
+											'<div class="shop-list-mid" style="width: 90%;">' +
+											'<div class="tit"><a href="detail">' + data[i].spmc + '</a></div>' +
+											'<div class="am-gallery-desc">￥' + data[i].price + '</div>' +
+											'</div>' +
+											'</li>';
+									}
+									// 如果没有数据
+								} else {
+									// 锁定
+									me.lock();
+									// 无数据
+									me.noData();
+								}
+								// 为了测试，延迟1秒加载
+								setTimeout(function() {
+									// 插入数据到页面，放到最后面
+									$('.list-pro').html(result);
+									// 每次数据插入，必须重置
+									me.resetload();
+									// 重置页数，重新获取loadDownFn的数据
+									page = 1;
+									// 解锁loadDownFn里锁定的情况
+									me.unlock();
+									me.noData(false);
+								}, 1);
+							},
+							error: function(xhr, type) {
+								alert('数据获取失败!');
+								// 锁定
+								me.lock();
+								// 无数据
+								me.noData();
+								// 即使加载出错，也得重置
+								me.resetload();
+							}
+						});
+					},
+					// 2 . 上拉加载更多 回调函数
+					loadDownFn: function(me) {
+						page++;
+						// 拼接HTML
+						var result = '';
+						$.ajax({
+							type: 'POST',
+							async: false,
+							url: '/goodslist{$s}.html',
+							data: {
+								catid: '{$cate.catid}',
+								sort: {$sort},
+								page: page,
+								size: size
+							},
+							dataType: 'json',
+							success: function(data) {
+								if((data != null) && (data.length > 0)) {
+									for(var i = 0; i < data.length; i++) {
+										result += '' +
+											'<li>' +
+											'<a href="/detail/sort/{$sort}/pid/' + data[i].productid + '.html"><div  style=" background-image:url(' + data[i].menuimg + ')" class="list-bg-pic"></div></a>' +
+											'<div class="shop-list-mid" style="width: 90%;">' +
+											'<div class="tit"><a href="detail">' + data[i].spmc + '</a></div>' +
+											'<div class="am-gallery-desc">￥' + data[i].price + '</div>' +
+											'</div>' +
+											'</li>';
+									}
+									// 如果没有数据
+								} else {
+									// 锁定
+									me.lock();
+									// 无数据
+									me.noData();
+								}
+								// 为了测试，延迟1秒加载
+								setTimeout(function() {
+									// 插入数据到页面，放到最后面
+									$('.list-pro').append(result);
+									// 每次数据插入，必须重置
+									me.resetload();
+								}, 1);
+							},
+							error: function(xhr, type) {
+								alert('数据获取失败!');
+								// 锁定
+								me.lock();
+								// 无数据
+								me.noData();
+								// 即使加载出错，也得重置
+								me.resetload();
+							}
+						});
+					},
+					threshold: 10
+				});
+
+			})
+		</script>
+
+	</body>
+<script>
+// 首先禁止body
+    document.body.ontouchmove = function (e) {
+          e.preventDefault();
+    };
+
+// 然后取得触摸点的坐标
+   var startX = 0, startY = 0;
+    //touchstart事件
+    function touchSatrtFunc(evt) {
+        try
+        {
+            //evt.preventDefault(); //阻止触摸时浏览器的缩放、滚动条滚动等
+            var touch = evt.touches[0]; //获取第一个触点
+            var x = Number(touch.pageX); //页面触点X坐标
+            var y = Number(touch.pageY); //页面触点Y坐标
+            //记录触点初始位置
+            startX = x;
+            startY = y;
+
+        } catch (e) {
+            alert('touchSatrtFunc：' + e.message);
+        }
+    }
+    document.addEventListener('touchstart', touchSatrtFunc, false);
+
+// 然后对允许滚动的条件进行判断，这里讲滚动的元素指向body
+  var _ss = document.body;
+    _ss.ontouchmove = function (ev) {
+        var _point = ev.touches[0],
+                _top = _ss.scrollTop;
+        // 什么时候到底部
+        var _bottomFaVal = _ss.scrollHeight - _ss.offsetHeight;
+        // 到达顶端
+        if (_top === 0) {
+            // 阻止向下滑动
+            if (_point.clientY > startY) {
+                ev.preventDefault();
+            } else {
+                // 阻止冒泡
+                // 正常执行
+                ev.stopPropagation();
+            }
+        } else if (_top === _bottomFaVal) {
+            // 到达底部 如果想禁止页面滚动和上拉加载，讲这段注释放开，也就是在滚动到页面底部的制售阻止默认事件
+            // 阻止向上滑动
+            // if (_point.clientY < startY) {
+            //     ev.preventDefault();
+            // } else {
+            //     // 阻止冒泡
+            //     // 正常执行
+            //     ev.stopPropagation();
+            // }
+        } else if (_top > 0 && _top < _bottomFaVal) {
+            ev.stopPropagation();
+        } else {
+            ev.preventDefault();
+        }
+    };
+</script>
+<style>
+	#list {overflow:scroll; -webkit-overflow-scrolling: touch;/*解决ios滑动不卡顿*/}
+</style>
+</html>

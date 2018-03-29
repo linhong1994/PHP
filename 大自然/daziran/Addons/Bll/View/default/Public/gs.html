@@ -1,0 +1,12 @@
+<div id="gslh" style="display: none;">
+	<p style="margin-top: 10px;margin-bottom: 20px;font-size: 16px;">当前账号已挂失</p>
+	<p style="margin-top: 10px;margin-bottom: 20px;font-size: 16px;">详情咨询：<a href="tel:0595-28033888">0595-28033888</a></p>
+</div>
+
+
+
+<php>
+$tc='<script>layer.open({title: "温馨提示",content: $("#gslh").html(),closeBtn: 0,btn: []});	</script>';
+if(session("userinfo")["state"] == 0) echo $tc;
+</php>
+

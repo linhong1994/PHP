@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" type="text/css" href="/assets/css/share.css" />
+<title>{:session('sys.webtitle')}</title>
+</head>
+
+<body>
+
+<div id="header" class="head">
+    <div class="wrap">
+        <i class="menu_back"><a href="{:outo()}"></a></i>
+        <div class="title">
+            <span class="title_d"><p>邀请明细</p></span>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<style>
+.revCon img{float: left;width:39px; height:39px;}
+</style>
+<div id="content">
+     <div class="revCon">
+          <div class="g-accounts-details g-recharge-details clearfix">
+                    
+             <ul>
+                <li><div style="width: 39px;height:39px;float: left;"></div><span>用户名</span><span>注册时间</span></li>
+                {volist name='user' id='vo'}
+                <li><img src="{$vo.headimg}" /><span>{$vo.username}</span><span>{$vo.createtime}</span></li>
+                {/volist}
+             </ul>      
+                
+          </div>
+     </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<title>大自然会所</title>
+<link href="{:ADDON_PUBLIC_PATH}/css/owl.carousel.css" rel="stylesheet">
+<link href="{:ADDON_PUBLIC_PATH}/css/public.css" rel="stylesheet" type="text/css" />
+<link href="{:ADDON_PUBLIC_PATH}/css/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/dropload.min.js"></script>
+<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/layer.js"></script>
+<script type="text/javascript" src="//webapi.amap.com/maps?v=1.3&key=ac262d2172bd0edc6919c0c81fbd2afa"></script>
+
+</head>
+<style>
+
+</style>
+
+<body>
+<div class="mobile">
+  <!--header 开始-->
+  <header>
+    <div class="header"> <a class="new-a-back" href="{:U("index3")}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/iconfont-fanhui.png"></span> </a>
+      <h2>最近门店</h2>
+      <a class="new-a-back2" style="right:0; top:0;" href="{:addons_url("Bll://User/index",array("rand"=>rand(1000,9999)))}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/home.png"></span> </a>
+
+    </div>
+  </header>
+  <!--header 结束-->
+  <div class="m_baoliao w">
+  	
+    <div class="baoliao_list">
+
+    </div>
+    <div class="bl_more"></div>
+  </div>
+
+  <!--<div class="copyright">Copyright © 2017-2020 大自然养生会所 版权所有</div>-->
+</div>
+<div class="gotop backtop" style="display:none;"></div>
+
+<script type="text/javascript">
+var page = 0;
+var size = 8;
+var lock = 1;
+var Lng = "{$Lng}";
+var Lat = "{$Lat}";
+var result="";
+
+function getshoplist(){
+	page++;
+	$.ajax({
+		async:false,
+		type: 'POST',
+		url: '{:addons_url("Bll://Api/getShopList")}',
+		data: {page:page,size:size,jd:Lng,wd:Lat},
+		dataType: 'json',
+		success: function(data){
+			var arrLen;
+			if(data==null||data=="[]"){
+				arrLen=0
+			}
+		  else{
+		  	arrLen = data.length;
+		  }
+		  if(arrLen > 0){
+		  	for(var i=0; i<arrLen;i++){
+		  		var str;
+		      if(Lng==null||Lat==null) str="?km";
+		      else{
+		      	if(data[i].distance/1000 < 1) str=data[i].distance + "m";
+		      	else str= parseFloat(data[i].distance/1000).toFixed(1) +"km";
+		      }
+		  		result += ''
+		  		+'<a href="shop_details2/shopid/'+data[i].shopid+'.html">'
+		        +'<div class="baoliao_content">'
+		            +'<div class="bl_img"><img src="'+data[i].shopimg+'" /></div>'
+		            +'<div class="bl_right">'
+		                +'<div class="bl_title">'+data[i].shopname+'</div>'
+		                +'<div class="bl_tag">'
+		                         +'<span class="stars">'
+		                             +'<em class="star-text">'+data[i].shopdaddr+'</em>'
+		                         +'</span>'
+		      							+'<span class="avg-price">距离位置：'+str+'</span>'
+		                +'</div>'
+		            +'</div>'
+		          +'</div> '
+		        +'</a>';
+				}
+		  	$(".baoliao_list").html(result);
+		  	$(".bl_more").text("上拉加载更多");
+		  	if(arrLen<size) 
+		  	{
+		  		$(".bl_more").text("");
+		  		lock=0;
+		  	}
+			// 如果没有数据
+			}else{
+				$(".bl_more").text("");
+				lock=0;
+		 }
+		},
+		error: function(xhr, type){
+		  alert(xhr.status);
+		}
+	}); 
+}
+
+//返回顶部
+$(document).ready(function(){
+	getshoplist();
+	$(window).scroll(function () {
+		var scrollHeight = $(document).height();
+		var scrollTop = $(window).scrollTop();
+		var $windowHeight = $(window).innerHeight();
+		scrollTop > 75 ? $(".gotop").fadeIn(200).css("display","block") : $(".gotop").fadeOut(200).css({"background-image":"url(<php>echo ADDON_PUBLIC_PATH;</php>/images/iconfont-fanhuidingbu.png)"});
+		if ($(document).scrollTop() + $(window).height() > $(document).height() - 100) {
+			if(lock){
+				lock=0;
+        getshoplist();
+			}else{
+				$(".bl_more").text("");
+			}
+		}
+
+	});
+
+	$('.backtop').click(function (e) {
+		$(".gotop").css({"background-image":"url(<php>echo ADDON_PUBLIC_PATH;</php>/images/iconfont-fanhuidingbu_up.png)"});
+		e.preventDefault();
+		$('html,body').animate({ scrollTop:0});
+	});
+});
+</script>
+<include file="./Addons/Bll/View/default/Public/guanzhu.html" />
+</body>
+</html>

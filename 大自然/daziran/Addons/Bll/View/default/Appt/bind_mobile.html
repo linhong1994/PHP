@@ -1,0 +1,132 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>手机验证 — 大自然会所</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link href="{:ADDON_PUBLIC_PATH}/css/public.css" rel="stylesheet" type="text/css" />
+    <link href="{:ADDON_PUBLIC_PATH}/css/style.css" rel="stylesheet" type="text/css">
+		<script src="{:ADDON_PUBLIC_PATH}/js/jquery-3.1.1.min.js"></script>
+		<script type="text/javascript" src="{:ADDON_PUBLIC_PATH}/js/layer.js"></script>
+	</head>
+
+<body class="secrityBg">
+  <header>
+    <div class="header"> <a class="new-a-back" href="
+    	<php>
+    		if($shopid!=null) echo U("shop_details2",array("shopid"=>I("shopid")));
+    		if($pid!=null) echo U("appt_order",array("pid"=>I("pid"))); 
+    	</php>
+    	"> <span><img src="{:ADDON_PUBLIC_PATH}/images/iconfont-fanhui.png"></span> </a>
+      <h2>手机验证</h2>
+      <a class="new-a-back2" style="right:0; top:0;" href="{:addons_url("Bll://User/index",array("rand"=>rand(1000,9999)))}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/home.png"></span> </a>
+
+    </div>
+  </header>    
+    <div class="h5-1yyg-v11">
+
+        <form class="authentication-con clearfix" id="bind_mobile" action="{:U("bind_mobile")}" method="post">
+        	<input id="pid" name="pid" type="hidden" value="{$pid}">
+        	<input id="shopid" name="shopid" type="hidden" value="{$shopid}">
+             <ul>
+                    <li class="pd20" style="padding-left:0"><input type="text" class="rText" placeholder="请输入手机号码" maxlength="11" id="mobile" name="mobile"></li>
+                    <li class="enter-word">
+                        <input type="text" class="rText" placeholder="请输入6位验证码" maxlength="6" id="verify" name="verify"><a class="orgBtn" id="get">获取验证码</a></li>
+                    <li><a class="orgBtn"  id="bind">确认</a></li>
+ 
+             </ul>
+        </form>
+    </div> 
+
+<script>
+function msg(m){
+  layer.open({
+    content: m
+    ,skin: 'msg'
+    ,time: 2 //2秒后自动关闭
+  });
+}
+var countdown;
+function settime() {
+	if (countdown == 0) {
+		$("#get").removeAttr("disabled");
+		$("#get").removeClass("lang-btn-dis");
+		$("#get").text("重新发送");
+		return;
+	} else {
+		$("#get").attr("disabled", "disabled");
+		$("#get").addClass("lang-btn-dis");
+		$("#get").text("重新发送("+countdown+"s)");
+		countdown--; 
+	}
+	setTimeout(function() { 
+		settime() 
+	},1000) 
+}
+
+$(function(){
+	$("#get").on("click",function(){
+		if($("#mobile").val().length == 11){
+		  $.ajax({
+		    type: 'POST',
+		    async: false,
+		    url: '{:addons_url("Bll://Api/getVerify")}',
+		    data: {
+		    	mobile:$("#mobile").val(),
+		    	userid:"{$userid}"
+		    },
+		    dataType: 'json',
+		    success: function(data){
+					switch(data["state"]){
+					case 0:
+						msg(data["mag"]);
+						break;
+					case 1:
+						$("#get").attr("disabled", "disabled");
+						$("#get").addClass("lang-btn-dis");
+						msg(data["msg"]);
+						$("#get").text(data["msg"]);
+						break;
+					case 2:
+						countdown=data["time"];
+						settime();
+						msg(data["msg"]);
+						break;
+					case 3:
+						countdown=60;
+						settime();
+						msg(data["msg"]);
+						break;
+					}
+		    },
+		    error: function(xhr, type){
+		      alert("短信服务器故障！");
+		    }
+		  });
+		}else{
+		  msg('请输入正确手机号码！');
+		}
+	});
+	
+
+	$("#bind").on("click",function(){
+		if($("#mobile").val().length == 11){
+			if($("#verify").val().length == 6){
+				$("#bind_mobile").submit();
+			}else{
+				msg('请输入6位验证码！');
+			}
+
+		}else{
+		  msg('请输入正确手机号码！');
+		}
+	});
+})
+</script>
+<include file="./Addons/Bll/View/default/Public/guanzhu.html" />
+</body>
+</html>

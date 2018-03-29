@@ -1,0 +1,65 @@
+{extend name="layout" /}
+{block name="content"}
+	<div class="first-widget parallax" id="blogId">
+		<div class="parallax-overlay">
+			<div class="container pageTitle">
+				<div class="row">
+					<div class="col-md-12 col-sm-12 text-center" style="margin-bottom:20px;">
+						<h2 class="page-title">博客</h2>
+					</div> <!-- /.col-md-6 -->
+					<div class="col-md-12 col-sm-12 text-center">
+						<span class="page-location">为您的需求提供快速可靠的技术解决方案</span>
+					</div> <!-- /.col-md-6 -->
+				</div> <!-- /.row -->
+			</div> <!-- /.container -->
+		</div> <!-- /.parallax-overlay -->
+	</div> <!-- /.pageTitle -->
+
+	<div class="container">	
+		<div class="row">
+
+			<div class="col-md-8 blog-posts">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="post-blog">
+							<div class="blog-image">
+								<img src="{$vo.pic|get_files_path}" alt="">
+							</div> <!-- /.blog-image -->
+							<div class="blog-content">
+								<span class="meta-date">{$vo.time|strtotime|date="Y/m/d",###}</span>
+								<span class="meta-comments">阅读数：{$vo.view}</span>
+								<span class="meta-author">作者：{$vo.author}</span>
+								<h3><a href="{:url('blog_single',['id'=>$vo.id])}">{$vo.title}</a></h3>
+								{$vo.content}
+							</div> <!-- /.blog-content -->
+						</div> <!-- /.post-blog -->
+					</div> <!-- /.col-md-12 -->
+				</div> <!-- /.row -->
+				
+				
+			</div> <!-- /.col-md-8 -->
+
+			<div class="col-md-4">
+				<div class="sidebar">
+					<div class="sidebar-widget">
+						<h5 class="widget-title">最新博客</h5>
+						
+						{volist name='new' id='vo'}
+						<div class="last-post clearfix">
+							<div class="thumb pull-left">
+								<a href="{:url('blog_single',['id'=>$vo.id])}"><img src="{$vo.pic|get_thumb}" alt=""></a>
+							</div>
+							<div class="content">
+								<span>{$vo.time|strtotime|date="Y/m/d",###}</span>
+								<h4><a href="{:url('blog_single',['id'=>$vo.id])}">{$vo.title}</a></h4>
+							</div>
+						</div> <!-- /.last-post -->
+						{/volist}
+					</div> <!-- /.sidebar-widget -->
+				</div> <!-- /.sidebar -->
+			</div> <!-- /.col-md-4 -->
+
+		</div> <!-- /.row -->
+	</div> <!-- /.container -->	
+
+{/block}

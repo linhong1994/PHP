@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>{:session('sys.webtitle')}</title>
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+		<link href="/assets/css/amazeui.min.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/check.css" rel="stylesheet" type="text/css" />
+		<script src="/assets/js/jquery-3.2.1.min.js"></script>
+		<script src="/assets/js/layer_mobile/layer.js"></script>
+	</head>
+
+	<body style="background: #efefef;">
+		<header data-am-widget="header" class="am-header am-header-default sq-head ">
+			<div class="am-header-left am-header-nav">
+				<a href="{:outo()}" class="">
+					<i class="am-icon-chevron-left"></i>
+				</a>
+			</div>
+			<h1 class="am-header-title">
+  	            <a href="" class="">充值</a>
+            </h1>
+      <div class="am-header-right am-header-nav">
+				<a href="/index.html" class="">
+					<i class="am-icon-home am-icon-sm"></i>
+				</a>
+			</div>
+		</header>
+		<div style="height: 49px;"></div>
+		<div class="re-money">我的余额：<span>{:session('user.balance')}元</span></div>
+		<ul class="re-cate">
+			<li class="current">
+				<a><b>0.01</b>元<i></i></a>
+			</li>
+			<li>
+				<a><b>500</b>元<i></i></a>
+			</li>
+			<li>
+				<a><b>1000</b>元<i></i></a>
+			</li>
+		</ul>
+<style>
+.xz {
+  border-top: 10px solid #cb2527;    
+  border: 1px solid #cb2527;
+}
+</style>
+<div class="am-input-group" style="margin: 0 5%; display:block;">
+  <span class="am-input-group-label" style="border: 0px; text-align: left;margin: 1rem 5% 0 5%;
+    font-size: 1.8rem; padding: 0px;">请输入金额</span>
+  <input id='zdy' type="number" class="" style="padding:7px;width: 100%;">
+</div>
+		<div class="re-money">充值方式</div>
+		<ul class="re-style">
+			<li>
+				<img src="/assets/images/wei.png" />
+				<span>微信支付</span>
+				<label class="am-radio-inline">
+			    <input type="radio" checked="checked" name="radio10" value="1" data-am-ucheck>
+			 </label>
+			</li>
+		</ul>
+		<input type="button" class="login-btn" value="我要充值">
+		<script src="/assets/js/amazeui.min.js"></script>
+<script>
+$(function(){
+	$('#zdy').keyup(function(){
+		$('.current').removeClass('current');
+		$('.am-input-group').addClass('xz');
+	})
+	$('li').click(function(){
+		$(this).addClass('current');
+		$(this).siblings().removeClass('current');
+		$('.am-input-group').removeClass('xz');
+	})
+	$('.login-btn').click(function(){
+		if($('.current').length==0){
+			var fee = $("#zdy").val();
+			if(fee.indexOf('.')!=-1 || isNaN(parseInt(fee))){
+	      layer.open({
+			    content: "请输入整数金额！"
+			    ,skin: 'msg'
+			    ,time: 2 //2秒后自动关闭
+			  });
+				return;
+			}
+		}else{
+			var fee = $('.current b').text();
+		}
+    layer.open({
+	    content: "正在发送请求,请稍候！"
+	    ,skin: 'msg'
+	    ,time: 2 //2秒后自动关闭
+	  });
+  	$.ajax({
+			type: 'GET',
+			async: false,
+			url: '/recharge.html',
+			data: {
+				fee:fee
+			},
+			dataType: 'json',
+			success: function(data){
+				//调用微信JS api 支付
+				jsApiCall(data);
+			},
+			error: function(xhr, type){
+			  alert('Ajax error!');
+			}
+		});
+	})
+})
+function jsApiCall(data){
+	WeixinJSBridge.invoke(
+		'getBrandWCPayRequest',
+		JSON.parse(data),
+		function(res){
+			//WeixinJSBridge.log(res.err_msg);
+			if(res.err_msg=="get_brand_wcpay_request:ok"){
+	      layer.open({
+			    content: "支付成功！"
+			    ,skin: 'msg'
+			    ,time: 2 //2秒后自动关闭
+			  });
+				location.href="/records.html";
+			}else if(res.err_msg == "get_brand_wcpay_request:cancel")  {
+	      layer.open({
+			    content: "取消支付！"
+			    ,skin: 'msg'
+			    ,time: 2 //2秒后自动关闭
+			  });
+			  
+      }
+			else{
+	      layer.open({
+			    content: res.err_code+res.err_desc+res.err_msg
+			    ,skin: 'msg'
+			    ,time: 3 //2秒后自动关闭
+			  });
+				
+			}
+
+		}
+	);
+}	
+</script>
+	</body>
+
+</html>

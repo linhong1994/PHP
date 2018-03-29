@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>{:session('sys.webtitle')}</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+		<link href="/assets/css/amazeui.min.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+		<script src="/assets/js/jquery-3.2.1.min.js"></script>
+		<script src="/assets/js/date.js"></script>
+		<script src="/assets/js/iscroll.js"></script>
+
+	</head>
+	<body>
+		<header data-am-widget="header" class="am-header am-header-default sq-head ">
+			<div class="am-header-left am-header-nav">
+				<a href="{:outo()}" class="">
+					<i class="am-icon-chevron-left"></i>
+				</a>
+			</div>
+			<h1 class="am-header-title">
+  	            <a href="" class="">确认订单</a>
+            </h1>
+      <div class="am-header-right am-header-nav">
+				<a href="/index.html" class="">
+					<i class="am-icon-home am-icon-sm"></i>
+				</a>
+			</div>
+	    </header>
+	    <div style="height: 49px;"></div>
+	    <h5 class="order-tit">收货人信息</h5>
+	    <div class="order-name">
+	    	<a >
+	    		<p class="order-tele">{$addr.lxr}&nbsp;&nbsp;{$addr.lxfs}</p>
+	    		<p class="order-add">{$addr.province .$addr.city . $addr.county . $addr.address}</p>
+	    	</a>
+	    	<i class="am-icon-angle-right"></i>
+	    </div>
+        <div style="background: #eee; height: 10px;"></div>
+        <h5 class="order-tit">确认订单信息</h5>
+        <ul class="shopcart-list" style="padding-bottom: 0;">
+        {volist name='list' id='vo'}
+	    	<li>
+	    		<input type="hidden" name="spid[]" value="{$vo.pspecid}" />
+	    		<input type="hidden" name="num[]" value="{$vo.num}" />
+          <img src="{$vo.menuimg}" class="shop-pic" />
+          <div class="order-mid">
+          	<div class="tit" >{$vo.spmc}</div>
+          	<div class="order-price">￥{$vo.price} <i>X{$vo.num}</i>
+		          {php}
+		          if(isset($vo["cx"])){
+			          $haszp='style="display: block;"';
+			          foreach($vo["cx"] as $value){
+			          	if(is_array($value["zp"])){
+			          		$haszp='';
+			          		echo '<div class="scroll-down">优惠详情<i></i></div>';
+			          		break;
+			          	}
+			          }		          	
+		          }
+		          {/php}
+          	</div>
+          </div>
+          {eq name=':isset($vo["cx"])' value='1'}
+						{volist name='vo.cx' id='vp'}
+            <div style="clear:both;"></div>
+            <div class="shop-list-zp" style="display: block;">
+            	{eq name=':is_array($vp["zp"])' value='1'}
+            		{volist name='vp.zp' id='vq'}
+            		<div>
+                <div class="zp-pic"><img src="{$vq.menuimg}" /></div>
+                <div class="zp-title"><span class="red">{$vp.kw}：</span>{$vq.spmc} X {$vq.num}</div>
+                </div>
+                {/volist}
+              {else/}
+                <div><div class="zp-title"><span class="red">{$vp.kw}：</span>{$vp.zp}</div></div>
+              {/eq}
+            </div>
+						{/volist}
+          {/eq}
+	    	</li>
+	    	{/volist}
+      {eq name=':isset($sd)' value='1'}
+	      {volist name='sd' id='vo'}
+	        <div style="clear:both;"></div>
+	        <div class="shop-list-zp">
+	        	{eq name=':is_array($vo["zp"])' value='1'}
+	        		{volist name='vo.zp' id='vp'}
+	            <div class="zp-pic"><img src="{$vp.menuimg}" /></div>
+	            <div class="zp-title"><span class="red">首单赠送：</span>{$vp.spmc} X {$vp.num}</div>
+	            {/volist}
+	          {else/}
+	            <div class="zp-title"><span class="red">首单赠送：</span>{$vo.zp}</div>
+	          {/eq}
+	        </div>
+	      {/volist}
+      {/eq}
+	    </ul>
+	    <ul class="order-infor">
+	    	<li class="order-infor-first">
+	    		<span>商品总计：</span>
+	    		<i>￥{$price+$yhje}</i>
+	    	</li>
+	    	<li class="order-infor-first">
+	    		<span>运费：</span>
+	    		<i>￥{$freight}</i>
+	    	</li>
+
+	    	<li class="order-infor-first"><span>优惠：</span>
+	    	{eq name=':isset($yhq)' value='1'}
+	    		<a>{$yhq.yname}</a>
+	    	{else/}
+	    		<a>未使用优惠券</a>
+	    	{/eq}
+	    	</li>
+	    	
+	    	{volist name='flyhq' id='vo'}
+	    	<li class="order-infor-first">
+	    		<a>{$vo.yname}</a>
+	    	</li>
+	    	{/volist}
+	    	
+	    </ul>
+	    <!--<div style="background: #eee; height: 10px;"></div>
+	    
+	    <input id="beginTime" class="select-time" placeholder="请选择配送时间 >" /></div>
+		<div id="datePlugin"></div>-->
+	    <div style="background: #eee; height: 10px;"></div>
+	    <textarea placeholder="备注说明" class="bz-infor" readonly>{$remark}</textarea>
+	    <div style="background: #eee; height: 10px;"></div>
+	    <div style="height: 55px;"></div>
+	    <div class="shop-fix">
+	    	<div class="order-text">
+	    		应付总额：<span>￥{$price}</span>
+	    	</div>
+	    	<a href="/pay/oid/{:input('oid')}.html" class="js-btn">马上支付</a>
+	    </div>
+<!--底部-->
+ <div style="height: 55px;"></div>
+ <div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default sq-foot am-no-layout" id="">
+      <ul class="am-navbar-nav am-cf am-avg-sm-5">   
+          <li>
+            <a href="{:url('index')}" class="">
+                <span class="am-icon-home"></span>
+                <span class="am-navbar-label">首页</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('category')}" class="">
+                <span class="am-icon-comments"></span>
+                <span class="am-navbar-label">分类</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('shopcart')}" class="">
+                <span class="am-icon-shopping-cart"></span>
+                <span class="am-navbar-label">购物车</span>
+            </a>
+          </li>
+          <li>
+            <a href="{:url('allorder')}" class="">
+                <span class="am-icon-file-text"></span>
+                <span class="am-navbar-label">订单</span>
+            </a>
+          </li>
+ 
+          <li>
+            <a href="{:url('member')}" class="curr">
+                <span class="am-icon-user"></span>
+                <span class="am-navbar-label">我的</span>
+            </a>
+          </li>
+      </ul>
+</div>
+<script>
+$(function(){
+	$(".order-mid").click(function () {
+	     $(this).next("div").next(".shop-list-zp").slideToggle("slow");
+		 $(this).find("i").toggleClass("active");
+	});
+})
+</script>
+	</body>
+</html>

@@ -1,0 +1,61 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="author" content="m.178hui.com" />
+<meta name="applicable-device" content="mobile" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<title>门店详情 — 大自然会所</title>
+<link href="{:ADDON_PUBLIC_PATH}/css/public.css" rel="stylesheet" type="text/css" />
+<link href="{:ADDON_PUBLIC_PATH}/css/owl.carousel.css" rel="stylesheet">
+<link href="{:ADDON_PUBLIC_PATH}/css/frozen.css" rel="stylesheet" type="text/css">
+<link href="{:ADDON_PUBLIC_PATH}/css/baoliao.css" rel="stylesheet" type="text/css">
+
+<script src="{:ADDON_PUBLIC_PATH}/js/jquery-1.8.3.min.js"></script>
+<script src="{:ADDON_PUBLIC_PATH}/js/owl.carousel.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".shaixuan").click(function(event){
+		event.stopPropagation(); 
+		$(".shaixuan_box").show();
+		$(".shaixuan_box").animate({right:'100%'});
+		$("html,body").css("overflow","hidden");
+	});
+	$(document).click(function(event){
+		$(".shaixuan_box").animate({right:'-100%'});
+		$(".shaixuan_box").hide(5);
+		$("html,body").css("overflow","");
+	});    
+});
+</script>
+</head>
+
+<body style="background:#F5F5F5">
+<div class="mobile success-bg">
+
+  <!--header 开始-->
+  <header>
+    <div class="header"> <a class="new-a-back" href="{:U("index")}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/iconfont-fanhui.png"></span> </a>
+      <h2>我的会员卡</h2>
+      <a class="new-a-back2" style="right:0; top:0;" href="{:U("index",array("rand"=>rand(1000,9999)))}"> <span><img src="{:ADDON_PUBLIC_PATH}/images/home.png"></span> </a>
+      <div class="head_right" style="top:13px;"></div>
+    </div>
+  </header>
+  <!--header 结束-->
+  
+  <style>
+  .mobile { background:#F5F5F5;}
+  .vipcard { width:100%; height:auto; background:#F5F5F5; text-align:center;}
+  .vipbh { margin-top:20px;font-size:18px; padding:10px; border-bottom:1px solid #DDD8CE;border-top:1px solid #DDD8CE;
+  background:#fff;}
+  </style>
+  <div class="vipcard">
+      <img src="{:ADDON_PUBLIC_PATH}/images/vipcard.png">
+  </div>
+  <div class="vipbh">卡号：NO.0000001</div>
+
+
+</div>
+<include file="./Addons/Bll/View/default/Public/guanzhu.html" />
+</body>
+</html>

@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>{:session('sys.webtitle')}</title>
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="icon" type="image/png" href="/theme/default/images/favicon.png">
+		<link href="/assets/css/amazeui.min.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/dropload.css" rel="stylesheet" type="text/css" />
+		<script src="/assets/js/jquery-3.2.1.min.js"></script>
+		<script src="/assets/js/layer_mobile/layer.js"></script>
+		<script src="/assets/js/dropload.min.js"></script>
+		<script>
+			//设置猜你喜欢滚动条横向动态宽度
+			$(function() {
+				var num = $('.else-xm-1').children('li').length;
+				$('.cn-like .scroll').css("width", num * 87);
+			});
+		</script>
+		<style>
+			body {
+				overflow-x: hidden
+			}
+			
+			.am-slider-default .am-control-nav {
+				text-align: center;
+			}
+			
+			.am-slider-default .am-control-nav li a.am-active {
+				background: #cb2527;
+			}
+			
+			.am-slider-default .am-control-nav li a {
+				border: 0;
+				width: 10px;
+				height: 10px;
+			}
+			
+			.normal-price {
+				font-size: 0.12rem;
+				color: #9c9c9c
+			}
+			
+			.d-amount {
+				padding: 0 3%;
+			}
+			
+			.detal-info {
+				font-size: 14px;
+			}
+			
+			.detal-info p {
+				font-size: 14px;
+			}
+			
+			.detal-info p:first-child {
+				font-size: 14px;
+				font-weight: bold;
+			}
+			
+			.same-product-search {
+				border: 1px solid #eee;
+				min-height: 44px;
+				font-size: 14px;
+				background: #fff;
+				padding: 10px 10px;
+			}
+			
+			.same-product-search .name {
+				text-align: left;
+				padding-right: 1em;
+				float: left
+			}
+			
+			.same-product-search .content {
+				font-size: 0.35rem;
+				color: #929292;
+				padding-right: 0.32rem;
+				float: right
+			}
+			
+			.cn-like {
+				padding: 0.32rem 0.375rem 0 0.375rem;
+				background: #fff;
+				font-size: 14px;
+				overflow-x: auto;
+				overflow-y: hidden;
+			}
+			
+			.cn-like p {
+				color: #666;
+				padding: 0.33rem;
+			}
+			
+			.cn-like .scroll ul li {
+				float: left;
+				margin-left: 7px;
+			}
+			
+			.else-xm-1:after {
+				content: ".";
+				display: block;
+				height: 0;
+				clear: both;
+				visibility: hidden;
+			}
+			
+			.cn-like .scroll {
+				height: 127px;
+			}
+			
+			.cn-like .scroll ul li div {
+				color: #595959;
+				line-height: 1.19em;
+				font-size: 12px;
+				white-space: normal;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
+				word-break: break-all;
+				width: 80px;
+				overflow: hidden
+			}
+			
+			.cn-like .scroll ul li img {
+				width: 80px;
+				height: 100px;
+			}
+			
+			.detal-info span.smicon {
+				color: #8CB159;
+				margin: 0 5px;
+			}
+			
+			.am-nav-tabs {
+				border: 0;
+			}
+			
+			.am-nav-tabs>li>a {
+				border: 0;
+				border-bottom: 2px solid transparent;
+			}
+			
+			.am-nav-tabs>li.am-active>a,
+			.am-nav-tabs>li.am-active>a:focus,
+			.am-nav-tabs>li.am-active>a:hover {
+				border: 0;
+				border-bottom-width: 2px;
+				border-bottom-style: solid;
+				border-bottom-color: #ff6868
+			}
+			
+			.am-nav>li>a:focus,
+			.am-nav>li>a:hover {
+				background-color: #fff;
+			}
+			
+			.list-bg-pic-sm {
+				width: 90px;
+				height: 90px;
+				background-size: contain;
+				background-position: center center;
+				background-repeat: no-repeat;
+				margin: 0 auto;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header data-am-widget="header" class="am-header am-header-default sq-head ">
+			<div class="am-header-left am-header-nav">
+				<a href="{:outo()}" class="">
+					<i class="am-icon-chevron-left"></i>
+				</a>
+			</div>
+			<h1 class="am-header-title">
+  	            <a href="" class="">商品详情</a>
+            </h1>
+      <div class="am-header-right am-header-nav">
+				<a href="/index.html" class="">
+					<i class="am-icon-home am-icon-sm"></i>
+				</a>
+			</div>
+		</header>
+		<div style="height: 49px;"></div>
+		<!--图片轮换-->
+		<style>
+			.list-bg-pic {
+				width: 100%;
+				height: 200px;
+				background-size: contain;
+				background-position: center center;
+				background-repeat: no-repeat;
+				margin: 0 auto;
+			}
+			
+			.am-slider-default {
+				box-shadow: none;
+			}
+		</style>
+		<div class="am-slider am-slider-default" data-am-flexslider id="demo-slider-0">
+			<ul class="am-slides am-thumbnails">
+				{volist name='img' id='vo'}
+				<li>
+					<div style="background-image:url({$vo.menuimg})" class="list-bg-pic"></div>
+				</li>
+				{/volist}
+			</ul>
+		</div>
+		<div class="detal-info" style="position: relative; width: 100%;">
+			<p style="font-size:16px;">{$product.spmc}</p>
+			<h2>商城价：<span>￥{$product.price}</span><del class="normal-price">原价￥{$product.origprice}</del></h2>
+			<div class="heart">
+				<img src="/assets/images/herat.png" width="25" />
+				<p>收藏商品</p>
+			</div>
+			<p style="display: none;">配货方式支持：<span class="am-icon-check-circle smicon">门店自提</span><span class="am-icon-check-circle smicon">快递</span></p>
+		</div>
+		<!--		<div class="d-amount" style="display: none;">
+        	<h4>数量：</h4>
+            <div class="d-stock">
+              <a class="decrease">-</a>
+                <input id="num" readonly="" class="text_box" name="" type="text" value="1">
+                <input id="id" type="hidden" value="644">
+                <a class="increase">+</a>
+               <span id="dprice" class="price" style="display:none"> 36</span>
+            </div>
+        </div>-->
+		<div style="background: #eee; height: 10px;display: none;"></div>
+		<div class="same-product-search" style="display: none;">
+			<div class="name">深沪海景店</div>
+			<div class="content">更多门店>></div>
+		</div>
+		{neq name=':count($cxlist)' value='0'}
+		<div style="background: #eee; height: 10px;"></div>
+		<div class="same-product-search">
+			<span class="yhxx">优惠</span>
+			<div class="yhxx-cell">
+				<a href="javascript:void(0)" data-am-modal="{target: '#my-alert'}">
+					{volist name='cxlist' id='vo'} {php}if($i!=1) echo '<br>';{/php}
+					<span>{$vo.jj}</span> {/volist}
+				</a>
+			</div>
+		</div>
+		{/neq}
+		
+		{eq name='iszh' value='1'}
+      <div style="clear:both;"></div>
+      <div class="shop-list-zp">
+    		{volist name='zh' id='vq'}
+        <div class="zp-pic"><img src="{$vq.menuimg}" /></div>
+        <div class="zp-title"><span class="red">组合：</span>{$vq.spmc} X {$vq.num}</div>
+        {/volist}
+      </div>
+		{/eq}
+
+		<div style="background: #eee; height: 10px;"></div>
+		<div class="same-product-search">
+			<h2 style="font-size:16px;">商品简介</h2>
+			<div>{$product.spremark1}</div>
+		</div>
+		{eq name='islike' value='1'}
+		<div style="background: #eee; height: 10px;"></div>
+		<div class="cn-like">
+			<p>猜您喜欢</p>
+			<div class="scroll">
+				<ul class="else-xm-1">
+					{volist name='like' id='vo'}
+					<li>
+						<a href="/detail/sort/{$sort}/pid/{$vo.productid}.html">
+							<img src="{$vo.menuimg}">
+							<div>{$vo.spmc}</div>
+						</a>
+					</li>
+					{/volist}
+
+				</ul>
+			</div>
+		</div>
+		{/eq}
+		<div style="background: #eee; height: 10px;"></div>
+		<div class="am-tabs detail-list" data-am-tabs>
+			<ul class="am-tabs-nav am-nav am-nav-tabs">
+				<li class="am-active">
+					<a href="#tab1">商品详情</a>
+				</li>
+				<li>
+					<a href="#tab2">商品参数</a>
+				</li>
+				<li>
+					<a href="#tab3">商品评论</a>
+				</li>
+			</ul>
+
+			<div class="am-tabs-bd">
+				<div class="am-tab-panel am-fade am-in am-active detail " id="tab1">
+					{$product.spremark2}
+				</div>
+				<div class="am-tab-panel am-fade detail " id="tab2">
+					{$product.spremark3}
+				</div>
+				<div class="am-tab-panel am-fade detail " id="tab3">
+					<!--<div class="comment">
+		         	<span>好评：</span>
+		         	<div class="com-good"></div>
+		         	<span>100%</span>
+		         </div>
+		         <div class="comment">
+		         	<span>中评：</span>
+		         	<div class="com-bad"></div>
+		         	<span>0%</span>
+		         </div>
+		         <div class="comment">
+		         	<span>差评：</span>
+		         	<div class="com-bad"></div>
+		         	<span>0%</span>
+		         </div>-->
+					<ul class="comment-list">
+						<li class="current">
+							<a>全部</a>
+						</li>
+					</ul>
+					<div id="list">
+					<ul class="comment-pic">
+
+					</ul>
+					</div> 
+				</div>
+			</div>
+		</div>
+		
+
+		<!--底部-->
+		<div style=" height: 55px;"></div>
+		<ul class="fix-shopping">
+			<li>
+				<a href="javascript:void(0)" class="join">加入购物车</a>
+			</li>
+			<li>
+				<a href="javascript:void(0)" class="imm-buy">立即购买</a>
+			</li>
+		</ul>
+
+		<!--购买详细列表-->
+		<form class="gmlb" method="post" action="/detail.html">
+			<input type="hidden" id="spid" name="spid[]" />
+			<div class="tpsm">
+				<div class="pic list-bg-pic-sm" style=" background-image:url(
+					{volist name='img' id='vo'}
+					{eq name='i' value='1'}{$vo.menuimg}{/eq}
+					{/volist}
+				)"></div>
+				<div class="priec-text">
+					<span>{$product.spmc}</span>
+					<span class="red" data-ndj="{$product.price}" data-odj="{$product.origprice}">¥<b id="yhj">{$product.price}</b><del class="normal-price">￥<b id="yj">{$product.origprice}</b></del></span>
+					<span>已选择：{$product.spgg}</span>
+				</div>
+			</div>
+			<div class="clearfoot"></div>
+			<div class="sp-choice">
+				<h2>种类</h2>
+				<div id="spec">
+					{volist name='spec' id='vo'}
+					<span class="{eq name='vo.pspecid' value='$product.pspecid'}current{/eq}" data-specid="{$vo.pspecid}" data-jg="{$vo.price}" data-kc="{$vo.stocknum}" data-yj="{$vo.origprice}">{$vo.spgg}</span> {/volist}
+				</div>
+			</div>
+			<div class="d-amount">
+				<h4>数量：(库存:<b>{$product.stocknum}</b>)</h4>
+				<div class="d-stock">
+					<a class="decrease">-</a>
+
+					<input id="num" class="text_box" name="num[]" type="number" value="1">
+					<a class="increase">+</a>
+				</div>
+			</div>
+			<a class="red-button">确定</a>
+			<div class="choice-close">X</div>
+		</form>
+
+		<div class="m_popUp" style=" display:none">
+			<div class="m_guide"></div><cite></cite></div>
+
+		<!--优惠信息弹窗-->
+		<div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
+			<div class="am-modal-dialog">
+				<div class="am-modal-hd">优惠信息</div>
+				<div class="am-modal-bd">
+					活动期间，可享受如下优惠：{volist name='cxlist' id='vo'}
+					<br> {$i}、{$vo.xq} {/volist}
+				</div>
+				<div class="am-modal-footer">
+					<span class="am-modal-btn">确定</span>
+				</div>
+			</div>
+		</div>
+		<div class="shop-detail-cart" {eq name='shopcar' value='0'}style="display: none;"{/eq}>
+		    <a class="z-set-2" href="/shopcart.html">
+					<b>{$shopcar}</b>
+		    </a>
+		</div>
+
+		<script src="/assets/js/amazeui.min.js"></script>
+		<script>
+			var page = 0;
+			// 每页展示10个
+			var size = 6;
+			
+var lock = 1;
+function getpe(){
+	if(lock){
+	  page++;
+	  // 拼接HTML
+	  var result = '';
+	  $.ajax({
+	    type: 'POST',
+	    async: false,
+	    url: '/detail.html',
+	    data: {
+	    	type:'pj',
+	    	page:page,
+	    	size:size,
+	    	pid:'{$product.productid}'
+	    },
+	    dataType: 'json',
+	    success: function(data){
+	      if( (data!=null) && (data.length>0) ){
+	        for(var i=0; i<data.length; i++){
+	        	result += ''
+							+'<li>'
+								+'<div class="tit">'
+									+'<img src="/assets/images/tx.png" class="tx" />'
+									+'<span>'+data[i].username+'</span>'
+									+'<i> ['+data[i].evaltime+']</i>'
+								+'</div>'
+								+'<div class="comment-con">'
+									+data[i].evalremark
+								+'</div>'
+							+'</li>';
+	        }
+	      // 如果没有数据
+	      }else{
+		      // 锁定
+		      lock=0;
+	      }
+	      // 插入数据到页面，放到最后面
+	      $('.comment-pic').append(result);
+	    },
+	    error: function(xhr, type){
+	      // 锁定
+	      lock=0;
+	      alert('数据获取失败!');
+	
+	    }
+	  });
+	}
+}
+			$(function() {
+				if({$sc}) {
+					$('.heart img').attr('src', '/assets/images/redherat.png');
+					$('.heart p').text('取消收藏');
+				}
+
+				getpe();
+				$(window).scroll(function () {
+					var scrollHeight = $(document).height();
+					var scrollTop = $(window).scrollTop();
+					var $windowHeight = $(window).innerHeight();
+					if ($(document).scrollTop() + $(window).height() > $(document).height() - 100) {
+						getpe();
+					}
+				});
+
+
+
+				$('.heart').click(function() {
+					if($('.heart p').text() == '收藏商品') {
+						var type = 'sc';
+					} else {
+						var type = 'qx';
+					}
+					$.ajax({
+						type: 'POST',
+						async: false,
+						url: '/detail.html',
+						data: {
+							type: type,
+							pid: '{$product.productid}'
+						},
+						dataType: 'json',
+						success: function(data) {
+							if(data.msg == '收藏成功!') {
+								$('.heart img').attr('src', '/assets/images/redherat.png');
+								$('.heart p').text('取消收藏');
+							}
+							if(data.msg == '取消成功!') {
+								$('.heart img').attr('src', '/assets/images/herat.png');
+								$('.heart p').text('收藏商品');
+							}
+							layer.open({
+								content: data.msg,
+								skin: 'msg',
+								time: 2 //2秒后自动关闭
+							});
+						},
+						error: function(xhr, type) {
+							layer.open({
+								content: '网络出错,操作失败!',
+								skin: 'msg',
+								time: 2 //2秒后自动关闭
+							});
+						}
+					});
+
+				});
+			})
+		</script>
+		<script>
+			//购物数量加减
+			$(function() {
+				$('[name="num[]"]').click(function(){
+					$(this).select();
+				})
+				$('[name="num[]"]').change(function(){
+					$(this).select();
+					if($(this).val() < 1 ) $(this).val(1);
+					$("#yhj").text((parseFloat($(".red").data("ndj"))*$(this).val()).toFixed(2));
+					$("#yj").text((parseFloat($(".red").data("odj"))*$(this).val()).toFixed(2));
+				})
+				$('.increase').click(function() {
+					var self = $(this);
+					var current_num = parseInt(self.siblings('input').val());
+					if(current_num < $('h4 b').text()) {
+						current_num += 1;
+						self.siblings('input').val(current_num);
+						$("#yhj").text((parseFloat($("#yhj").text()) + parseFloat($(".red").data("ndj"))).toFixed(2));
+						$("#yj").text((parseFloat($("#yj").text()) + parseFloat($(".red").data("odj"))).toFixed(2));
+					}
+				})
+				$('.decrease').click(function() {
+					var self = $(this);
+					var current_num = parseInt(self.siblings('input').val());
+					if(current_num > 1) {
+						current_num -= 1;
+						self.siblings('input').val(current_num);
+						$("#yhj").text((parseFloat($("#yhj").text()) - parseFloat($(".red").data("ndj"))).toFixed(2));
+						$("#yj").text((parseFloat($("#yj").text()) - parseFloat($(".red").data("odj"))).toFixed(2));
+					}
+				})
+			})
+		</script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('.sp-choice span').click(function() {
+					$(this).toggleClass("current");
+					$(this).siblings().removeClass("current");
+					$('.priec-text span:nth-child(3)').html("已选: " + $(this).text());
+					var yj = $(this).data("yj");
+					var jg = $(this).data("jg");
+					$("#yhj").text(jg);
+					$(".red").data("ndj", jg);
+					$("#yj").text(yj);
+					$(".red").data("odj", yj);
+					$("#num").val(1);
+					$("#spid").val($(this).data('specid'));
+					$("h4 b").text($(this).data("kc"));
+				})
+			});
+		</script>
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+				var type;
+				$('.join').click(function() {
+					$(".gmlb").animate({
+						height: 'toggle'
+					}, 500);
+					$(".m_popUp").show();
+					type = 'jr';
+					$(".red-button").addClass('jr');
+					$(".red-button").removeClass('tj');
+				});
+				$('.imm-buy').click(function() {
+					$(".gmlb").animate({
+						height: 'toggle'
+					}, 500);
+					$(".m_popUp").show();
+					type = 'tj';
+					$(".red-button").addClass('tj');
+					$(".red-button").removeClass('jr');
+				});
+				$('.red-button').click(function() {
+					if(type == 'jr') {
+						$.ajax({
+							type: 'POST',
+							async: false,
+							url: '/detail.html',
+							data: {
+								type: 'jr',
+								psid: $('#spec .current').data('specid'),
+								num: $('#num').val()
+							},
+							dataType: 'json',
+							success: function(data) {
+								if($('.z-set-2 b').length <= 0){
+									$('.z-set-2').html('<b></b>');
+								}
+								$(".shop-detail-cart b").text(parseInt($(".shop-detail-cart b").text())+parseInt($('#num').val()));
+								$(".shop-detail-cart").show();
+								layer.open({
+									content: data.msg,
+									skin: 'msg',
+									time: 2 //2秒后自动关闭
+								});
+								
+							},
+							error: function(xhr, type) {
+								layer.open({
+									content: '网络出错,操作失败!',
+									skin: 'msg',
+									time: 2 //2秒后自动关闭
+								});
+							}
+						});
+						$(".m_popUp").hide();
+						$(".gmlb").animate({
+							height: 'toggle'
+						}, 500);
+					} else if(type == 'tj') {
+						$("#spid").val($('#spec .current').data('specid'));
+						$('.gmlb').submit();
+					}
+				});
+
+				$('.m_popUp').click(function() {
+					$(".m_popUp").hide();
+					$(".gmlb").animate({
+						height: 'toggle'
+					}, 500);
+				});
+				$('.choice-close').click(function() {
+					$(".m_popUp").hide();
+					$(".gmlb").animate({
+						height: 'toggle'
+					}, 500);
+				});
+
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>{:session('sys.webtitle')}</title>
+    <link href="/assets/css/style.css" rel="stylesheet" type="text/css">
+		<script src="/assets/js/jquery-3.2.1.min.js"></script>
+</head>
+
+<body>
+<div class="relsearch">
+    <a href="{:outo()}"><div id="closeiiii" class="ssjt"></div></a>
+    <div class="sssr">
+        <input type="search" value="" placeholder="">
+    </div>
+    <div class="ssan"><a href="">搜索</a></div>
+</div>
+
+<div class="mui-scroll">
+  <div style="margin:20px 0;">
+    <div class="tit"><i class="iconfont icon-hot"></i>热门搜索</div>
+    <div class="tags">
+			{volist name='list' id='vo'}
+			<a href="/goodslist/catid/{$vo.keyword}/s/1.html"><span class="tag actice">{$vo.keyword}</span></a>
+			{/volist}
+    </div>
+  </div>
+  <div class="clearfoot"></div>
+  <div style="margin:20px 0;">
+    <div class="tit tit2"><i class="iconfont icon-hot"></i>最近搜索</div>
+    <div class="tags">
+			{volist name='uk' id='vo'}
+			<a href="/goodslist/catid/{$vo.keyword}/s/1.html"><span class="tag actice">{$vo.keyword}</span></a>
+			{/volist}
+    </div>
+  </div> 
+</div>
+<script>
+$(function(){
+	
+$('.ssan').click(function(){
+	$('.ssan a').attr('href', '/goodslist/catid/'+$('.sssr input').val()+'/s/1.html');
+})
+	
+	
+})
+</script>
+</body>
+</html>
